@@ -745,16 +745,55 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               })}
             </div>
 
-            {/* Back Button */}
-            <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
-              <button
-                onClick={() => setSelectedArticleId(null)}
-                className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition font-medium"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to All Articles
-              </button>
+
+
+            {/* Related Articles Section */}
+            <div className="mt-16 pt-12 border-t border-slate-200 dark:border-slate-700">
+              <h3 className="text-2xl font-bold mb-8 text-slate-900 dark:text-white">Related Articles</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {articles
+                  .filter(
+                    (article) =>
+                      article.category === selectedArticle.category &&
+                      article.id !== selectedArticle.id
+                  )
+                  .slice(0, 3)
+                  .map((relatedArticle) => (
+                    <Card
+                      key={relatedArticle.id}
+                      className="p-0 hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-cyan-600 flex flex-col h-full overflow-hidden"
+                      onClick={() => setSelectedArticleId(relatedArticle.id)}
+                    >
+                      <div className="w-full h-40 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                        <img
+                          src={relatedArticle.thumbnail}
+                          alt={relatedArticle.title}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="p-4 flex-1 flex flex-col">
+                        <h4 className="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2 text-sm">
+                          {relatedArticle.title}
+                        </h4>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
+                          {relatedArticle.excerpt}
+                        </p>
+                        <div className="mt-auto">
+                          <span className="text-xs text-cyan-600 font-medium">Read More →</span>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+              </div>
             </div>
+
+            <button
+              onClick={() => setSelectedArticleId(null)}
+              className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition font-medium mt-12"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to All Articles
+            </button>
           </div>
         </article>
       </div>
