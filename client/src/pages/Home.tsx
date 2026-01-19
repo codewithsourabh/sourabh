@@ -243,12 +243,16 @@ export default function Home() {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
-                View My Work <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button variant="outline" className="border-slate-300 dark:border-slate-600">
-                Download Resume
-              </Button>
+              <a href="#projects">
+                <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
+                  View My Work <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
+              <a href="https://drive.google.com/file/d/1OgR27VRHDhIFFNSH-1Jn4rQtsMvZbOex/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" className="border-slate-300 dark:border-slate-600">
+                  Download Resume
+                </Button>
+              </a>
             </div>
           </div>
         </div>
