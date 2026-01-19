@@ -12,6 +12,7 @@ import { useState } from "react";
 
 export default function Blog() {
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const articles = [
     {
@@ -640,6 +641,14 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
     },
   ];
 
+  // Extract unique categories
+  const categories = Array.from(new Set(articles.map((a) => a.category)));
+
+  // Filter articles based on selected category
+  const filteredArticles = selectedCategory
+    ? articles.filter((a) => a.category === selectedCategory)
+    : articles;
+
   const selectedArticle = articles.find((a) => a.id === selectedArticleId);
 
   if (selectedArticleId && selectedArticle) {
@@ -765,11 +774,43 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
         </div>
       </section>
 
+      {/* Filter Section */}
+      <section className="py-8 md:py-12 bg-slate-50 dark:bg-slate-800/50">
+        <div className="container">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Filter by:</span>
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                selectedCategory === null
+                  ? "bg-cyan-600 text-white"
+                  : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:border-cyan-600 dark:hover:border-cyan-600"
+              }`}
+            >
+              All Articles
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === category
+                    ? "bg-cyan-600 text-white"
+                    : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:border-cyan-600 dark:hover:border-cyan-600"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Articles Grid */}
       <section className="py-16 md:py-24">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.map((article) => (
+            {filteredArticles.map((article) => (
               <Card
                 key={article.id}
                 className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-cyan-600 flex flex-col h-full"
@@ -809,6 +850,13 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               </Card>
             ))}
           </div>
+          {filteredArticles.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-slate-600 dark:text-slate-400 text-lg">
+                No articles found in this category. Try selecting a different filter.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
