@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
 
 /**
  * Design System: Technical Elegance
@@ -13,6 +13,26 @@ import { useState } from "react";
 export default function Home() {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentCertificateIndex, setCurrentCertificateIndex] = useState(0);
+
+  const certificateImages = [
+    { src: "/images/certificate-clickup-admin.png", alt: "ClickUp Admin Certificate" },
+  ];
+
+  const handleNextCertificate = () => {
+    setCurrentCertificateIndex((prev) => (prev + 1) % certificateImages.length);
+  };
+
+  const handlePrevCertificate = () => {
+    setCurrentCertificateIndex((prev) => (prev - 1 + certificateImages.length) % certificateImages.length);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCertificateIndex((prev) => (prev + 1) % certificateImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [certificateImages.length]);
 
   const navLinks = [
     { label: "Skills", href: "#skills" },
@@ -453,6 +473,60 @@ export default function Home() {
                 </Card>
               );
             })}
+          </div>
+
+          {/* Certificate Carousel */}
+          <div className="mt-20 pt-20 border-t border-slate-200 dark:border-slate-700">
+            <h3 className="text-2xl font-bold mb-8 text-center">Certificate <span className="text-cyan-600">Gallery</span></h3>
+            
+            <div className="relative max-w-4xl mx-auto">
+              {/* Carousel Container */}
+              <div className="relative bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 rounded-lg overflow-hidden shadow-lg">
+                {/* Certificate Image */}
+                <div className="relative h-96 md:h-[500px] overflow-hidden flex items-center justify-center">
+                  <img
+                    src={certificateImages[currentCertificateIndex].src}
+                    alt={certificateImages[currentCertificateIndex].alt}
+                    className="w-full h-full object-contain p-4 transition-opacity duration-500"
+                  />
+                </div>
+
+                {/* Navigation Arrows */}
+                <button
+                  onClick={handlePrevCertificate}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white p-2 rounded-full transition-colors z-10"
+                  aria-label="Previous certificate"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={handleNextCertificate}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white p-2 rounded-full transition-colors z-10"
+                  aria-label="Next certificate"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Indicator Dots */}
+              <div className="flex justify-center gap-2 mt-6">
+                {certificateImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentCertificateIndex(idx)}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      idx === currentCertificateIndex ? "bg-cyan-600" : "bg-slate-300 dark:bg-slate-600"
+                    }`}
+                    aria-label={`Go to certificate ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* Certificate Counter */}
+              <div className="text-center mt-4 text-sm text-slate-600 dark:text-slate-400">
+                Certificate {currentCertificateIndex + 1} of {certificateImages.length}
+              </div>
+            </div>
           </div>
         </div>
       </section>
