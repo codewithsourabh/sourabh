@@ -167,9 +167,24 @@ export default function Home() {
   ];
 
   const certifications = [
-    "8x ClickUp Certified – ClickUp University",
-    "HubSpot Marketing & Automation – HubSpot Academy",
-    "WordPress Certified – WordPress.org",
+    {
+      title: "8x ClickUp Certified",
+      issuer: "ClickUp University",
+      description: "Advanced expertise in ClickUp project management, workflow automation, and team collaboration. Demonstrates mastery of automation features and custom workflows.",
+      icon: "Workflow",
+    },
+    {
+      title: "HubSpot Marketing & Automation",
+      issuer: "HubSpot Academy",
+      description: "Comprehensive certification in HubSpot CRM, marketing automation, lead nurturing, and workflow design. Covers advanced integration and compliance requirements.",
+      icon: "Zap",
+    },
+    {
+      title: "WordPress Certified",
+      issuer: "WordPress.org",
+      description: "Professional certification in WordPress development, theme customization, plugin development, and site optimization. Includes SEO and performance best practices.",
+      icon: "Globe",
+    },
   ];
 
   return (
@@ -407,19 +422,37 @@ export default function Home() {
       </section>
 
       {/* Certifications Section */}
-      <section className="py-20 md:py-32 bg-slate-50 dark:bg-slate-900">
+      <section className="py-20 md:py-32 bg-white dark:bg-slate-800">
         <div className="container">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12">
-            <span className="text-cyan-600">Certifications</span> & Achievements
-          </h2>
+          <div className="mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="text-cyan-600">Certifications</span> & Credentials
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
+              Professional certifications demonstrating expertise in CRM platforms, automation tools, and web development
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {certifications.map((cert, idx) => (
-              <Card key={idx} className="p-6 text-center hover:shadow-lg transition-shadow card-hover">
-                <div className="text-4xl font-bold text-cyan-600 mb-3">✓</div>
-                <p className="font-semibold text-slate-900 dark:text-white">{cert}</p>
-              </Card>
-            ))}
+          <div className="grid md:grid-cols-3 gap-8">
+            {certifications.map((cert, idx) => {
+              const IconComponent = idx === 0 ? Workflow : idx === 1 ? Zap : Globe;
+              return (
+                <Card key={idx} className="p-8 border-t-4 border-t-cyan-600 hover:shadow-lg transition-shadow">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg">
+                      <IconComponent className="w-6 h-6 text-cyan-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">{cert.title}</h3>
+                      <p className="text-sm text-cyan-600 font-medium">{cert.issuer}</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                    {cert.description}
+                  </p>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
