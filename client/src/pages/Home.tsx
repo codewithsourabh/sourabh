@@ -56,7 +56,7 @@ export default function Home() {
     },
     {
       title: "Software/HubSpot Engineer",
-      company: "Outdoor Norway (Travel Industry)",
+      company: "Outdoor Norway",
       period: "Feb 2024 – Aug 2025",
       highlights: [
         "Developed and maintained company websites, enhancing user experience and engagement",
