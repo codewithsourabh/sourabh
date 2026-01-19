@@ -25,7 +25,7 @@ export default function Home() {
     {
       title: "HubSpot Engineer / Integration Engineer",
       company: "Current Role",
-      period: "Aug 2025 – Dec 2026",
+      period: "Aug 2025 – Present",
       highlights: [
         "Led end-to-end HubSpot-Salesforce integration for US financial loan platform",
         "Designed secure data synchronization with compliance requirements",
