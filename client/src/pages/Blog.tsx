@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * Design System: Technical Elegance
@@ -14,6 +14,22 @@ export default function Blog() {
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+
+  useEffect(() => {
+    if (!selectedArticleId) return;
+
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight - windowHeight;
+      const scrolled = window.scrollY;
+      const progress = documentHeight > 0 ? (scrolled / documentHeight) * 100 : 0;
+      setScrollProgress(Math.min(progress, 100));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [selectedArticleId]);
 
   const articles = [
     {
@@ -666,8 +682,16 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
   if (selectedArticleId && selectedArticle) {
     return (
       <div className="min-h-screen bg-background text-foreground">
+        {/* Reading Progress Bar */}
+        <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-700 z-50">
+          <div
+            className="h-full bg-gradient-to-r from-cyan-500 to-cyan-600 transition-all duration-300"
+            style={{ width: `${scrollProgress}%` }}
+          />
+        </div>
+
         {/* Header */}
-        <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
+        <header className="sticky top-1 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
           <div className="container flex items-center justify-between h-16">
             <div className="text-xl font-bold text-cyan-600">Sourabh</div>
             <a href="/blog" className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition">
