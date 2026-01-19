@@ -854,6 +854,56 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               </div>
             </div>
 
+            {/* Author Bio Section */}
+            <div className="mt-16 pt-12 border-t border-slate-200 dark:border-slate-700">
+              <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className="flex-shrink-0">
+                  <img
+                    src="/images/author-bio.jpg"
+                    alt="Sourabh Saini"
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">About the Author</h3>
+                  <p className="text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                    <strong>Sourabh Saini</strong> is a Software Engineer with 5+ years of expertise in CRM automation, HubSpot integration, and WordPress development. He specializes in building scalable digital solutions that streamline workflows, reduce manual effort, and drive measurable business outcomes through intelligent automation and seamless integrations.
+                  </p>
+                  <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
+                    With a passion for solving complex integration challenges, Sourabh has worked with leading companies across finance, travel, and healthcare sectors. He's certified in ClickUp, HubSpot, and WordPress, and continuously explores new technologies to deliver innovative solutions.
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">Connect:</span>
+                    <a
+                      href="https://www.linkedin.com/in/mrsourabh"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-colors"
+                      title="LinkedIn"
+                    >
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                    <a
+                      href="https://github.com/codewithsourabh"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-900 hover:text-white transition-colors"
+                      title="GitHub"
+                    >
+                      <X className="w-5 h-5" />
+                    </a>
+                    <a
+                      href="mailto:mernsourabh@gmail.com"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-cyan-600 hover:text-white transition-colors"
+                      title="Email"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <button
               onClick={() => setSelectedArticleId(null)}
               className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition font-medium mt-12"
