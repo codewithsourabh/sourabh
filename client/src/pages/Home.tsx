@@ -168,11 +168,6 @@ export default function Home() {
               </Card>
             ))}
           </div>
-
-          {/* Accent Image */}
-          <div className="rounded-lg overflow-hidden shadow-lg">
-            <img src="/images/skills-accent.jpg" alt="Skills accent" className="w-full h-64 object-cover" />
-          </div>
         </div>
       </section>
 
@@ -224,7 +219,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="grid md:grid-cols-2 gap-8">
             {projects.map((project, idx) => (
               <Card
                 key={idx}
@@ -254,11 +249,6 @@ export default function Home() {
                 </div>
               </Card>
             ))}
-          </div>
-
-          {/* Projects Accent Image */}
-          <div className="rounded-lg overflow-hidden shadow-lg">
-            <img src="/images/projects-accent.jpg" alt="Projects accent" className="w-full h-64 object-cover" />
           </div>
         </div>
       </section>
