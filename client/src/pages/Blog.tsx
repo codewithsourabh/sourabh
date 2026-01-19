@@ -24,6 +24,7 @@ export default function Blog() {
       author: "Sourabh Saini",
       category: "HubSpot",
       readTime: "8 min read",
+      thumbnail: "/images/blog-hubspot-automation.jpg",
       content: `HubSpot automation is a game-changer for businesses looking to scale their operations without proportionally increasing manual effort. In this comprehensive guide, we'll explore how to design workflows that truly move the needle.
 
 ## Understanding HubSpot Workflows
@@ -90,6 +91,7 @@ By mastering HubSpot automation, you'll free up your team to focus on high-value
       author: "Sourabh Saini",
       category: "WordPress",
       readTime: "10 min read",
+      thumbnail: "/images/blog-wordpress-seo.jpg",
       content: `WordPress powers over 40% of the web, but many WordPress sites leave significant SEO performance on the table. This guide covers technical and on-page SEO strategies specific to WordPress.
 
 ## WordPress SEO Foundation
@@ -191,6 +193,7 @@ By implementing these WordPress SEO strategies, you'll improve your site's visib
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "9 min read",
+      thumbnail: "/images/blog-crm-integration.jpg",
       content: `Modern businesses use multiple tools across their tech stack. The key to efficiency is making these tools work together seamlessly. This guide covers integrating HubSpot with your existing systems.
 
 ## Why CRM Integration Matters
@@ -300,6 +303,7 @@ By implementing proper CRM integration, you'll create a unified system that driv
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "7 min read",
+      thumbnail: "/images/blog-booking-systems.jpg",
       content: `Booking systems are critical for service-based businesses. Integrating them with your CRM ensures seamless customer management and operational efficiency.
 
 ## Booking System Architecture
@@ -430,6 +434,7 @@ By implementing a well-integrated booking system, you'll improve customer experi
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "8 min read",
+      thumbnail: "/images/blog-data-sync.jpg",
       content: `Data inconsistency across systems is a common problem that leads to poor decision-making and customer experience. This guide covers strategies for maintaining synchronized data.\n\n## The Data Synchronization Challenge
 
 When data exists in multiple systems:
@@ -848,9 +853,18 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
             {filteredArticles.map((article) => (
               <Card
                 key={article.id}
-                className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-cyan-600 flex flex-col h-full"
+                className="p-0 hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-cyan-600 flex flex-col h-full overflow-hidden"
                 onClick={() => setSelectedArticleId(article.id)}
               >
+                <div className="w-full h-48 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img
+                    src={article.thumbnail}
+                    alt={article.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+
+                <div className="p-6 flex-1 flex flex-col">
                 <div className="mb-4 flex-1">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="px-3 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 rounded-full text-xs font-medium">
@@ -881,6 +895,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                   <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 w-full justify-center text-sm">
                     Read Article <ArrowRight className="w-4 h-4" />
                   </Button>
+                </div>
                 </div>
               </Card>
             ))}
