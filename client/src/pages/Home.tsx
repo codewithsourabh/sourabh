@@ -487,7 +487,7 @@ export default function Home() {
                   <img
                     src={certificateImages[currentCertificateIndex].src}
                     alt={certificateImages[currentCertificateIndex].alt}
-                    className="w-full h-full object-contain p-4 transition-opacity duration-500"
+                    className="w-full h-full object-contain p-4 transition-opacity duration-500" style={{backgroundColor: '#ffffff'}}
                   />
                 </div>
 
