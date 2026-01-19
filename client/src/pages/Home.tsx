@@ -16,7 +16,13 @@ export default function Home() {
   const [currentCertificateIndex, setCurrentCertificateIndex] = useState(0);
 
   const certificateImages = [
-    { src: "/images/certificate-clickup-admin.png", alt: "ClickUp Admin Certificate" },
+    {
+      src: "/images/certificate-clickup-admin.png",
+      alt: "ClickUp Admin Certificate",
+      title: "ClickUp Admin Certified",
+      date: "January 2024",
+      description: "Advanced ClickUp administration and workspace management",
+    },
   ];
 
   const handleNextCertificate = () => {
@@ -506,6 +512,26 @@ export default function Home() {
                 >
                   <ChevronRight className="w-6 h-6" />
                 </button>
+              </div>
+
+              {/* Certificate Details */}
+              <div className="mt-6 p-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div>
+                    <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                      {certificateImages[currentCertificateIndex].title}
+                    </h4>
+                    <p className="text-slate-600 dark:text-slate-300 mb-3">
+                      {certificateImages[currentCertificateIndex].description}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Achieved</p>
+                    <p className="text-lg font-semibold text-cyan-600">
+                      {certificateImages[currentCertificateIndex].date}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Indicator Dots */}
