@@ -22,11 +22,21 @@ export default function Home() {
   ];
 
   const skills = [
-    { category: "CMS & CRM", items: ["WordPress", "HubSpot", "Zoho", "WooCommerce"] },
-    { category: "Automation", items: ["Zapier", "ClickUp", "Workflow Automation", "Node.js Custom Actions"] },
-    { category: "Integrations", items: ["API Integration", "Salesforce", "Third-Party Services", "Data Synchronization"] },
-    { category: "Web Technologies", items: ["HTML", "CSS", "JavaScript", "React"] },
-    { category: "Analytics & SEO", items: ["Google Analytics", "Core Web Vitals", "Schema Markup", "Keyword Research"] },
+    { category: "CMS & CRM", items: ["WordPress", "HubSpot", "Zoho", "WooCommerce", "CMS Customization", "CRM Customization"] },
+    { category: "Automation", items: ["Zapier", "ClickUp", "Workflow Automation", "Node.js Custom Actions", "Lead Capture Automation"] },
+    { category: "Integrations", items: ["API Integration", "Salesforce", "Third-Party Services", "Data Synchronization", "Booking Systems"] },
+    { category: "Web Technologies", items: ["HTML", "CSS", "JavaScript", "React", "Responsive Design", "Performance Optimization"] },
+    { category: "Analytics & SEO", items: ["Google Analytics", "Core Web Vitals", "Schema Markup", "XML Sitemaps", "Keyword Research", "Content Audits"] },
+    { category: "E-Commerce & Digital", items: ["WooCommerce", "Amazon/Flipkart/Meesho Integration", "Inventory Management", "Digital Marketing", "Product Optimization"] },
+  ];
+
+  const education = [
+    {
+      degree: "Bachelor of Technology in Computer Science Engineering",
+      institution: "Rajasthan Technical University",
+      location: "Kota, Jaipur, India",
+      period: "June 2018 – May 2022",
+    },
   ];
 
   const experience = [
@@ -86,6 +96,18 @@ export default function Home() {
       description: "Integration workflows for provider credentials, licensing, and referral network synchronization",
       technologies: ["HubSpot", "EHR Systems", "HIPAA", "Webhooks", "Scheduling"],
       impact: "Automated license expiration alerts and network coverage analysis",
+    },
+    {
+      title: "E-Commerce Platform Integration",
+      description: "Multi-platform e-commerce solution with bulk product uploads and inventory synchronization across Amazon, Flipkart, and Meesho",
+      technologies: ["WooCommerce", "Amazon API", "Flipkart Integration", "Meesho API", "Inventory Management"],
+      impact: "Successfully managed 1000+ product listings with automated inventory sync and 99% accuracy",
+    },
+    {
+      title: "Travel Booking System Integration",
+      description: "Real-time booking system integration with availability synchronization and automated reservation management",
+      technologies: ["WordPress", "Booking Engine", "Real-time Sync", "Payment Gateway", "HubSpot"],
+      impact: "Seamless real-time availability updates reducing booking conflicts by 100%",
     },
   ];
 
@@ -198,6 +220,7 @@ export default function Home() {
                   {idx === 2 && <Code2 className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
                   {idx === 3 && <Database className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
                   {idx === 4 && <Workflow className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
+                  {idx === 5 && <Globe className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
                   <h3 className="text-xl font-semibold">{skillGroup.category}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -206,6 +229,35 @@ export default function Home() {
                       {item}
                     </span>
                   ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Education Section */}
+      <section className="py-20 md:py-32 bg-white dark:bg-slate-800">
+        <div className="container">
+          <div className="mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="text-cyan-600">Education</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
+              Formal education in Computer Science Engineering with continuous professional development
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            {education.map((edu, idx) => (
+              <Card key={idx} className="p-8 border-l-4 border-l-cyan-600 hover:shadow-lg transition-shadow">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-1">{edu.degree}</h3>
+                    <p className="text-cyan-600 font-semibold">{edu.institution}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">{edu.location}</p>
+                  </div>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 mt-2 md:mt-0">{edu.period}</span>
                 </div>
               </Card>
             ))}
