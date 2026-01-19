@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, User, ArrowRight, Search, X } from "lucide-react";
+import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter } from "lucide-react";
 import { useState } from "react";
 
 /**
@@ -700,6 +700,49 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                   <Calendar className="w-4 h-4" />
                   <span>{selectedArticle.date}</span>
                 </div>
+              </div>
+            </div>
+
+            {/* Social Sharing Buttons */}
+            <div className="mb-8 pb-8 border-b border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Share:</span>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-colors"
+                  title="Share on LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-500 hover:text-white transition-colors"
+                  title="Share on Facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(selectedArticle.title + ' ' + window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-green-500 hover:text-white transition-colors"
+                  title="Share on WhatsApp"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(selectedArticle.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-sky-500 hover:text-white transition-colors"
+                  title="Share on Twitter"
+                >
+                  <Twitter className="w-5 h-5" />
+                </a>
               </div>
             </div>
 
