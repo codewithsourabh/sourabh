@@ -767,44 +767,42 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
 
       {/* Articles Grid */}
       <section className="py-16 md:py-24">
-        <div className="container max-w-4xl">
-          <div className="grid gap-8">
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article) => (
               <Card
                 key={article.id}
-                className="p-6 md:p-8 hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-cyan-600"
+                className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-cyan-600 flex flex-col h-full"
                 onClick={() => setSelectedArticleId(article.id)}
               >
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="px-3 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 rounded-full text-sm font-medium">
-                        {article.category}
-                      </span>
-                      <span className="text-sm text-slate-500 dark:text-slate-400">{article.readTime}</span>
-                    </div>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 hover:text-cyan-600 transition">
-                      {article.title}
-                    </h2>
+                <div className="mb-4 flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="px-3 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 rounded-full text-xs font-medium">
+                      {article.category}
+                    </span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">{article.readTime}</span>
                   </div>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-3 hover:text-cyan-600 transition line-clamp-2">
+                    {article.title}
+                  </h2>
                 </div>
 
-                <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed text-sm line-clamp-3">
                   {article.excerpt}
                 </p>
 
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-                  <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+                <div className="flex flex-col gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
                     <div className="flex items-center gap-1">
-                      <User className="w-4 h-4" />
+                      <User className="w-3 h-3" />
                       <span>{article.author}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="w-3 h-3" />
                       <span>{article.date}</span>
                     </div>
                   </div>
-                  <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 w-full md:w-auto justify-center">
+                  <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 w-full justify-center text-sm">
                     Read Article <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
