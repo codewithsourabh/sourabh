@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, User, ArrowRight } from "lucide-react";
+import { ArrowLeft, Calendar, User, ArrowRight, Search, X } from "lucide-react";
 import { useState } from "react";
 
 /**
@@ -13,6 +13,7 @@ import { useState } from "react";
 export default function Blog() {
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const articles = [
     {
@@ -644,10 +645,16 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
   // Extract unique categories
   const categories = Array.from(new Set(articles.map((a) => a.category)));
 
-  // Filter articles based on selected category
-  const filteredArticles = selectedCategory
-    ? articles.filter((a) => a.category === selectedCategory)
-    : articles;
+  // Filter articles based on selected category and search query
+  const filteredArticles = articles.filter((article) => {
+    const matchesCategory = !selectedCategory || article.category === selectedCategory;
+    const matchesSearch =
+      !searchQuery ||
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.content.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const selectedArticle = articles.find((a) => a.id === selectedArticleId);
 
@@ -771,6 +778,30 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
           <p className="text-lg text-slate-600 dark:text-slate-300">
             Exploring HubSpot automation, WordPress optimization, and integration strategies to help you build scalable digital solutions.
           </p>
+        </div>
+      </section>
+
+      {/* Search Section */}
+      <section className="py-6 md:py-8 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+        <div className="container">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search articles by keyword..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-10 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
       </section>
 
