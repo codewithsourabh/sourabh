@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 /**
@@ -12,6 +12,14 @@ import { useState } from "react";
 
 export default function Home() {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navLinks = [
+    { label: "Skills", href: "#skills" },
+    { label: "Experience", href: "#experience" },
+    { label: "Projects", href: "#projects" },
+    { label: "Contact", href: "#contact" },
+  ];
 
   const skills = [
     { category: "CMS & CRM", items: ["WordPress", "HubSpot", "Zoho", "WooCommerce"] },
@@ -93,13 +101,47 @@ export default function Home() {
       <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between h-16">
           <div className="text-xl font-bold text-cyan-600">Sourabh</div>
-          <div className="flex gap-8 items-center">
-            <a href="#skills" className="text-sm hover:text-cyan-600 transition">Skills</a>
-            <a href="#experience" className="text-sm hover:text-cyan-600 transition">Experience</a>
-            <a href="#projects" className="text-sm hover:text-cyan-600 transition">Projects</a>
-            <a href="#contact" className="text-sm hover:text-cyan-600 transition">Contact</a>
+          
+          {/* Desktop Menu */}
+          <div className="hidden md:flex gap-8 items-center">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} className="text-sm hover:text-cyan-600 transition">
+                {link.label}
+              </a>
+            ))}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white dark:bg-slate-900 border-t border-border">
+            <div className="container py-4 flex flex-col gap-4">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm hover:text-cyan-600 transition py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
