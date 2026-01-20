@@ -723,7 +723,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
         setActiveHeading('');
       }
     }
-  }, [selectedArticleId, articles]);
+  }, [selectedArticleId]);
 
   if (selectedArticleId && selectedArticle) {
     return (
