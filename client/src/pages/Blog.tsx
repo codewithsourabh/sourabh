@@ -722,6 +722,13 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
 
   const selectedArticle = articles.find((a) => a.id === selectedArticleId);
 
+  useEffect(() => {
+    if (selectedArticleId && selectedArticle) {
+      setTableOfContents(extractHeadings(selectedArticle.content));
+      setActiveHeading('');
+    }
+  }, [selectedArticleId, selectedArticle]);
+
   if (selectedArticleId && selectedArticle) {
     return (
       <div className="min-h-screen bg-background text-foreground">
