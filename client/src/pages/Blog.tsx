@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter, Copy, Check, ChevronRight } from "lucide-react";
+import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter, Copy, Check, ChevronRight, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
 /**
@@ -1015,6 +1015,49 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               <ArrowLeft className="w-4 h-4" />
               Back to All Articles
             </button>
+
+            {/* AI Summarization Section */}
+            <div className="mb-8 pb-8 border-b border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  Summarize:
+                </span>
+                <a
+                  href={`https://chatgpt.com?q=Summarize+this+article:+${encodeURIComponent(selectedArticle.title)}%0A%0A${encodeURIComponent(selectedArticle.content.substring(0, 500))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-green-600 hover:text-white transition-colors"
+                  title="Summarize with ChatGPT"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                  </svg>
+                </a>
+                <a
+                  href={`https://claude.ai?q=Summarize+this+article:+${encodeURIComponent(selectedArticle.title)}%0A%0A${encodeURIComponent(selectedArticle.content.substring(0, 500))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-purple-600 hover:text-white transition-colors"
+                  title="Summarize with Claude"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                  </svg>
+                </a>
+                <a
+                  href={`https://gemini.google.com?q=Summarize+this+article:+${encodeURIComponent(selectedArticle.title)}%0A%0A${encodeURIComponent(selectedArticle.content.substring(0, 500))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-colors"
+                  title="Summarize with Google Gemini"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
               </div>
             </div>
           </div>
