@@ -1040,7 +1040,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
 
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
-        <div className="container max-w-3xl">
+        <div className="container">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
             Blog & <span className="text-cyan-600">Insights</span>
           </h1>
