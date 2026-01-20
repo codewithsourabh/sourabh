@@ -1044,7 +1044,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
             Blog & <span className="text-cyan-600">Insights</span>
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300">
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
             Exploring HubSpot automation, WordPress optimization, and integration strategies to help you build scalable digital solutions.
           </p>
         </div>
