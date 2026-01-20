@@ -67,13 +67,6 @@ export default function Blog() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [selectedArticleId]);
 
-  useEffect(() => {
-    if (selectedArticleId && selectedArticle) {
-      setTableOfContents(extractHeadings(selectedArticle.content));
-      setActiveHeading('');
-    }
-  }, [selectedArticleId, selectedArticle]);
-
   const articles = [
     {
       id: "hubspot-automation",
