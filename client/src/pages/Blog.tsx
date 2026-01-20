@@ -1028,7 +1028,9 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between h-16">
-          <div className="text-xl font-bold text-cyan-600">Sourabh</div>
+          <a href="/" className="text-xl font-bold text-cyan-600 hover:text-cyan-700 transition">
+            Sourabh
+          </a>
           <a href="/" className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition">
             <ArrowLeft className="w-4 h-4" />
             Back to Home
