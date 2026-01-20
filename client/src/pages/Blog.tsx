@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter } from "lucide-react";
+import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 
 /**
@@ -15,6 +15,15 @@ export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [scrollProgress, setScrollProgress] = useState<number>(0);
+  const [copiedLink, setCopiedLink] = useState<boolean>(false);
+
+  const handleCopyLink = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    });
+  };
 
   useEffect(() => {
     if (!selectedArticleId) return;
@@ -767,7 +776,24 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                 >
                   <Twitter className="w-5 h-5" />
                 </a>
+                <button
+                  onClick={handleCopyLink}
+                  className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
+                    copiedLink
+                      ? 'bg-green-500 text-white'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-cyan-600 hover:text-white'
+                  }`}
+                  title="Copy link"
+                >
+                  {copiedLink ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                </button>
               </div>
+              {copiedLink && (
+                <div className="mt-3 flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-medium">
+                  <Check className="w-4 h-4" />
+                  <span>Link copied to clipboard</span>
+                </div>
+              )}
             </div>
 
             {/* Article Body */}
