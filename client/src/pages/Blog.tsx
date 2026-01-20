@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter, Copy, Check } from "lucide-react";
+import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter, Copy, Check, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
 /**
@@ -16,6 +16,8 @@ export default function Blog() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const [activeHeading, setActiveHeading] = useState<string>("");
+  const [tableOfContents, setTableOfContents] = useState<Array<{id: string; title: string; level: number}>>([]);
 
   const handleCopyLink = () => {
     const url = window.location.href;
@@ -23,6 +25,20 @@ export default function Blog() {
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
     });
+  };
+
+  const extractHeadings = (content: string) => {
+    const headings: Array<{id: string; title: string; level: number}> = [];
+    const lines = content.split('\n');
+    lines.forEach((line) => {
+      if (line.startsWith('##')) {
+        const level = line.startsWith('###') ? 3 : 2;
+        const title = line.replace(/^#+\s/, '');
+        const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+        headings.push({ id, title, level });
+      }
+    });
+    return headings;
   };
 
   useEffect(() => {
@@ -34,11 +50,29 @@ export default function Blog() {
       const scrolled = window.scrollY;
       const progress = documentHeight > 0 ? (scrolled / documentHeight) * 100 : 0;
       setScrollProgress(Math.min(progress, 100));
+
+      // Update active heading
+      const headings = document.querySelectorAll('[data-heading-id]');
+      let activeId = '';
+      headings.forEach((heading) => {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top <= 150) {
+          activeId = heading.getAttribute('data-heading-id') || '';
+        }
+      });
+      setActiveHeading(activeId);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [selectedArticleId]);
+
+  useEffect(() => {
+    if (selectedArticleId && selectedArticle) {
+      setTableOfContents(extractHeadings(selectedArticle.content));
+      setActiveHeading('');
+    }
+  }, [selectedArticleId, selectedArticle]);
 
   const articles = [
     {
@@ -712,7 +746,44 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
 
         {/* Article Content */}
         <article className="py-12 md:py-20">
-          <div className="container max-w-3xl">
+          <div className="container">
+            <div className="flex gap-8 max-w-6xl mx-auto">
+              {/* TOC Sidebar */}
+              {tableOfContents.length > 0 && (
+                <aside className="hidden lg:block w-64 flex-shrink-0">
+                  <div className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                      <ChevronRight className="w-4 h-4" />
+                      On this page
+                    </h3>
+                    <nav className="space-y-2">
+                      {tableOfContents.map((heading) => (
+                        <a
+                          key={heading.id}
+                          href={`#${heading.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const element = document.querySelector(`[data-heading-id="${heading.id}"]`);
+                            if (element) {
+                              element.scrollIntoView({ behavior: 'smooth' });
+                            }
+                          }}
+                          className={`block text-sm transition-colors py-1 px-3 rounded-md ${
+                            activeHeading === heading.id
+                              ? 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 font-medium'
+                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                          } ${heading.level === 3 ? 'ml-4' : ''}`}
+                        >
+                          {heading.title}
+                        </a>
+                      ))}
+                    </nav>
+                  </div>
+                </aside>
+              )}
+              
+              {/* Main Content */}
+              <div className="flex-1 max-w-3xl">
             {/* Article Header */}
             <div className="mb-8">
               <div className="flex items-center gap-4 mb-4">
@@ -800,16 +871,20 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
             <div className="prose dark:prose-invert max-w-none">
               {selectedArticle.content.split('\n\n').map((paragraph, idx) => {
                 if (paragraph.startsWith('##')) {
+                  const title = paragraph.replace('## ', '');
+                  const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
                   return (
-                    <h2 key={idx} className="text-2xl font-bold mt-8 mb-4 text-slate-900 dark:text-white">
-                      {paragraph.replace('## ', '')}
+                    <h2 key={idx} data-heading-id={id} className="text-2xl font-bold mt-8 mb-4 text-slate-900 dark:text-white scroll-mt-24">
+                      {title}
                     </h2>
                   );
                 }
                 if (paragraph.startsWith('###')) {
+                  const title = paragraph.replace('### ', '');
+                  const id = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
                   return (
-                    <h3 key={idx} className="text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white">
-                      {paragraph.replace('### ', '')}
+                    <h3 key={idx} data-heading-id={id} className="text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white scroll-mt-24">
+                      {title}
                     </h3>
                   );
                 }
@@ -937,6 +1012,8 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               <ArrowLeft className="w-4 h-4" />
               Back to All Articles
             </button>
+              </div>
+            </div>
           </div>
         </article>
       </div>
