@@ -716,11 +716,14 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
   const selectedArticle = articles.find((a) => a.id === selectedArticleId);
 
   useEffect(() => {
-    if (selectedArticleId && selectedArticle) {
-      setTableOfContents(extractHeadings(selectedArticle.content));
-      setActiveHeading('');
+    if (selectedArticleId) {
+      const article = articles.find((a) => a.id === selectedArticleId);
+      if (article) {
+        setTableOfContents(extractHeadings(article.content));
+        setActiveHeading('');
+      }
     }
-  }, [selectedArticleId, selectedArticle]);
+  }, [selectedArticleId, articles]);
 
   if (selectedArticleId && selectedArticle) {
     return (
