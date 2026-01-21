@@ -1,8 +1,9 @@
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import ContactFormModal from "@/components/ContactFormModal";
+import CustomContactForm from "@/components/CustomContactForm";
 
 /**
  * Design System: Technical Elegance
@@ -12,6 +13,10 @@ import ContactFormModal from "@/components/ContactFormModal";
  */
 
 export default function Home() {
+  // The userAuth hooks provides authentication state
+  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
+  let { user, loading, error, isAuthenticated, logout } = useAuth();
+
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentCertificateIndex, setCurrentCertificateIndex] = useState(0);
@@ -598,7 +603,7 @@ export default function Home() {
       </section>
 
       {/* Contact Form Modal */}
-      <ContactFormModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+      <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
   );
 }
