@@ -238,4 +238,9 @@
       max-width: 1280px; /* Standard content width */
     }
   }
+
+  /* HubSpot Form Styling */
+  .hsfc-Step .hsfc-Step__Content {
+    padding: 0 !important;
+  }
 }
