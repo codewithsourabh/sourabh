@@ -867,8 +867,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
 
                 {/* Summarize Section */}
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-amber-500" />
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                     Summarize:
                   </span>
                   <a
