@@ -572,12 +572,10 @@ export default function Home() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 mb-12">
-              <button onClick={() => setIsContactModalOpen(true)}>
-                <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
-                  <Mail className="w-4 h-4" />
-                  Get in Touch
-                </Button>
-              </button>
+              <Button onClick={() => setIsContactModalOpen(true)} className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
+                <Mail className="w-4 h-4" />
+                Get in Touch
+              </Button>
               <a href="https://www.linkedin.com/in/mrsourabh" target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 gap-2">
                   <Linkedin className="w-4 h-4" />
