@@ -30,6 +30,13 @@ export default function Home() {
       date: "January 2024",
       description: "Advanced ClickUp administration and workspace management",
     },
+    {
+      src: "/images/certificate-clickup-brain-ai.png",
+      alt: "ClickUp Brain AI Expert Certificate",
+      title: "ClickUp Brain AI Expert",
+      date: "January 2025",
+      description: "Expert certification in ClickUp Brain AI and advanced automation",
+    },
   ];
 
   const handleNextCertificate = () => {
