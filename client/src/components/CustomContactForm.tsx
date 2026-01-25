@@ -183,13 +183,16 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
   };
 
   const isFormValid = () => {
-    return (
+    // Check if all fields have values and are valid
+    const hasAllValues = formData.fullName && formData.email && formData.phoneNumber && formData.message;
+    const allValid = 
       validateFullName(formData.fullName) &&
       validateEmail(formData.email) &&
       validatePhoneNumber(formData.phoneNumber) &&
-      validateMessage(formData.message) &&
-      Object.keys(errors).length === 0
-    );
+      validateMessage(formData.message);
+    const noErrors = Object.keys(errors).length === 0;
+    
+    return hasAllValues && allValid && noErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
