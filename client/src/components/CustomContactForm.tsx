@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { X, CheckCircle, AlertCircle } from "lucide-react";
+import { X, CheckCircle, AlertCircle, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ContactFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface FormErrors {
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  message?: string;
 }
 
 const COUNTRY_CODES = [
@@ -40,6 +47,26 @@ const COUNTRY_CODES = [
   { code: "+56", country: "Chile" },
 ];
 
+// Validation functions
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const validatePhoneNumber = (phone: string): boolean => {
+  // Phone number should be 7-15 digits
+  const phoneRegex = /^\d{7,15}$/;
+  return phoneRegex.test(phone);
+};
+
+const validateFullName = (name: string): boolean => {
+  return name.trim().length >= 2;
+};
+
+const validateMessage = (msg: string): boolean => {
+  return msg.trim().length >= 10;
+};
+
 export default function CustomContactForm({ isOpen, onClose }: ContactFormModalProps) {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -49,9 +76,61 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
     message: "",
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Real-time validation on blur
+  const handleBlur = (fieldName: string) => {
+    setTouched((prev) => ({
+      ...prev,
+      [fieldName]: true,
+    }));
+    validateField(fieldName);
+  };
+
+  const validateField = (fieldName: string) => {
+    const newErrors = { ...errors };
+
+    switch (fieldName) {
+      case "fullName":
+        if (!validateFullName(formData.fullName)) {
+          newErrors.fullName = "Full name must be at least 2 characters";
+        } else {
+          delete newErrors.fullName;
+        }
+        break;
+      case "email":
+        if (!formData.email) {
+          newErrors.email = "Email is required";
+        } else if (!validateEmail(formData.email)) {
+          newErrors.email = "Please enter a valid email address";
+        } else {
+          delete newErrors.email;
+        }
+        break;
+      case "phoneNumber":
+        if (!formData.phoneNumber) {
+          newErrors.phoneNumber = "Phone number is required";
+        } else if (!validatePhoneNumber(formData.phoneNumber)) {
+          newErrors.phoneNumber = "Phone number must be 7-15 digits";
+        } else {
+          delete newErrors.phoneNumber;
+        }
+        break;
+      case "message":
+        if (!validateMessage(formData.message)) {
+          newErrors.message = "Message must be at least 10 characters";
+        } else {
+          delete newErrors.message;
+        }
+        break;
+    }
+
+    setErrors(newErrors);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -59,10 +138,90 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
       ...prev,
       [name]: value,
     }));
+
+    // Validate on change if field has been touched
+    if (touched[name]) {
+      const newErrors = { ...errors };
+
+      switch (name) {
+        case "fullName":
+          if (!validateFullName(value)) {
+            newErrors.fullName = "Full name must be at least 2 characters";
+          } else {
+            delete newErrors.fullName;
+          }
+          break;
+        case "email":
+          if (!value) {
+            newErrors.email = "Email is required";
+          } else if (!validateEmail(value)) {
+            newErrors.email = "Please enter a valid email address";
+          } else {
+            delete newErrors.email;
+          }
+          break;
+        case "phoneNumber":
+          if (!value) {
+            newErrors.phoneNumber = "Phone number is required";
+          } else if (!validatePhoneNumber(value)) {
+            newErrors.phoneNumber = "Phone number must be 7-15 digits";
+          } else {
+            delete newErrors.phoneNumber;
+          }
+          break;
+        case "message":
+          if (!validateMessage(value)) {
+            newErrors.message = "Message must be at least 10 characters";
+          } else {
+            delete newErrors.message;
+          }
+          break;
+      }
+
+      setErrors(newErrors);
+    }
+  };
+
+  const isFormValid = () => {
+    return (
+      validateFullName(formData.fullName) &&
+      validateEmail(formData.email) &&
+      validatePhoneNumber(formData.phoneNumber) &&
+      validateMessage(formData.message) &&
+      Object.keys(errors).length === 0
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate all fields before submission
+    const newErrors: FormErrors = {};
+
+    if (!validateFullName(formData.fullName)) {
+      newErrors.fullName = "Full name must be at least 2 characters";
+    }
+    if (!formData.email || !validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    if (!formData.phoneNumber || !validatePhoneNumber(formData.phoneNumber)) {
+      newErrors.phoneNumber = "Phone number must be 7-15 digits";
+    }
+    if (!validateMessage(formData.message)) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setTouched({
+        fullName: true,
+        email: true,
+        phoneNumber: true,
+        message: true,
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
 
@@ -114,6 +273,8 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
         phoneNumber: "",
         message: "",
       });
+      setErrors({});
+      setTouched({});
 
       // Auto-close after 3 seconds
       setTimeout(() => {
@@ -174,10 +335,23 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur("fullName")}
                     required
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
+                      touched.fullName && errors.fullName
+                        ? "border-red-500 focus:ring-red-500"
+                        : touched.fullName && !errors.fullName
+                          ? "border-green-500 focus:ring-green-500"
+                          : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                    }`}
                     placeholder="John Doe"
                   />
+                  {touched.fullName && errors.fullName && (
+                    <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+                  )}
+                  {touched.fullName && !errors.fullName && formData.fullName && (
+                    <p className="text-green-500 text-xs mt-1">✓ Valid</p>
+                  )}
                 </div>
 
                 {/* Email */}
@@ -190,10 +364,23 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur("email")}
                     required
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
+                      touched.email && errors.email
+                        ? "border-red-500 focus:ring-red-500"
+                        : touched.email && !errors.email
+                          ? "border-green-500 focus:ring-green-500"
+                          : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                    }`}
                     placeholder="john@example.com"
                   />
+                  {touched.email && errors.email && (
+                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                  )}
+                  {touched.email && !errors.email && formData.email && (
+                    <p className="text-green-500 text-xs mt-1">✓ Valid email</p>
+                  )}
                 </div>
 
                 {/* Phone Number with Country Code */}
@@ -214,16 +401,31 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                         </option>
                       ))}
                     </select>
-                    <input
-                      type="tel"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleInputChange}
-                      required
-                      className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                      placeholder="1234567890"
-                    />
+                    <div className="flex-1">
+                      <input
+                        type="tel"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleInputChange}
+                        onBlur={() => handleBlur("phoneNumber")}
+                        required
+                        className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
+                          touched.phoneNumber && errors.phoneNumber
+                            ? "border-red-500 focus:ring-red-500"
+                            : touched.phoneNumber && !errors.phoneNumber
+                              ? "border-green-500 focus:ring-green-500"
+                              : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                        }`}
+                        placeholder="1234567890"
+                      />
+                    </div>
                   </div>
+                  {touched.phoneNumber && errors.phoneNumber && (
+                    <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>
+                  )}
+                  {touched.phoneNumber && !errors.phoneNumber && formData.phoneNumber && (
+                    <p className="text-green-500 text-xs mt-1">✓ Valid phone number</p>
+                  )}
                 </div>
 
                 {/* Message */}
@@ -235,11 +437,31 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
+                    onBlur={() => handleBlur("message")}
                     required
                     rows={4}
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
+                    className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all resize-none ${
+                      touched.message && errors.message
+                        ? "border-red-500 focus:ring-red-500"
+                        : touched.message && !errors.message
+                          ? "border-green-500 focus:ring-green-500"
+                          : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                    }`}
                     placeholder="Your message here..."
                   />
+                  <div className="flex justify-between items-start mt-1">
+                    <div>
+                      {touched.message && errors.message && (
+                        <p className="text-red-500 text-xs">{errors.message}</p>
+                      )}
+                      {touched.message && !errors.message && formData.message && (
+                        <p className="text-green-500 text-xs">✓ Valid message</p>
+                      )}
+                    </div>
+                    <span className="text-xs text-slate-500">
+                      {formData.message.length}/10 min
+                    </span>
+                  </div>
                 </div>
 
                 {/* Error Message */}
@@ -253,10 +475,17 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isSubmitting || !isFormValid()}
+                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? "Sending..." : "Send Message"}
+                  {isSubmitting ? (
+                    <>
+                      <Loader className="w-4 h-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    "Send Message"
+                  )}
                 </Button>
               </form>
             </>
