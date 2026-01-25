@@ -37,6 +37,13 @@ export default function Home() {
       date: "January 2025",
       description: "Expert certification in ClickUp Brain AI and advanced automation",
     },
+    {
+      src: "/images/certificate-clickup-capacity-planning.png",
+      alt: "ClickUp Capacity Planning Certificate",
+      title: "ClickUp Capacity Planning Certified",
+      date: "January 2025",
+      description: "Expertise in ClickUp capacity planning and resource management",
+    },
   ];
 
   const handleNextCertificate = () => {
