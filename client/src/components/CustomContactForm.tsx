@@ -71,12 +71,8 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
       const hubspotData = {
         fields: [
           {
-            name: "firstname",
-            value: formData.fullName.split(" ")[0],
-          },
-          {
-            name: "lastname",
-            value: formData.fullName.split(" ").slice(1).join(" ") || "",
+            name: "full_name",
+            value: formData.fullName,
           },
           {
             name: "email",
