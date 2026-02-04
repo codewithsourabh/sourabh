@@ -298,6 +298,7 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              Sourabh Saini<br />
               CRM & Automation <span className="gradient-underline text-cyan-600">Expert</span>
             </h1>
             
