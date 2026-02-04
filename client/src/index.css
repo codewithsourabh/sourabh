@@ -250,7 +250,7 @@
 
   /* Placeholder background for images */
   picture {
-    @apply block bg-white dark:bg-slate-800;
+    @apply block;
   }
 
   /* HubSpot Form Styling */
