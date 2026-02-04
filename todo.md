@@ -50,3 +50,7 @@
 - [x] Add explicit width/height and aspect-ratio CSS to all images
 - [x] Implement blur-up placeholder effect for lazy-loaded images
 - [x] Add JSON-LD structured data (Person, Article, BreadcrumbList)
+
+
+## SEO Fixes
+- [x] Add meta keywords and description tags to homepage
