@@ -69,3 +69,7 @@
 
 ## Hero Section Updates
 - [x] Replace hero background with new tech-themed blue gradient image
+
+
+## Hero Section Fixes
+- [x] Fix hero overlay opacity and text colors to match design reference
