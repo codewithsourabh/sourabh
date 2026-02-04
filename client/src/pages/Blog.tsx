@@ -1005,7 +1005,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                       loading="lazy"
                       width="128"
                       height="128"
-                      className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg aspect-square"
+                      className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg aspect-square bg-transparent"
                     />
                   </picture>
                 </div>
