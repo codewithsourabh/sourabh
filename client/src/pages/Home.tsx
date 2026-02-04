@@ -358,28 +358,29 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-700 py-20 md:py-32">
-        <div className="absolute right-0 top-0 bottom-0 w-full md:w-1/2 overflow-hidden">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">
+        <div className="absolute inset-0 opacity-50">
           <picture>
-            <source srcSet="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/VTyptrmNoVqUgUaw.avif" type="image/avif" />
-            <source srcSet="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/gkdTnKLpxvsueEYl.webp" type="image/webp" />
-            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/gkdTnKLpxvsueEYl.webp" alt="Hero background" className="w-full h-full object-cover" loading="lazy" width="1920" height="1080" />
+            <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.avif" type="image/avif" />
+            <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" type="image/webp" />
+            <img src="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" alt="Hero background" className="w-full h-full object-cover" />
           </picture>
         </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-transparent dark:from-slate-900/90 dark:via-slate-900/70 dark:to-transparent" />
         
         <div className="container relative z-10">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             <div className="inline-block mb-6 px-4 py-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-full">
               <span className="text-sm font-semibold text-cyan-700 dark:text-cyan-300">Software Engineer • 5+ Years</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-slate-900 dark:text-white">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Sourabh Saini
               <br />
-              <span>CRM & Automation <span className="text-cyan-600">Expert</span></span>
+              <span>CRM & Automation <span className="gradient-underline text-cyan-600">Expert</span></span>
             </h1>
             
-            <p className="text-base md:text-lg text-slate-700 dark:text-slate-300 mb-8 max-w-xl leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl leading-relaxed">
               Specializing in HubSpot, WordPress, and workflow automation. I build scalable digital solutions that streamline data flows, reduce manual effort, and drive business outcomes through intelligent integrations.
             </p>
             
