@@ -978,6 +978,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                     <img
                       src="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/NafzeXOPnwSlPkbM.webp"
                       alt="Sourabh Saini"
+                      loading="lazy"
                       className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg"
                     />
                   </picture>
@@ -1046,6 +1047,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                           <img
                             src={relatedArticle.thumbnailWebp}
                             alt={relatedArticle.title}
+                            loading="lazy"
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           />
                         </picture>
@@ -1193,6 +1195,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                     <img
                       src={article.thumbnailWebp}
                       alt={article.title}
+                      loading="lazy"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </picture>

@@ -40,3 +40,8 @@
 ## Current Tasks
 - [x] Replace 3 existing certificates with updated versions (Admin, Brain AI, Capacity Planning)
 - [x] Add author bio image to blog articles with AVIF/WebP support
+
+## Performance Optimization
+- [x] Add lazy loading to certificate carousel images in Home.tsx
+- [x] Add lazy loading to author bio image in Blog.tsx
+- [x] Add lazy loading to blog article thumbnail images

@@ -567,6 +567,7 @@ export default function Home() {
                     <img
                       src={certificateImages[currentCertificateIndex].srcWebp}
                       alt={certificateImages[currentCertificateIndex].alt}
+                      loading="lazy"
                       className="max-w-full max-h-96 md:max-h-[500px] object-contain transition-opacity duration-500"
                     />
                   </picture>
