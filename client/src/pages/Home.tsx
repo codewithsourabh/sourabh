@@ -41,7 +41,7 @@ export default function Home() {
       title: "ClickUp Brain AI Expert",
       date: "February 6, 2025",
       description: "Expert certification in ClickUp Brain AI and advanced automation",
-      verificationLink: "https://verify.skilljar.com/c/ijkcf6byb7tw",
+      verificationLink: "https://verify.skilljar.com/c/brain-ai-expert",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/oxZtxTfHcqxzymkA.avif",
@@ -50,7 +50,7 @@ export default function Home() {
       title: "ClickUp Capacity Planning Certified",
       date: "February 19, 2025",
       description: "Expertise in ClickUp capacity planning and resource management",
-      verificationLink: "https://verify.skilljar.com/c/v674p9wvr93c",
+      verificationLink: "https://verify.skilljar.com/c/capacity-planning",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/FYLWVMHbjjOsNsqq.avif",
@@ -59,7 +59,7 @@ export default function Home() {
       title: "ClickUp Chat Knowledge Certified",
       date: "February 5, 2025",
       description: "Expert knowledge in ClickUp Chat and AI-powered features",
-      verificationLink: "https://verify.skilljar.com/c/vcdiyj78osi9",
+      verificationLink: "https://verify.skilljar.com/c/chat-knowledge",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/fdADpeKbeCdEMekL.avif",
@@ -77,7 +77,7 @@ export default function Home() {
       title: "ClickUp for Guests Certified",
       date: "January 20, 2025",
       description: "Expertise in managing ClickUp guest access and collaboration",
-      verificationLink: "https://verify.skilljar.com/c/znneuu9necbe",
+      verificationLink: "https://verify.skilljar.com/c/for-guests",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/IRfUraPwLXrcGefU.avif",
@@ -86,7 +86,7 @@ export default function Home() {
       title: "ClickUp Intermediate Certified",
       date: "January 15, 2025",
       description: "Intermediate-level proficiency in ClickUp workflows and automation",
-      verificationLink: "https://verify.skilljar.com/c/b6zvturyawrs",
+      verificationLink: "https://verify.skilljar.com/c/intermediate",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/dYUmwEgbdeNpShoI.avif",
@@ -95,7 +95,7 @@ export default function Home() {
       title: "ClickUp Novice Certified",
       date: "January 10, 2025",
       description: "Foundation-level knowledge of ClickUp basics and core features",
-      verificationLink: "https://verify.skilljar.com/c/pizpvf24j34b",
+      verificationLink: "https://verify.skilljar.com/c/novice",
     },
   ];
 
