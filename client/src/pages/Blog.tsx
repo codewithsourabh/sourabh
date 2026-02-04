@@ -972,11 +972,15 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
             <div className="mt-16 pt-12 border-t border-slate-200 dark:border-slate-700">
               <div className="flex flex-col md:flex-row gap-8 items-start">
                 <div className="flex-shrink-0">
-                  <img
-                    src="https://cdn.sourabhsaini.com/assets/img/author-bio.webp"
-                    alt="Sourabh Saini"
-                    className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg"
-                  />
+                  <picture>
+                    <source srcSet="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/rJOQXZoFSNAiuKsd.avif" type="image/avif" />
+                    <source srcSet="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/NafzeXOPnwSlPkbM.webp" type="image/webp" />
+                    <img
+                      src="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/NafzeXOPnwSlPkbM.webp"
+                      alt="Sourabh Saini"
+                      className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg"
+                    />
+                  </picture>
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">About the Author</h3>

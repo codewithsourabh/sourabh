@@ -36,3 +36,7 @@
 
 ## In Progress
 - [x] Add 5 new ClickUp certificates to carousel (Chat Knowledge, Expert, For Guests, Intermediate, Novice)
+
+## Current Tasks
+- [x] Replace 3 existing certificates with updated versions (Admin, Brain AI, Capacity Planning)
+- [x] Add author bio image to blog articles with AVIF/WebP support

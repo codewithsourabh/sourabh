@@ -24,27 +24,27 @@ export default function Home() {
 
   const certificateImages = [
     {
-      srcAvif: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-admin.avif",
-      srcWebp: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-admin.webp",
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/WJmfffGeVLIjKvDt.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/daXIzETXIpqVcekf.webp",
       alt: "ClickUp Admin Certificate",
       title: "ClickUp Admin Certified",
-      date: "January 2024",
+      date: "January 2025",
       description: "Advanced ClickUp administration and workspace management",
     },
     {
-      srcAvif: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-brain-ai.avif",
-      srcWebp: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-brain-ai.webp",
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/TPzjmtleZRxdSQEq.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/hEzwOUflzfSWYjDK.webp",
       alt: "ClickUp Brain AI Expert Certificate",
       title: "ClickUp Brain AI Expert",
-      date: "January 2025",
+      date: "February 2025",
       description: "Expert certification in ClickUp Brain AI and advanced automation",
     },
     {
-      srcAvif: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-capacity-planning.avif",
-      srcWebp: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-capacity-planning.webp",
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/oxZtxTfHcqxzymkA.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/pMnbnjXQrLDNusKo.webp",
       alt: "ClickUp Capacity Planning Certificate",
       title: "ClickUp Capacity Planning Certified",
-      date: "January 2025",
+      date: "February 2025",
       description: "Expertise in ClickUp capacity planning and resource management",
     },
     {
