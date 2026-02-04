@@ -61,3 +61,7 @@
 - [x] Add verification checkmarks next to certificate names
 - [x] Fix spacing issues (top/bottom congestion)
 - [x] Remove excess background on left/right sides
+
+
+## Icon Updates
+- [x] Replace shield verification icon with Instagram-style verified checkmark
