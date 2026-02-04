@@ -24,21 +24,24 @@ export default function Home() {
 
   const certificateImages = [
     {
-      src: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-admin.webp",
+      srcAvif: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-admin.avif",
+      srcWebp: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-admin.webp",
       alt: "ClickUp Admin Certificate",
       title: "ClickUp Admin Certified",
       date: "January 2024",
       description: "Advanced ClickUp administration and workspace management",
     },
     {
-      src: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-brain-ai.webp",
+      srcAvif: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-brain-ai.avif",
+      srcWebp: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-brain-ai.webp",
       alt: "ClickUp Brain AI Expert Certificate",
       title: "ClickUp Brain AI Expert",
       date: "January 2025",
       description: "Expert certification in ClickUp Brain AI and advanced automation",
     },
     {
-      src: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-capacity-planning.webp",
+      srcAvif: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-capacity-planning.avif",
+      srcWebp: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-capacity-planning.webp",
       alt: "ClickUp Capacity Planning Certificate",
       title: "ClickUp Capacity Planning Certified",
       date: "January 2025",
@@ -287,7 +290,11 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">
         <div className="absolute inset-0 opacity-50">
-          <img src="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" alt="Hero background" className="w-full h-full object-cover" />
+          <picture>
+            <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.avif" type="image/avif" />
+            <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" type="image/webp" />
+            <img src="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" alt="Hero background" className="w-full h-full object-cover" />
+          </picture>
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-transparent dark:from-slate-900/90 dark:via-slate-900/70 dark:to-transparent" />
         
@@ -513,11 +520,15 @@ export default function Home() {
               <div className="relative bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 rounded-lg overflow-hidden shadow-lg">
                 {/* Certificate Image */}
                 <div className="relative h-96 md:h-[500px] overflow-hidden flex items-center justify-center">
-                  <img
-                    src={certificateImages[currentCertificateIndex].src}
-                    alt={certificateImages[currentCertificateIndex].alt}
-                    className="w-full h-full object-contain p-4 transition-opacity duration-500" style={{backgroundColor: '#ffffff'}}
-                  />
+                  <picture>
+                    <source srcSet={certificateImages[currentCertificateIndex].srcAvif} type="image/avif" />
+                    <source srcSet={certificateImages[currentCertificateIndex].srcWebp} type="image/webp" />
+                    <img
+                      src={certificateImages[currentCertificateIndex].srcWebp}
+                      alt={certificateImages[currentCertificateIndex].alt}
+                      className="w-full h-full object-contain p-4 transition-opacity duration-500" style={{backgroundColor: '#ffffff'}}
+                    />
+                  </picture>
                 </div>
 
                 {/* Navigation Arrows */}

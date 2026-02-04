@@ -78,7 +78,8 @@ export default function Blog() {
       author: "Sourabh Saini",
       category: "HubSpot",
       readTime: "8 min read",
-      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-hubspot-automation.jpg",
+      thumbnailAvif: "https://cdn.sourabhsaini.com/assets/img/blog-hubspot-automation.avif",
+      thumbnailWebp: "https://cdn.sourabhsaini.com/assets/img/blog-hubspot-automation.jpg",
       content: `HubSpot automation is a game-changer for businesses looking to scale their operations without proportionally increasing manual effort. In this comprehensive guide, we'll explore how to design workflows that truly move the needle.
 
 ## Understanding HubSpot Workflows
@@ -145,7 +146,8 @@ By mastering HubSpot automation, you'll free up your team to focus on high-value
       author: "Sourabh Saini",
       category: "WordPress",
       readTime: "10 min read",
-      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-wordpress-seo.jpg",
+      thumbnailAvif: "https://cdn.sourabhsaini.com/assets/img/blog-wordpress-seo.avif",
+      thumbnailWebp: "https://cdn.sourabhsaini.com/assets/img/blog-wordpress-seo.jpg",
       content: `WordPress powers over 40% of the web, but many WordPress sites leave significant SEO performance on the table. This guide covers technical and on-page SEO strategies specific to WordPress.
 
 ## WordPress SEO Foundation
@@ -247,7 +249,8 @@ By implementing these WordPress SEO strategies, you'll improve your site's visib
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "9 min read",
-      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-crm-integration.jpg",
+      thumbnailAvif: "https://cdn.sourabhsaini.com/assets/img/blog-crm-integration.avif",
+      thumbnailWebp: "https://cdn.sourabhsaini.com/assets/img/blog-crm-integration.jpg",
       content: `Modern businesses use multiple tools across their tech stack. The key to efficiency is making these tools work together seamlessly. This guide covers integrating HubSpot with your existing systems.
 
 ## Why CRM Integration Matters
@@ -357,7 +360,8 @@ By implementing proper CRM integration, you'll create a unified system that driv
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "7 min read",
-      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-booking-systems.jpg",
+      thumbnailAvif: "https://cdn.sourabhsaini.com/assets/img/blog-booking-systems.avif",
+      thumbnailWebp: "https://cdn.sourabhsaini.com/assets/img/blog-booking-systems.jpg",
       content: `Booking systems are critical for service-based businesses. Integrating them with your CRM ensures seamless customer management and operational efficiency.
 
 ## Booking System Architecture
@@ -488,7 +492,8 @@ By implementing a well-integrated booking system, you'll improve customer experi
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "8 min read",
-      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-data-sync.jpg",
+      thumbnailAvif: "https://cdn.sourabhsaini.com/assets/img/blog-data-sync.avif",
+      thumbnailWebp: "https://cdn.sourabhsaini.com/assets/img/blog-data-sync.jpg",
       content: `Data inconsistency across systems is a common problem that leads to poor decision-making and customer experience. This guide covers strategies for maintaining synchronized data.\n\n## The Data Synchronization Challenge
 
 When data exists in multiple systems:
@@ -1031,11 +1036,15 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                       onClick={() => setSelectedArticleId(relatedArticle.id)}
                     >
                       <div className="w-full h-40 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                        <img
-                          src={relatedArticle.thumbnail}
-                          alt={relatedArticle.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
+                        <picture>
+                          <source srcSet={relatedArticle.thumbnailAvif} type="image/avif" />
+                          <source srcSet={relatedArticle.thumbnailWebp} type="image/webp" />
+                          <img
+                            src={relatedArticle.thumbnailWebp}
+                            alt={relatedArticle.title}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          />
+                        </picture>
                       </div>
                       <div className="p-4 flex-1 flex flex-col">
                         <h4 className="font-bold text-slate-900 dark:text-white mb-2 line-clamp-2 text-sm">
@@ -1174,11 +1183,15 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                 onClick={() => setSelectedArticleId(article.id)}
               >
                 <div className="w-full h-48 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img
-                    src={article.thumbnail}
-                    alt={article.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
+                  <picture>
+                    <source srcSet={article.thumbnailAvif} type="image/avif" />
+                    <source srcSet={article.thumbnailWebp} type="image/webp" />
+                    <img
+                      src={article.thumbnailWebp}
+                      alt={article.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </picture>
                 </div>
 
                 <div className="p-6 flex-1 flex flex-col">

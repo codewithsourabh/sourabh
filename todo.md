@@ -1,0 +1,31 @@
+# Project TODO
+
+## Completed Features
+- [x] Basic homepage layout with hero section
+- [x] Navigation menu with links to sections and blog
+- [x] Skills section with categories
+- [x] Experience section with job details
+- [x] Projects section
+- [x] Blog page with article listing
+- [x] Article filtering by category (HubSpot, WordPress, CRM, Integration)
+- [x] Article search functionality
+- [x] Individual article view with sticky table of contents
+- [x] Author bio section with social media links
+- [x] Share functionality (LinkedIn, Facebook, WhatsApp, Twitter, Copy Link)
+- [x] AI summarization links (ChatGPT, Claude, Gemini)
+- [x] Custom contact form modal with HubSpot API integration
+- [x] Real-time form validation (email format, phone number validation)
+- [x] Loading spinner and success confirmation for form submissions
+- [x] Certificates carousel with 3 ClickUp certifications
+- [x] CDN image hosting (cdn.sourabhsaini.com/assets/img)
+- [x] Logo clickable linking to home page
+- [x] Removed vercel.json (using Manus deployment)
+- [x] **AVIF/WebP image format support with HTML picture element fallback**
+
+## Pending Features
+- [ ] Upload author photo to `/images/author-bio.jpg` for blog articles
+- [ ] Add email notifications for form submissions (Zapier integration)
+- [ ] Add testimonials/social proof section
+- [ ] Add more certificates to carousel
+- [ ] Implement lazy loading for images
+- [ ] Add blog search and filtering enhancements
