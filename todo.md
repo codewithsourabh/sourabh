@@ -73,3 +73,4 @@
 
 ## Hero Section Fixes
 - [x] Fix hero overlay opacity and text colors to match design reference
+- [x] Restructure hero layout - light background left with text, blue gradient image right
