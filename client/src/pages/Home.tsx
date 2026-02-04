@@ -24,21 +24,21 @@ export default function Home() {
 
   const certificateImages = [
     {
-      src: "/images/certificate-clickup-admin.png",
+      src: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-admin.webp",
       alt: "ClickUp Admin Certificate",
       title: "ClickUp Admin Certified",
       date: "January 2024",
       description: "Advanced ClickUp administration and workspace management",
     },
     {
-      src: "/images/certificate-clickup-brain-ai.png",
+      src: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-brain-ai.webp",
       alt: "ClickUp Brain AI Expert Certificate",
       title: "ClickUp Brain AI Expert",
       date: "January 2025",
       description: "Expert certification in ClickUp Brain AI and advanced automation",
     },
     {
-      src: "/images/certificate-clickup-capacity-planning.png",
+      src: "https://cdn.sourabhsaini.com/assets/img/certificate-clickup-capacity-planning.webp",
       alt: "ClickUp Capacity Planning Certificate",
       title: "ClickUp Capacity Planning Certified",
       date: "January 2025",
@@ -287,7 +287,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">
         <div className="absolute inset-0 opacity-50">
-          <img src="/images/hero-bg.jpg" alt="Hero background" className="w-full h-full object-cover" />
+          <img src="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" alt="Hero background" className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-transparent dark:from-slate-900/90 dark:via-slate-900/70 dark:to-transparent" />
         

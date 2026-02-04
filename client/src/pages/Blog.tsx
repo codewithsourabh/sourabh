@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter, Copy, Check, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import CustomContactForm from "@/components/CustomContactForm";
 
 /**
  * Design System: Technical Elegance
@@ -18,6 +19,7 @@ export default function Blog() {
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [activeHeading, setActiveHeading] = useState<string>("");
   const [tableOfContents, setTableOfContents] = useState<Array<{id: string; title: string; level: number}>>([]);
+  const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
 
   const handleCopyLink = () => {
     const url = window.location.href;
@@ -76,7 +78,7 @@ export default function Blog() {
       author: "Sourabh Saini",
       category: "HubSpot",
       readTime: "8 min read",
-      thumbnail: "/images/blog-hubspot-automation.jpg",
+      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-hubspot-automation.jpg",
       content: `HubSpot automation is a game-changer for businesses looking to scale their operations without proportionally increasing manual effort. In this comprehensive guide, we'll explore how to design workflows that truly move the needle.
 
 ## Understanding HubSpot Workflows
@@ -143,7 +145,7 @@ By mastering HubSpot automation, you'll free up your team to focus on high-value
       author: "Sourabh Saini",
       category: "WordPress",
       readTime: "10 min read",
-      thumbnail: "/images/blog-wordpress-seo.jpg",
+      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-wordpress-seo.jpg",
       content: `WordPress powers over 40% of the web, but many WordPress sites leave significant SEO performance on the table. This guide covers technical and on-page SEO strategies specific to WordPress.
 
 ## WordPress SEO Foundation
@@ -245,7 +247,7 @@ By implementing these WordPress SEO strategies, you'll improve your site's visib
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "9 min read",
-      thumbnail: "/images/blog-crm-integration.jpg",
+      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-crm-integration.jpg",
       content: `Modern businesses use multiple tools across their tech stack. The key to efficiency is making these tools work together seamlessly. This guide covers integrating HubSpot with your existing systems.
 
 ## Why CRM Integration Matters
@@ -355,7 +357,7 @@ By implementing proper CRM integration, you'll create a unified system that driv
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "7 min read",
-      thumbnail: "/images/blog-booking-systems.jpg",
+      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-booking-systems.jpg",
       content: `Booking systems are critical for service-based businesses. Integrating them with your CRM ensures seamless customer management and operational efficiency.
 
 ## Booking System Architecture
@@ -486,7 +488,7 @@ By implementing a well-integrated booking system, you'll improve customer experi
       author: "Sourabh Saini",
       category: "Integration",
       readTime: "8 min read",
-      thumbnail: "/images/blog-data-sync.jpg",
+      thumbnail: "https://cdn.sourabhsaini.com/assets/img/blog-data-sync.jpg",
       content: `Data inconsistency across systems is a common problem that leads to poor decision-making and customer experience. This guide covers strategies for maintaining synchronized data.\n\n## The Data Synchronization Challenge
 
 When data exists in multiple systems:
@@ -966,7 +968,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               <div className="flex flex-col md:flex-row gap-8 items-start">
                 <div className="flex-shrink-0">
                   <img
-                    src="/images/author-bio.jpg"
+                    src="https://cdn.sourabhsaini.com/assets/img/author-bio.webp"
                     alt="Sourabh Saini"
                     className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg"
                   />
@@ -1051,13 +1053,21 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               </div>
             </div>
 
-            <button
-              onClick={() => setSelectedArticleId(null)}
-              className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition font-medium mt-12"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to All Articles
-            </button>
+            <div className="flex items-center gap-4 mt-12">
+              <button
+                onClick={() => setSelectedArticleId(null)}
+                className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition font-medium"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to All Articles
+              </button>
+              <Button
+                onClick={() => setIsContactModalOpen(true)}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white"
+              >
+                Get in Touch
+              </Button>
+            </div>
               </div>
             </div>
           </div>
@@ -1226,13 +1236,34 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
           <p className="text-lg text-slate-300 mb-8">
             Reach out to discuss HubSpot implementations, WordPress optimization, or integration strategies for your business.
           </p>
-          <a href="/#contact">
-            <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
-              Get in Touch <ArrowRight className="w-4 h-4" />
-            </Button>
-          </a>
+          <Button
+            onClick={() => setIsContactModalOpen(true)}
+            className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2"
+          >
+            Get in Touch <ArrowRight className="w-4 h-4" />
+          </Button>
         </div>
       </section>
+
+      {/* Contact Form Modal */}
+      {isContactModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h2 className="text-xl font-bold">Get in Touch</h2>
+              <button
+                onClick={() => setIsContactModalOpen(false)}
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6">
+              <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
