@@ -250,7 +250,7 @@
 
   /* Placeholder background for images */
   picture {
-    @apply block bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800;
+    @apply block bg-white dark:bg-slate-800;
   }
 
   /* HubSpot Form Styling */
