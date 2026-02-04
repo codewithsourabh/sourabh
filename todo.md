@@ -33,3 +33,6 @@
 
 ## Bug Fixes
 - [x] Fixed certificate carousel images - changed from `w-full h-full object-contain` to `max-w-full max-h-96 md:max-h-[500px] object-contain` to prevent cropping and allow proper scaling
+
+## In Progress
+- [x] Add 5 new ClickUp certificates to carousel (Chat Knowledge, Expert, For Guests, Intermediate, Novice)

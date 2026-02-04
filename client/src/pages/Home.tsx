@@ -47,6 +47,46 @@ export default function Home() {
       date: "January 2025",
       description: "Expertise in ClickUp capacity planning and resource management",
     },
+    {
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/FYLWVMHbjjOsNsqq.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/uiUIPfXJUpPSCgOS.webp",
+      alt: "ClickUp Chat Knowledge Certificate",
+      title: "ClickUp Chat Knowledge Certified",
+      date: "February 2025",
+      description: "Expert knowledge in ClickUp Chat and AI-powered features",
+    },
+    {
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/fdADpeKbeCdEMekL.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/nxAmKQPjfITCpSKE.webp",
+      alt: "ClickUp Expert Certificate",
+      title: "ClickUp Expert Certified",
+      date: "February 2025",
+      description: "Advanced expertise in ClickUp platform and features",
+    },
+    {
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/awKtlfzkQQPDTqQj.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/MPAqRrzUsNuymdGp.webp",
+      alt: "ClickUp for Guests Certificate",
+      title: "ClickUp for Guests Certified",
+      date: "January 2025",
+      description: "Expertise in managing ClickUp guest access and collaboration",
+    },
+    {
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/IRfUraPwLXrcGefU.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/vbivHcZacYVnLEhe.webp",
+      alt: "ClickUp Intermediate Certificate",
+      title: "ClickUp Intermediate Certified",
+      date: "January 2025",
+      description: "Intermediate-level proficiency in ClickUp workflows and automation",
+    },
+    {
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/dYUmwEgbdeNpShoI.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/aqHJqwkAPWYDHMsa.webp",
+      alt: "ClickUp Novice Certificate",
+      title: "ClickUp Novice Certified",
+      date: "January 2025",
+      description: "Foundation-level knowledge of ClickUp basics and core features",
+    },
   ];
 
   const handleNextCertificate = () => {
