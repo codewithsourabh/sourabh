@@ -45,3 +45,8 @@
 - [x] Add lazy loading to certificate carousel images in Home.tsx
 - [x] Add lazy loading to author bio image in Blog.tsx
 - [x] Add lazy loading to blog article thumbnail images
+
+## SEO & Performance Enhancements
+- [x] Add explicit width/height and aspect-ratio CSS to all images
+- [x] Implement blur-up placeholder effect for lazy-loaded images
+- [x] Add JSON-LD structured data (Person, Article, BreadcrumbList)

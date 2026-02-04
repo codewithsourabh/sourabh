@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import CustomContactForm from "@/components/CustomContactForm";
+import { generatePersonSchema, generateBreadcrumbSchema, injectStructuredData } from "@/lib/structuredData";
 
 /**
  * Design System: Technical Elegance
@@ -103,6 +104,34 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(interval);
   }, [certificateImages.length]);
+
+  useEffect(() => {
+    const handleImageLoad = (event: Event) => {
+      const img = event.target as HTMLImageElement;
+      img.classList.add('loaded');
+    };
+
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    lazyImages.forEach((img) => {
+      img.addEventListener('load', handleImageLoad);
+      if ((img as HTMLImageElement).complete) {
+        img.classList.add('loaded');
+      }
+    });
+
+    return () => {
+      lazyImages.forEach((img) => {
+        img.removeEventListener('load', handleImageLoad);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    injectStructuredData(generatePersonSchema());
+    injectStructuredData(generateBreadcrumbSchema([
+      { name: 'Home', url: 'https://sourabh-portfolio.manus.space' },
+    ]));
+  }, []);
 
   const navLinks = [
     { label: "Skills", href: "#skills" },
@@ -560,7 +589,7 @@ export default function Home() {
               {/* Carousel Container */}
               <div className="relative bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 rounded-lg overflow-hidden shadow-lg">
                 {/* Certificate Image */}
-                <div className="relative min-h-96 md:min-h-[500px] flex items-center justify-center bg-white dark:bg-slate-600 p-4">
+                <div className="relative min-h-96 md:min-h-[500px] flex items-center justify-center bg-white dark:bg-slate-600 p-4 aspect-video">
                   <picture>
                     <source srcSet={certificateImages[currentCertificateIndex].srcAvif} type="image/avif" />
                     <source srcSet={certificateImages[currentCertificateIndex].srcWebp} type="image/webp" />
@@ -568,6 +597,8 @@ export default function Home() {
                       src={certificateImages[currentCertificateIndex].srcWebp}
                       alt={certificateImages[currentCertificateIndex].alt}
                       loading="lazy"
+                      width="800"
+                      height="600"
                       className="max-w-full max-h-96 md:max-h-[500px] object-contain transition-opacity duration-500"
                     />
                   </picture>

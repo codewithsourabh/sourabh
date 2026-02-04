@@ -239,6 +239,20 @@
     }
   }
 
+  /* Blur-up placeholder effect for lazy-loaded images */
+  img[loading="lazy"] {
+    @apply transition-opacity duration-500;
+  }
+
+  img[loading="lazy"].loaded {
+    @apply opacity-100;
+  }
+
+  /* Placeholder background for images */
+  picture {
+    @apply block bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800;
+  }
+
   /* HubSpot Form Styling */
   .hsfc-Step .hsfc-Step__Content {
     padding: 0 !important;

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, User, ArrowRight, Search, X, Linkedin, Facebook, MessageCircle, Twitter, Copy, Check, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import CustomContactForm from "@/components/CustomContactForm";
+import { generateArticleSchema, generateBreadcrumbSchema, injectStructuredData } from "@/lib/structuredData";
 
 /**
  * Design System: Technical Elegance
@@ -67,6 +68,29 @@ export default function Blog() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, [selectedArticleId]);
+
+  useEffect(() => {
+    injectStructuredData(generateBreadcrumbSchema([
+      { name: 'Home', url: 'https://sourabh-portfolio.manus.space' },
+      { name: 'Blog', url: 'https://sourabh-portfolio.manus.space/blog' },
+    ]));
+  }, []);
+
+  useEffect(() => {
+    if (selectedArticleId) {
+      const article = articles.find((a) => a.id === selectedArticleId);
+      if (article) {
+        injectStructuredData(
+          generateArticleSchema(
+            article.title,
+            article.excerpt,
+            article.thumbnailWebp,
+            article.date
+          )
+        );
+      }
+    }
   }, [selectedArticleId]);
 
   const articles = [
@@ -979,7 +1003,9 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                       src="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/NafzeXOPnwSlPkbM.webp"
                       alt="Sourabh Saini"
                       loading="lazy"
-                      className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg"
+                      width="128"
+                      height="128"
+                      className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-cyan-600 shadow-lg aspect-square"
                     />
                   </picture>
                 </div>
@@ -1040,7 +1066,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                       className="p-0 hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-cyan-600 flex flex-col h-full overflow-hidden"
                       onClick={() => setSelectedArticleId(relatedArticle.id)}
                     >
-                      <div className="w-full h-40 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                      <div className="w-full h-40 bg-slate-200 dark:bg-slate-700 overflow-hidden aspect-video">
                         <picture>
                           <source srcSet={relatedArticle.thumbnailAvif} type="image/avif" />
                           <source srcSet={relatedArticle.thumbnailWebp} type="image/webp" />
@@ -1048,6 +1074,8 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                             src={relatedArticle.thumbnailWebp}
                             alt={relatedArticle.title}
                             loading="lazy"
+                            width="400"
+                            height="225"
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           />
                         </picture>
@@ -1188,7 +1216,7 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                 className="p-0 hover:shadow-lg transition-shadow cursor-pointer border-t-4 border-t-cyan-600 flex flex-col h-full overflow-hidden"
                 onClick={() => setSelectedArticleId(article.id)}
               >
-                <div className="w-full h-48 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <div className="w-full h-48 bg-slate-200 dark:bg-slate-700 overflow-hidden aspect-video">
                   <picture>
                     <source srcSet={article.thumbnailAvif} type="image/avif" />
                     <source srcSet={article.thumbnailWebp} type="image/webp" />
@@ -1196,6 +1224,8 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                       src={article.thumbnailWebp}
                       alt={article.title}
                       loading="lazy"
+                      width="400"
+                      height="225"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </picture>
