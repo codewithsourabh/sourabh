@@ -30,3 +30,6 @@
 - [ ] Add more certificates to carousel
 - [ ] Implement lazy loading for images
 - [ ] Add blog search and filtering enhancements
+
+## Bug Fixes
+- [x] Fixed certificate carousel images - changed from `w-full h-full object-contain` to `max-w-full max-h-96 md:max-h-[500px] object-contain` to prevent cropping and allow proper scaling

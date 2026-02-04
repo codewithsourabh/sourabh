@@ -520,14 +520,14 @@ export default function Home() {
               {/* Carousel Container */}
               <div className="relative bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 rounded-lg overflow-hidden shadow-lg">
                 {/* Certificate Image */}
-                <div className="relative h-96 md:h-[500px] overflow-hidden flex items-center justify-center">
+                <div className="relative min-h-96 md:min-h-[500px] flex items-center justify-center bg-white dark:bg-slate-600 p-4">
                   <picture>
                     <source srcSet={certificateImages[currentCertificateIndex].srcAvif} type="image/avif" />
                     <source srcSet={certificateImages[currentCertificateIndex].srcWebp} type="image/webp" />
                     <img
                       src={certificateImages[currentCertificateIndex].srcWebp}
                       alt={certificateImages[currentCertificateIndex].alt}
-                      className="w-full h-full object-contain p-4 transition-opacity duration-500" style={{backgroundColor: '#ffffff'}}
+                      className="max-w-full max-h-96 md:max-h-[500px] object-contain transition-opacity duration-500"
                     />
                   </picture>
                 </div>
