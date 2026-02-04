@@ -23,6 +23,7 @@ export default function Home() {
   const [currentCertificateIndex, setCurrentCertificateIndex] = useState(0);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
+  // Certificates sorted by date (newest first)
   const certificateImages = [
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/WJmfffGeVLIjKvDt.avif",
@@ -585,11 +586,11 @@ export default function Home() {
           <div className="mt-20 pt-20 border-t border-slate-200 dark:border-slate-700">
             <h3 className="text-2xl font-bold mb-8 text-center">Certificate <span className="text-cyan-600">Gallery</span></h3>
             
-            <div className="relative max-w-4xl mx-auto">
+            <div className="relative max-w-3xl mx-auto px-4">
               {/* Carousel Container */}
-              <div className="relative bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 rounded-lg overflow-hidden shadow-lg">
+              <div className="relative bg-white dark:bg-slate-700 rounded-lg overflow-hidden shadow-lg">
                 {/* Certificate Image */}
-                <div className="relative min-h-96 md:min-h-[500px] flex items-center justify-center bg-white dark:bg-slate-600 p-4 aspect-video">
+                <div className="relative min-h-80 md:min-h-[450px] flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-600 dark:to-slate-700 py-8 px-6">
                   <picture>
                     <source srcSet={certificateImages[currentCertificateIndex].srcAvif} type="image/avif" />
                     <source srcSet={certificateImages[currentCertificateIndex].srcWebp} type="image/webp" />
@@ -597,9 +598,9 @@ export default function Home() {
                       src={certificateImages[currentCertificateIndex].srcWebp}
                       alt={certificateImages[currentCertificateIndex].alt}
                       loading="lazy"
-                      width="800"
-                      height="600"
-                      className="max-w-full max-h-96 md:max-h-[500px] object-contain transition-opacity duration-500"
+                      width="700"
+                      height="500"
+                      className="max-w-full max-h-80 md:max-h-[420px] object-contain transition-opacity duration-500"
                     />
                   </picture>
                 </div>
@@ -622,12 +623,17 @@ export default function Home() {
               </div>
 
               {/* Certificate Details */}
-              <div className="mt-6 p-6 bg-white dark:bg-slate-700 rounded-lg shadow-md">
+              <div className="p-6 bg-white dark:bg-slate-700">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div>
-                    <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-                      {certificateImages[currentCertificateIndex].title}
-                    </h4>
+                    <div className="flex items-center gap-2 mb-2">
+                      <h4 className="text-xl font-bold text-slate-900 dark:text-white">
+                        {certificateImages[currentCertificateIndex].title}
+                      </h4>
+                      <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 3.062v6.218c0 1.264-.534 2.47-1.457 3.315l-5.325 4.905a3.066 3.066 0 01-4.296 0l-5.325-4.905A3.066 3.066 0 012.455 12.735V6.517a3.066 3.066 0 012.812-3.062zM9 11a1 1 0 11-2 0 1 1 0 012 0z" clipRule="evenodd" />
+                      </svg>
+                    </div>
                     <p className="text-slate-600 dark:text-slate-300 mb-3">
                       {certificateImages[currentCertificateIndex].description}
                     </p>

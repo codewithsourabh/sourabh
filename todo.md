@@ -54,3 +54,10 @@
 
 ## SEO Fixes
 - [x] Add meta keywords and description tags to homepage
+
+
+## Certificate Carousel Improvements
+- [x] Sort certificates by date (newest first)
+- [x] Add verification checkmarks next to certificate names
+- [x] Fix spacing issues (top/bottom congestion)
+- [x] Remove excess background on left/right sides
