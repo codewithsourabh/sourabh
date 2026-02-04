@@ -21,6 +21,7 @@
 - [x] Logo clickable linking to home page
 - [x] Removed vercel.json (using Manus deployment)
 - [x] **AVIF/WebP image format support with HTML picture element fallback**
+- [x] Hero heading layout - "Sourabh Saini" on first line, "CRM & Automation Expert" on second line
 
 ## Pending Features
 - [ ] Upload author photo to `/images/author-bio.jpg` for blog articles

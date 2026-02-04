@@ -305,8 +305,9 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Sourabh Saini<br />
-              CRM & Automation <span className="gradient-underline text-cyan-600">Expert</span>
+              Sourabh Saini
+              <br />
+              <span>CRM & Automation <span className="gradient-underline text-cyan-600">Expert</span></span>
             </h1>
             
             <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl leading-relaxed">
