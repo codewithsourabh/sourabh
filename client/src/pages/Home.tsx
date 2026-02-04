@@ -361,12 +361,12 @@ export default function Home() {
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">
         <div className="absolute inset-0 opacity-50">
           <picture>
-            <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.avif" type="image/avif" />
-            <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" type="image/webp" />
-            <img src="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" alt="Hero background" className="w-full h-full object-cover" />
+            <source srcSet="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/VTyptrmNoVqUgUaw.avif" type="image/avif" />
+            <source srcSet="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/gkdTnKLpxvsueEYl.webp" type="image/webp" />
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/108200144/gkdTnKLpxvsueEYl.webp" alt="Hero background" className="w-full h-full object-cover" loading="lazy" width="1920" height="1080" />
           </picture>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-transparent dark:from-slate-900/90 dark:via-slate-900/70 dark:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 via-slate-900/50 to-transparent dark:from-slate-950/80 dark:via-slate-950/60 dark:to-transparent" />
         
         <div className="container relative z-10">
           <div className="max-w-3xl">
