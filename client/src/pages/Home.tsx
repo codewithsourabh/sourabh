@@ -1,5 +1,4 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -24,25 +23,16 @@ export default function Home() {
   const [currentCertificateIndex, setCurrentCertificateIndex] = useState(0);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-  // Certificates sorted by date (newest first - descending order)
+  // Certificates sorted by date (newest first)
   const certificateImages = [
     {
-      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/oxZtxTfHcqxzymkA.avif",
-      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/pMnbnjXQrLDNusKo.webp",
-      alt: "ClickUp Capacity Planning Certificate",
-      title: "ClickUp Capacity Planning Certified",
-      date: "February 19, 2025",
-      description: "Expertise in ClickUp capacity planning and resource management",
-      verificationLink: "https://verify.skilljar.com/c/capacity-planning",
-    },
-    {
-      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/fdADpeKbeCdEMekL.avif",
-      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/nxAmKQPjfITCpSKE.webp",
-      alt: "ClickUp Expert Certificate",
-      title: "ClickUp Expert Certified",
-      date: "February 6, 2025",
-      description: "Advanced expertise in ClickUp platform and features",
-      verificationLink: "https://verify.skilljar.com/c/ijkcf6byb7tw",
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/WJmfffGeVLIjKvDt.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/daXIzETXIpqVcekf.webp",
+      alt: "ClickUp Admin Certificate",
+      title: "ClickUp Admin Certified",
+      date: "January 24, 2025",
+      description: "Advanced ClickUp administration and workspace management",
+      verificationLink: "https://verify.skilljar.com/c/f59m3kaust3k",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/TPzjmtleZRxdSQEq.avif",
@@ -54,6 +44,15 @@ export default function Home() {
       verificationLink: "https://verify.skilljar.com/c/brain-ai-expert",
     },
     {
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/oxZtxTfHcqxzymkA.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/pMnbnjXQrLDNusKo.webp",
+      alt: "ClickUp Capacity Planning Certificate",
+      title: "ClickUp Capacity Planning Certified",
+      date: "February 19, 2025",
+      description: "Expertise in ClickUp capacity planning and resource management",
+      verificationLink: "https://verify.skilljar.com/c/capacity-planning",
+    },
+    {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/FYLWVMHbjjOsNsqq.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/uiUIPfXJUpPSCgOS.webp",
       alt: "ClickUp Chat Knowledge Certificate",
@@ -63,13 +62,13 @@ export default function Home() {
       verificationLink: "https://verify.skilljar.com/c/chat-knowledge",
     },
     {
-      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/WJmfffGeVLIjKvDt.avif",
-      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/daXIzETXIpqVcekf.webp",
-      alt: "ClickUp Admin Certificate",
-      title: "ClickUp Admin Certified",
-      date: "January 24, 2025",
-      description: "Advanced ClickUp administration and workspace management",
-      verificationLink: "https://verify.skilljar.com/c/f59m3kaust3k",
+      srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/fdADpeKbeCdEMekL.avif",
+      srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/nxAmKQPjfITCpSKE.webp",
+      alt: "ClickUp Expert Certificate",
+      title: "ClickUp Expert Certified",
+      date: "February 6, 2025",
+      description: "Advanced expertise in ClickUp platform and features",
+      verificationLink: "https://verify.skilljar.com/c/ijkcf6byb7tw",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/awKtlfzkQQPDTqQj.avif",
@@ -115,9 +114,33 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [certificateImages.length]);
 
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    (e.target as HTMLImageElement).classList.add("loaded");
-  };
+  useEffect(() => {
+    const handleImageLoad = (event: Event) => {
+      const img = event.target as HTMLImageElement;
+      img.classList.add('loaded');
+    };
+
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    lazyImages.forEach((img) => {
+      img.addEventListener('load', handleImageLoad);
+      if ((img as HTMLImageElement).complete) {
+        img.classList.add('loaded');
+      }
+    });
+
+    return () => {
+      lazyImages.forEach((img) => {
+        img.removeEventListener('load', handleImageLoad);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    injectStructuredData(generatePersonSchema());
+    injectStructuredData(generateBreadcrumbSchema([
+      { name: 'Home', url: 'https://sourabh-portfolio.manus.space' },
+    ]));
+  }, []);
 
   const navLinks = [
     { label: "Skills", href: "#skills" },
@@ -154,74 +177,156 @@ export default function Home() {
         "Led end-to-end HubSpot-Salesforce integration for US financial loan processing platform with secure SSN linkage and compliance requirements",
         "Designed secure data synchronization between HubSpot Account records and financial identifiers ensuring accurate customer identification",
         "Integrated Salesforce APIs to fetch CIBIL/credit score data and trigger automated eligibility assessments",
-        "Implemented rule-based automation for lead scoring and routing based on credit profiles and loan eligibility",
-        "Reduced manual data entry by 85% through custom workflow automation and API integrations",
+        "Implemented rule-based automation to classify loan applications as Qualified or Not Qualified based on predefined business criteria",
+        "Developed custom-coded actions within HubSpot workflows using Node.js for advanced decision logic and cross-system orchestration",
+        "Established bi-directional data synchronization between HubSpot and Salesforce for customers, deals, and qualification status updates",
+        "Implemented robust error handling, validation, logging, and monitoring in collaboration with compliance teams to meet financial regulations",
       ],
     },
     {
-      title: "WordPress & HubSpot Specialist",
-      company: "Freelance / Consulting",
-      period: "Jan 2023 – July 2025",
+      title: "Software/HubSpot Engineer",
+      company: "Outdoor Norway",
+      period: "Feb 2024 – Aug 2025",
       highlights: [
-        "Developed and maintained 15+ WordPress websites with custom plugins and integrations",
-        "Implemented HubSpot CRM for 20+ businesses, resulting in 40% increase in lead conversion",
-        "Created automated workflows connecting WordPress forms to HubSpot for seamless lead capture",
-        "Optimized website performance, improving Core Web Vitals scores by average 35%",
-        "Managed WooCommerce stores with inventory sync and order automation",
+        "Developed and maintained company websites, enhancing user experience and engagement",
+        "Collaborated with cross-functional teams to automate workflows using HubSpot and ClickUp for improved operational efficiency",
+        "Customized CRM and CMS platforms to support business processes, reporting needs, and customer journey optimization",
+        "Built comprehensive integration system connecting HubSpot CRM with booking management platforms and customer communication tools",
+        "Developed automated workflows to sync lead data from multiple touchpoints including website inquiries, partner referrals, and trade show contacts",
+        "Implemented data standardization and normalization processes to clean customer information across disparate booking systems",
+        "Created custom webhooks to trigger automated email sequences based on booking stages and customer segmentation",
+        "Developed reporting dashboards providing real-time visibility into sales pipeline, conversion rates by travel package, and partner performance metrics",
       ],
     },
     {
-      title: "Digital Solutions Developer",
-      company: "Previous Experience",
-      period: "June 2022 – Dec 2022",
+      title: "HubSpot Integration Engineer",
+      company: "Murmu Software Infotech",
+      period: "Mar 2023 – Feb 2024",
       highlights: [
-        "Built custom automation solutions using Zapier and Make (formerly Integromat)",
-        "Integrated third-party APIs and services for business process automation",
-        "Provided technical support and training to clients on CRM and automation tools",
-        "Developed documentation and standard operating procedures for automation workflows",
+        "Developed and maintained WooCommerce websites using WordPress and integrated them seamlessly with HubSpot CRM",
+        "Streamlined data flow through automation and system integration using Zapier with various third-party service platforms",
+        "Created and customized APIs to enhance cross-platform functionality and enable seamless data exchange",
+        "Implemented CRM customizations to improve client engagement and satisfaction through personalized workflows",
+        "Designed integration architecture connecting HubSpot with financial data providers and compliance monitoring tools for B2B fintech company",
+        "Built automated workflows to capture, qualify, and route leads from webinars, content downloads, and partner referral channels",
+        "Integrated financial intelligence APIs to enrich CRM records with firmographics, investment focus areas, and regulatory status",
+        "Developed compliance-focused automation to flag regulated communications and maintain audit-ready documentation trails",
+      ],
+    },
+    {
+      title: "Software Engineer",
+      company: "Kadel Labs Pvt Ltd",
+      period: "Feb 2022 – Feb 2023",
+      highlights: [
+        "Architected multi-step Zapier workflows, improving data accuracy by 30% and reducing manual effort by 40%",
+        "Developed custom WordPress themes and plugins for clients, integrating CRMs to automate lead capture and synchronization",
+        "Optimized WordPress performance using caching, lazy loading, and CDN implementation, reducing page load times by 40% and improving Core Web Vitals",
+        "Documented HubSpot, WordPress, and Zapier integration workflows for marketing teams, enabling faster adoption and self-service troubleshooting",
+        "Designed and implemented integration workflows between HubSpot and healthcare provider databases for B2B health tech platform",
+        "Developed automated data pipelines to sync provider credentials, licensing details, and referral networks into HubSpot custom objects",
+        "Built field mapping logic to standardize medical specialties, insurance networks, and facility information across multiple data sources",
+        "Created webhook-driven compliance automation to trigger alerts for upcoming provider license expirations",
+        "Implemented data validation processes to ensure credential accuracy while maintaining HIPAA-compliant data handling",
+      ],
+    },
+    {
+      title: "Associate Software Engineer",
+      company: "Outdoor Norway",
+      period: "Feb 2021 – Jan 2022",
+      highlights: [
+        "Built Outdoor Norway's website from scratch using a custom, responsive WordPress theme with modular architecture",
+        "Integrated a third-party booking system to synchronize real-time availability and manage customer reservations",
+        "Implemented technical and on-page SEO strategies including schema markup, meta tags, XML sitemaps, and site-speed optimizations",
+        "Configured Google Analytics and Search Console, conducted keyword research and content audits to improve search rankings",
+        "Achieved significant improvements in organic visibility and user engagement through comprehensive SEO implementation",
+      ],
+    },
+    {
+      title: "E-Commerce Intern",
+      company: "Adigo Apparels",
+      period: "Jun 2020 – Jul 2020",
+      highlights: [
+        "Created and managed spreadsheets for bulk upload of hundreds of women's apparel items with multiple size, color, and style variations",
+        "Successfully uploaded products to Amazon, Flipkart, and Meesho with accurate categorization and pricing",
+        "Mapped and validated product attributes (SKUs, pricing, tags, categories) to guarantee error-free bulk uploads and consistent storefront presentation",
+        "Retouched and optimized product photography including background removal, color correction, and resizing to enhance visual appeal",
+        "Performed post-upload QA on live listings, diagnosing import issues and synchronizing inventory levels across platforms",
+        "Maintained data accuracy across multiple e-commerce platforms through rigorous quality assurance processes",
       ],
     },
   ];
 
   const projects = [
     {
-      title: "HubSpot-Salesforce Integration Platform",
-      description: "Enterprise-grade integration connecting HubSpot and Salesforce for financial services",
-      technologies: ["HubSpot API", "Salesforce API", "Node.js", "Data Sync"],
-      link: "#",
+      title: "Financial Loan Automation Platform",
+      description: "End-to-end HubSpot-Salesforce integration for secure loan processing with real-time eligibility assessment",
+      technologies: ["HubSpot", "Salesforce", "Node.js", "Data Sync", "Compliance"],
+      impact: "Automated loan qualification with 99.9% accuracy",
     },
     {
-      title: "WordPress E-Commerce Automation",
-      description: "WooCommerce store with automated inventory and order management",
-      technologies: ["WordPress", "WooCommerce", "Zapier", "Custom PHP"],
-      link: "#",
+      title: "Travel Industry CRM Integration",
+      description: "Comprehensive integration connecting HubSpot with booking platforms and customer communication tools",
+      technologies: ["HubSpot", "Booking Engines", "Webhooks", "Analytics", "GDPR"],
+      impact: "Deduplication of 50,000+ CRM records with real-time dashboards",
     },
     {
-      title: "Lead Capture & CRM Workflow",
-      description: "Automated lead capture system with intelligent routing and scoring",
-      technologies: ["HubSpot", "Zapier", "Google Sheets", "API Integration"],
-      link: "#",
+      title: "Financial Services Lead Management",
+      description: "Integration architecture for lead capture, qualification, and compliance automation",
+      technologies: ["HubSpot", "Financial APIs", "Compliance Tools", "Reporting"],
+      impact: "Automated quarterly reporting and advisor segmentation",
+    },
+    {
+      title: "Healthcare Provider Network Management",
+      description: "Integration workflows for provider credentials, licensing, and referral network synchronization",
+      technologies: ["HubSpot", "EHR Systems", "HIPAA", "Webhooks", "Scheduling"],
+      impact: "Automated license expiration alerts and network coverage analysis",
+    },
+    {
+      title: "E-Commerce Platform Integration",
+      description: "Multi-platform e-commerce solution with bulk product uploads and inventory synchronization across Amazon, Flipkart, and Meesho",
+      technologies: ["WooCommerce", "Amazon API", "Flipkart Integration", "Meesho API", "Inventory Management"],
+      impact: "Successfully managed 1000+ product listings with automated inventory sync and 99% accuracy",
+    },
+    {
+      title: "Travel Booking System Integration",
+      description: "Real-time booking system integration with availability synchronization and automated reservation management",
+      technologies: ["WordPress", "Booking Engine", "Real-time Sync", "Payment Gateway", "HubSpot"],
+      impact: "Seamless real-time availability updates reducing booking conflicts by 100%",
     },
   ];
 
-  useEffect(() => {
-    injectStructuredData(generatePersonSchema);
-    injectStructuredData(generateBreadcrumbSchema);
-  }, []);
+  const certifications = [
+    {
+      title: "8x ClickUp Certified",
+      issuer: "ClickUp University",
+      description: "Advanced expertise in ClickUp project management, workflow automation, and team collaboration. Demonstrates mastery of automation features and custom workflows.",
+      icon: "Workflow",
+    },
+    {
+      title: "HubSpot Marketing & Automation",
+      issuer: "HubSpot Academy",
+      description: "Comprehensive certification in HubSpot CRM, marketing automation, lead nurturing, and workflow design. Covers advanced integration and compliance requirements.",
+      icon: "Zap",
+    },
+    {
+      title: "WordPress Certified",
+      issuer: "WordPress.org",
+      description: "Professional certification in WordPress development, theme customization, plugin development, and site optimization. Includes SEO and performance best practices.",
+      icon: "Globe",
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700">
-        <div className="container flex items-center justify-between py-4">
-          <a href="/" className="text-2xl font-bold text-cyan-600">
-            Sourabh
-          </a>
+      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
+        <div className="container flex items-center justify-between h-16">
+          <a href="/" className="text-xl font-bold text-cyan-600 hover:text-cyan-700 transition">Sourabh</a>
           
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex gap-8">
+          {/* Desktop Menu */}
+          <div className="hidden md:flex gap-8 items-center">
             {navLinks.map((link) => (
-              <a key={link.label} href={link.href} className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+              <a key={link.href} href={link.href} className="text-sm hover:text-cyan-600 transition">
                 {link.label}
               </a>
             ))}
@@ -229,23 +334,28 @@ export default function Home() {
 
           {/* Mobile Menu Button */}
           <button
+            className="md:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+          <div className="md:hidden bg-white dark:bg-slate-900 border-t border-border">
             <div className="container py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a
-                  key={link.label}
+                  key={link.href}
                   href={link.href}
+                  className="text-sm hover:text-cyan-600 transition py-2"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
                 >
                   {link.label}
                 </a>
@@ -310,21 +420,53 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
             {skills.map((skillGroup, idx) => (
-              <Card key={idx} className="p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg flex items-center justify-center">
-                    <Zap className="w-6 h-6 text-cyan-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold">{skillGroup.category}</h3>
+              <Card key={idx} className="p-6 hover:shadow-lg transition-shadow card-hover">
+                <div className="flex items-start gap-4 mb-4">
+                  {idx === 0 && <Globe className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
+                  {idx === 1 && <Zap className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
+                  {idx === 2 && <Code2 className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
+                  {idx === 3 && <Database className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
+                  {idx === 4 && <Workflow className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
+                  {idx === 5 && <Globe className="w-6 h-6 text-cyan-600 flex-shrink-0 mt-1" />}
+                  <h3 className="text-xl font-semibold">{skillGroup.category}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {skillGroup.items.map((item, itemIdx) => (
-                    <span key={itemIdx} className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-sm">
+                    <span key={itemIdx} className="px-3 py-1 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 rounded-full text-sm font-medium">
                       {item}
                     </span>
                   ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Education Section */}
+      <section className="py-20 md:py-32 bg-white dark:bg-slate-800">
+        <div className="container">
+          <div className="mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="text-cyan-600">Education</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
+              Formal education in Computer Science Engineering with continuous professional development
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            {education.map((edu, idx) => (
+              <Card key={idx} className="p-8 border-l-4 border-l-cyan-600 hover:shadow-lg transition-shadow">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-1">{edu.degree}</h3>
+                    <p className="text-cyan-600 font-semibold">{edu.institution}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">{edu.location}</p>
+                  </div>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 mt-2 md:mt-0">{edu.period}</span>
                 </div>
               </Card>
             ))}
@@ -340,24 +482,24 @@ export default function Home() {
               Professional <span className="text-cyan-600">Journey</span>
             </h2>
             <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
-              Proven track record of delivering enterprise-grade solutions and driving business growth
+              5+ years of experience building and integrating CRM and CMS platforms
             </p>
           </div>
 
           <div className="space-y-8">
             {experience.map((exp, idx) => (
-              <Card key={idx} className="p-8 border-l-4 border-l-cyan-600">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+              <Card key={idx} className="p-8 border-l-4 border-l-cyan-600 hover:shadow-lg transition-shadow">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{exp.title}</h3>
+                    <h3 className="text-2xl font-bold mb-1">{exp.title}</h3>
                     <p className="text-cyan-600 font-semibold">{exp.company}</p>
                   </div>
-                  <span className="text-slate-600 dark:text-slate-400 whitespace-nowrap">{exp.period}</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 mt-2 md:mt-0">{exp.period}</span>
                 </div>
                 <ul className="space-y-2">
                   {exp.highlights.map((highlight, hIdx) => (
-                    <li key={hIdx} className="flex gap-3 text-slate-600 dark:text-slate-300">
-                      <span className="text-cyan-600 font-bold flex-shrink-0">•</span>
+                    <li key={hIdx} className="flex gap-3 text-slate-700 dark:text-slate-300">
+                      <span className="text-cyan-600 font-bold mt-1">•</span>
                       <span>{highlight}</span>
                     </li>
                   ))}
@@ -376,33 +518,37 @@ export default function Home() {
               Featured <span className="text-cyan-600">Projects</span>
             </h2>
             <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
-              Showcase of successful projects demonstrating technical expertise and business impact
+              Complex integrations and automation solutions delivered across multiple industries
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {projects.map((project, idx) => (
               <Card
                 key={idx}
-                className="group overflow-hidden hover:shadow-xl transition-all duration-300"
+                className="p-8 card-hover cursor-pointer group"
                 onMouseEnter={() => setHoveredProject(idx)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
-                <div className="p-6 h-full flex flex-col">
-                  <h3 className="text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-cyan-600 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-300 mb-4 flex-grow">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
+                <h3 className="text-xl font-bold mb-3 group-hover:text-cyan-600 transition">{project.title}</h3>
+                <p className="text-slate-600 dark:text-slate-300 mb-4">{project.description}</p>
+                
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">Technologies</p>
+                  <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, tIdx) => (
-                      <span key={tIdx} className="px-2 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 rounded text-xs font-semibold">
+                      <span key={tIdx} className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded text-xs font-medium">
                         {tech}
                       </span>
                     ))}
                   </div>
-                  <a href={project.link} className="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 font-semibold group/link">
-                    View Project <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                  </a>
+                </div>
+
+                <div className="pt-4 border-t border-border">
+                  <p className="text-sm text-cyan-600 dark:text-cyan-400 font-semibold flex items-center gap-2">
+                    {project.impact}
+                    {hoveredProject === idx && <ArrowRight className="w-4 h-4" />}
+                  </p>
                 </div>
               </Card>
             ))}
@@ -410,111 +556,128 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Education Section */}
-      <section className="py-20 md:py-32 bg-slate-50 dark:bg-slate-900">
+      {/* Certifications Section */}
+      <section className="py-20 md:py-32 bg-white dark:bg-slate-800">
         <div className="container">
           <div className="mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Education <span className="text-cyan-600">&</span> Certifications
+              <span className="text-cyan-600">Certifications</span> & Credentials
             </h2>
+            <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
+              Professional certifications demonstrating expertise in CRM platforms, automation tools, and web development
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Education */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Formal Education</h3>
-              <div className="space-y-6">
-                {education.map((edu, idx) => (
-                  <Card key={idx} className="p-6 border-l-4 border-l-cyan-600">
-                    <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{edu.degree}</h4>
-                    <p className="text-cyan-600 font-semibold mb-1">{edu.institution}</p>
-                    <p className="text-slate-600 dark:text-slate-300 text-sm">{edu.location}</p>
-                    <p className="text-slate-600 dark:text-slate-300 text-sm mt-2">{edu.period}</p>
-                  </Card>
+          <div className="grid md:grid-cols-3 gap-8">
+            {certifications.map((cert, idx) => {
+              const IconComponent = idx === 0 ? Workflow : idx === 1 ? Zap : Globe;
+              return (
+                <Card key={idx} className="p-8 border-t-4 border-t-cyan-600 hover:shadow-lg transition-shadow">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg">
+                      <IconComponent className="w-6 h-6 text-cyan-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">{cert.title}</h3>
+                      <p className="text-sm text-cyan-600 font-medium">{cert.issuer}</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                    {cert.description}
+                  </p>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Certificate Carousel */}
+          <div className="mt-20 pt-20 border-t border-slate-200 dark:border-slate-700">
+            <h3 className="text-2xl font-bold mb-8 text-center">Certificate <span className="text-cyan-600">Gallery</span></h3>
+            
+            <div className="relative max-w-3xl mx-auto px-4">
+              {/* Carousel Container */}
+              <div className="relative bg-white dark:bg-slate-700 rounded-lg overflow-hidden shadow-lg">
+                {/* Certificate Image */}
+                <div className="relative min-h-80 md:min-h-[450px] flex items-center justify-center bg-white dark:bg-slate-600 py-8 px-6">
+                  <picture>
+                    <source srcSet={certificateImages[currentCertificateIndex].srcAvif} type="image/avif" />
+                    <source srcSet={certificateImages[currentCertificateIndex].srcWebp} type="image/webp" />
+                    <img
+                      src={certificateImages[currentCertificateIndex].srcWebp}
+                      alt={certificateImages[currentCertificateIndex].alt}
+                      loading="lazy"
+                      width="700"
+                      height="500"
+                      className="max-w-full max-h-80 md:max-h-[420px] object-contain transition-opacity duration-500"
+                    />
+                  </picture>
+                </div>
+
+                {/* Navigation Arrows */}
+                <button
+                  onClick={handlePrevCertificate}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white p-2 rounded-full transition-colors z-10"
+                  aria-label="Previous certificate"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={handleNextCertificate}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white p-2 rounded-full transition-colors z-10"
+                  aria-label="Next certificate"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Certificate Details */}
+              <div className="p-6 bg-white dark:bg-slate-700">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h4 className="text-xl font-bold text-slate-900 dark:text-white">
+                        {certificateImages[currentCertificateIndex].title}
+                      </h4>
+                      <svg aria-label="Verified" className="w-5 h-5" fill="rgb(0, 149, 246)" height="18" role="img" viewBox="0 0 40 40" width="18">
+                        <title>Verified</title>
+                        <path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64 3.094 20 0 25.359l5.432 3.137v5.905h5.975L14.638 40l5.36-3.094L25.358 40l3.232-5.6h6.162v-6.01L40 25.359 36.905 20 40 14.641l-5.248-3.03v-6.46h-6.419L25.358 0l-5.36 3.094Zm7.415 11.225 2.254 2.287-11.43 11.5-6.835-6.93 2.244-2.258 4.587 4.581 9.18-9.18Z" fillRule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
+                      {certificateImages[currentCertificateIndex].description}
+                    </p>
+                    <a href={certificateImages[currentCertificateIndex].verificationLink} target="_blank" rel="noopener noreferrer">
+                      <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
+                        View Certificate <ExternalLink className="w-4 h-4" />
+                      </Button>
+                    </a>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Achieved</p>
+                    <p className="text-lg font-semibold text-cyan-600">
+                      {certificateImages[currentCertificateIndex].date}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Indicator Dots */}
+              <div className="flex justify-center gap-2 mt-6">
+                {certificateImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentCertificateIndex(idx)}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      idx === currentCertificateIndex ? "bg-cyan-600" : "bg-slate-300 dark:bg-slate-600"
+                    }`}
+                    aria-label={`Go to certificate ${idx + 1}`}
+                  />
                 ))}
               </div>
-            </div>
 
-            {/* Certificate Gallery */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Professional Certifications</h3>
-              <div className="relative max-w-md">
-                <div className="relative bg-white dark:bg-slate-700 rounded-lg overflow-hidden shadow-lg">
-                  <div className="relative min-h-64 md:min-h-80 flex items-center justify-center bg-white dark:bg-slate-600 py-6 px-4">
-                    <picture>
-                      <source srcSet={certificateImages[currentCertificateIndex].srcAvif} type="image/avif" />
-                      <source srcSet={certificateImages[currentCertificateIndex].srcWebp} type="image/webp" />
-                      <img
-                        src={certificateImages[currentCertificateIndex].srcWebp}
-                        alt={certificateImages[currentCertificateIndex].alt}
-                        loading="lazy"
-                        width="700"
-                        height="500"
-                        onLoad={handleImageLoad}
-                        className="max-w-full max-h-64 md:max-h-80 object-contain transition-opacity duration-500"
-                      />
-                    </picture>
-                  </div>
-
-                  {/* Navigation Arrows */}
-                  <button
-                    onClick={handlePrevCertificate}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white p-2 rounded-full transition-colors z-10"
-                    aria-label="Previous certificate"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={handleNextCertificate}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-cyan-600 hover:bg-cyan-700 text-white p-2 rounded-full transition-colors z-10"
-                    aria-label="Next certificate"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {/* Certificate Details */}
-                <div className="p-4 bg-white dark:bg-slate-700">
-                  <div className="flex items-start gap-2 mb-2">
-                    <h4 className="text-lg font-bold text-slate-900 dark:text-white flex-1">
-                      {certificateImages[currentCertificateIndex].title}
-                    </h4>
-                    <svg aria-label="Verified" className="w-5 h-5 flex-shrink-0" fill="rgb(0, 149, 246)" height="18" role="img" viewBox="0 0 40 40" width="18">
-                      <title>Verified</title>
-                      <path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64 3.094 20 0 25.359l5.432 3.137v5.905h5.975L14.638 40l5.36-3.094L25.358 40l3.232-5.6h6.162v-6.01L40 25.359 36.905 20 40 14.641l-5.248-3.03v-6.46h-6.419L25.358 0l-5.36 3.094Zm7.415 11.225 2.254 2.287-11.43 11.5-6.835-6.93 2.244-2.258 4.587 4.581 9.18-9.18Z" fillRule="evenodd"></path>
-                    </svg>
-                  </div>
-                  <p className="text-slate-600 dark:text-slate-300 text-sm mb-3">
-                    {certificateImages[currentCertificateIndex].description}
-                  </p>
-                  <a href={certificateImages[currentCertificateIndex].verificationLink} target="_blank" rel="noopener noreferrer">
-                    <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 w-full">
-                      View Certificate <ExternalLink className="w-4 h-4" />
-                    </Button>
-                  </a>
-                  <div className="mt-3 text-center">
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Achieved: {certificateImages[currentCertificateIndex].date}</p>
-                  </div>
-                </div>
-
-                {/* Indicator Dots */}
-                <div className="flex justify-center gap-1.5 mt-4">
-                  {certificateImages.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentCertificateIndex(idx)}
-                      className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                        idx === currentCertificateIndex ? "bg-cyan-600" : "bg-slate-300 dark:bg-slate-600"
-                      }`}
-                      aria-label={`Go to certificate ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-
-                {/* Certificate Counter */}
-                <div className="text-center mt-3 text-xs text-slate-600 dark:text-slate-400">
-                  Certificate {currentCertificateIndex + 1} of {certificateImages.length}
-                </div>
+              {/* Certificate Counter */}
+              <div className="text-center mt-4 text-sm text-slate-600 dark:text-slate-400">
+                Certificate {currentCertificateIndex + 1} of {certificateImages.length}
               </div>
             </div>
           </div>
@@ -522,42 +685,44 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 md:py-32 bg-white dark:bg-slate-800">
+      <section id="contact" className="py-20 md:py-32 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
         <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Let's <span className="text-cyan-600">Connect</span>
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Let's Work <span className="text-cyan-400">Together</span>
             </h2>
-            <p className="text-slate-600 dark:text-slate-300 text-lg">
-              Have a project in mind? I'd love to hear about it. Let's work together to bring your ideas to life.
+            <p className="text-lg text-slate-300 mb-8">
+              I'm open to discussing new projects, innovative ideas, and opportunities to be part of your vision.
             </p>
-          </div>
 
-          <div className="max-w-2xl mx-auto">
-            <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
-          </div>
+            <div className="flex flex-wrap justify-center gap-4 mb-12">
+              <Button onClick={() => setIsContactModalOpen(true)} className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
+                <Mail className="w-4 h-4" />
+                Get in Touch
+              </Button>
+              <a href="https://www.linkedin.com/in/mrsourabh" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 gap-2">
+                  <Linkedin className="w-4 h-4" />
+                  LinkedIn
+                </Button>
+              </a>
+              <a href="https://github.com/codewithsourabh" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 gap-2">
+                  <Github className="w-4 h-4" />
+                  GitHub
+                </Button>
+              </a>
+            </div>
 
-          {/* Social Links */}
-          <div className="flex justify-center gap-6 mt-12">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-3 bg-slate-100 dark:bg-slate-700 hover:bg-cyan-600 hover:text-white dark:hover:bg-cyan-600 rounded-full transition-colors">
-              <Github className="w-6 h-6" />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="p-3 bg-slate-100 dark:bg-slate-700 hover:bg-cyan-600 hover:text-white dark:hover:bg-cyan-600 rounded-full transition-colors">
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a href="mailto:contact@example.com" className="p-3 bg-slate-100 dark:bg-slate-700 hover:bg-cyan-600 hover:text-white dark:hover:bg-cyan-600 rounded-full transition-colors">
-              <Mail className="w-6 h-6" />
-            </a>
+            <p className="text-slate-400 text-sm">
+              © 2026 Sourabh. Software Engineer specializing in CRM and Automation Solutions.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 dark:bg-black text-slate-300 py-12">
-        <div className="container text-center">
-          <p>&copy; 2025 Sourabh Saini. All rights reserved.</p>
-        </div>
-      </footer>
+      {/* Contact Form Modal */}
+      <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
   );
 }
