@@ -65,3 +65,11 @@
 
 ## Icon Updates
 - [x] Replace shield verification icon with Instagram-style verified checkmark
+
+
+## Certificate Carousel Refinements
+- [x] Remove background image from certificate picture tag
+- [x] Add white background color to certificate container
+- [x] Sort certificates by completion date (newest first)
+- [x] Add verification links to certificate data
+- [x] Add "View Certificate" button with verification link

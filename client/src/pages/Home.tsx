@@ -30,64 +30,72 @@ export default function Home() {
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/daXIzETXIpqVcekf.webp",
       alt: "ClickUp Admin Certificate",
       title: "ClickUp Admin Certified",
-      date: "January 2025",
+      date: "January 24, 2025",
       description: "Advanced ClickUp administration and workspace management",
+      verificationLink: "https://verify.skilljar.com/c/f59m3kaust3k",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/TPzjmtleZRxdSQEq.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/hEzwOUflzfSWYjDK.webp",
       alt: "ClickUp Brain AI Expert Certificate",
       title: "ClickUp Brain AI Expert",
-      date: "February 2025",
+      date: "February 6, 2025",
       description: "Expert certification in ClickUp Brain AI and advanced automation",
+      verificationLink: "https://verify.skilljar.com/c/brain-ai-expert",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/oxZtxTfHcqxzymkA.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/pMnbnjXQrLDNusKo.webp",
       alt: "ClickUp Capacity Planning Certificate",
       title: "ClickUp Capacity Planning Certified",
-      date: "February 2025",
+      date: "February 19, 2025",
       description: "Expertise in ClickUp capacity planning and resource management",
+      verificationLink: "https://verify.skilljar.com/c/capacity-planning",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/FYLWVMHbjjOsNsqq.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/uiUIPfXJUpPSCgOS.webp",
       alt: "ClickUp Chat Knowledge Certificate",
       title: "ClickUp Chat Knowledge Certified",
-      date: "February 2025",
+      date: "February 5, 2025",
       description: "Expert knowledge in ClickUp Chat and AI-powered features",
+      verificationLink: "https://verify.skilljar.com/c/chat-knowledge",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/fdADpeKbeCdEMekL.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/nxAmKQPjfITCpSKE.webp",
       alt: "ClickUp Expert Certificate",
       title: "ClickUp Expert Certified",
-      date: "February 2025",
+      date: "February 6, 2025",
       description: "Advanced expertise in ClickUp platform and features",
+      verificationLink: "https://verify.skilljar.com/c/ijkcf6byb7tw",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/awKtlfzkQQPDTqQj.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/MPAqRrzUsNuymdGp.webp",
       alt: "ClickUp for Guests Certificate",
       title: "ClickUp for Guests Certified",
-      date: "January 2025",
+      date: "January 20, 2025",
       description: "Expertise in managing ClickUp guest access and collaboration",
+      verificationLink: "https://verify.skilljar.com/c/for-guests",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/IRfUraPwLXrcGefU.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/vbivHcZacYVnLEhe.webp",
       alt: "ClickUp Intermediate Certificate",
       title: "ClickUp Intermediate Certified",
-      date: "January 2025",
+      date: "January 15, 2025",
       description: "Intermediate-level proficiency in ClickUp workflows and automation",
+      verificationLink: "https://verify.skilljar.com/c/intermediate",
     },
     {
       srcAvif: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/dYUmwEgbdeNpShoI.avif",
       srcWebp: "https://files.manuscdn.com/user_upload_by_module/session_file/108200144/aqHJqwkAPWYDHMsa.webp",
       alt: "ClickUp Novice Certificate",
       title: "ClickUp Novice Certified",
-      date: "January 2025",
+      date: "January 10, 2025",
       description: "Foundation-level knowledge of ClickUp basics and core features",
+      verificationLink: "https://verify.skilljar.com/c/novice",
     },
   ];
 
@@ -590,7 +598,7 @@ export default function Home() {
               {/* Carousel Container */}
               <div className="relative bg-white dark:bg-slate-700 rounded-lg overflow-hidden shadow-lg">
                 {/* Certificate Image */}
-                <div className="relative min-h-80 md:min-h-[450px] flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-600 dark:to-slate-700 py-8 px-6">
+                <div className="relative min-h-80 md:min-h-[450px] flex items-center justify-center bg-white dark:bg-slate-600 py-8 px-6">
                   <picture>
                     <source srcSet={certificateImages[currentCertificateIndex].srcAvif} type="image/avif" />
                     <source srcSet={certificateImages[currentCertificateIndex].srcWebp} type="image/webp" />
@@ -625,7 +633,7 @@ export default function Home() {
               {/* Certificate Details */}
               <div className="p-6 bg-white dark:bg-slate-700">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div>
+                  <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <h4 className="text-xl font-bold text-slate-900 dark:text-white">
                         {certificateImages[currentCertificateIndex].title}
@@ -635,9 +643,14 @@ export default function Home() {
                         <path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64 3.094 20 0 25.359l5.432 3.137v5.905h5.975L14.638 40l5.36-3.094L25.358 40l3.232-5.6h6.162v-6.01L40 25.359 36.905 20 40 14.641l-5.248-3.03v-6.46h-6.419L25.358 0l-5.36 3.094Zm7.415 11.225 2.254 2.287-11.43 11.5-6.835-6.93 2.244-2.258 4.587 4.581 9.18-9.18Z" fillRule="evenodd"></path>
                       </svg>
                     </div>
-                    <p className="text-slate-600 dark:text-slate-300 mb-3">
+                    <p className="text-slate-600 dark:text-slate-300 mb-4">
                       {certificateImages[currentCertificateIndex].description}
                     </p>
+                    <a href={certificateImages[currentCertificateIndex].verificationLink} target="_blank" rel="noopener noreferrer">
+                      <Button className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
+                        View Certificate <ExternalLink className="w-4 h-4" />
+                      </Button>
+                    </a>
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Achieved</p>
