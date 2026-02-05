@@ -9,6 +9,7 @@ import WordPressBlog from "./pages/WordPressBlog";
 import WordPressBlogPost from "./pages/WordPressBlogPost";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import { useState } from "react";
 
 function Router({ mobileMenuOpen, setMobileMenuOpen, onContactClick }: any) {
@@ -25,6 +26,7 @@ function Router({ mobileMenuOpen, setMobileMenuOpen, onContactClick }: any) {
         <Route component={NotFound} />
       </Switch>
       <Footer onContactClick={onContactClick} />
+      <ScrollToTop />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -47,6 +47,24 @@ export default function WordPressBlogPost() {
 
   const slug = params?.slug as string;
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+  const tocContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll TOC when active heading changes
+  useEffect(() => {
+    if (!tocContainerRef.current || !activeHeading) return;
+
+    const activeElement = tocContainerRef.current.querySelector(
+      `a[href="#${activeHeading}"]`
+    );
+
+    if (activeElement) {
+      activeElement.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [activeHeading]);
+
 
   // Fetch post by slug
   const { data: fetchedPost, isLoading: isFetching, error: fetchError } = trpc.wordpress.postBySlug.useQuery(
@@ -442,7 +460,7 @@ export default function WordPressBlogPost() {
                     <ChevronRight className="w-4 h-4" />
                     On this page
                   </h3>
-                  <nav className="space-y-2 overflow-y-auto flex-1 pr-2">
+                  <nav className="space-y-2 overflow-y-auto flex-1 pr-2" ref={tocContainerRef}>
                     {post.headings.map((heading) => (
                       <a
                         key={heading.id}
