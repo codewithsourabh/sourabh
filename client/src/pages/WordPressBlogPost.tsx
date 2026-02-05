@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, User } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ArrowLeft, Calendar, User, ChevronRight } from "lucide-react";
 import { Streamdown } from "streamdown";
 
 interface BlogPostDetail {
@@ -14,14 +15,28 @@ interface BlogPostDetail {
   date: string;
   featuredImage: string | null;
   author: string;
+  headings?: Array<{ id: string; text: string; level: number }>;
+}
+
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  featuredImage: string | null;
+  author: string;
 }
 
 export default function WordPressBlogPost() {
   const [, navigate] = useLocation();
   const [match, params] = useRoute("/blog/:slug");
   const [post, setPost] = useState<BlogPostDetail | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeHeading, setActiveHeading] = useState<string | null>(null);
 
   const slug = params?.slug as string;
 
@@ -30,6 +45,9 @@ export default function WordPressBlogPost() {
     { slug },
     { enabled: !!slug }
   );
+
+  // Fetch all posts for related articles
+  const { data: allPosts } = trpc.wordpress.posts.useQuery({ page: 1, perPage: 20 });
 
   useEffect(() => {
     if (isFetching) {
@@ -46,6 +64,42 @@ export default function WordPressBlogPost() {
       setIsLoading(false);
     }
   }, [fetchedPost, isFetching, fetchError]);
+
+  // Get related posts (exclude current post)
+  useEffect(() => {
+    if (allPosts && post) {
+      const related = allPosts
+        .filter((p) => p.slug !== post.slug)
+        .slice(0, 3);
+      setRelatedPosts(related);
+    }
+  }, [allPosts, post]);
+
+  // Handle scroll progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setScrollProgress(scrollPercent);
+
+      // Update active heading
+      if (post?.headings) {
+        for (const heading of post.headings) {
+          const element = document.querySelector(`[data-heading-id="${heading.id}"]`);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 100) {
+              setActiveHeading(heading.id);
+            }
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [post]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -89,6 +143,14 @@ export default function WordPressBlogPost() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Reading Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-700 z-50">
+        <div
+          className="h-full bg-gradient-to-r from-cyan-500 to-cyan-600 transition-all duration-300"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       {/* Back Button */}
       <div className="container py-6">
         <Button
@@ -114,29 +176,119 @@ export default function WordPressBlogPost() {
 
       {/* Article Content */}
       <article className="py-12 md:py-20">
-        <div className="container max-w-3xl mx-auto">
-          {/* Header */}
-          <header className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-white">
-              {post.title}
-            </h1>
+        <div className="container max-w-6xl mx-auto">
+          <div className="flex gap-8">
+            {/* Main Content */}
+            <div className="flex-1 min-w-0">
+              {/* Header */}
+              <header className="mb-12">
+                <h1 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-white">
+                  {post.title}
+                </h1>
 
-            {/* Meta Information */}
-            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 pb-6">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                {formatDate(post.date)}
+                {/* Meta Information */}
+                <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 pb-6">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    {formatDate(post.date)}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    {post.author}
+                  </div>
+                </div>
+              </header>
+
+              {/* Content */}
+              <div className="prose dark:prose-invert max-w-none mb-12">
+                <Streamdown>{post.content}</Streamdown>
               </div>
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                {post.author}
+
+              {/* Author Box */}
+              <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-6 mb-12 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-white">About the Author</h3>
+                <p className="text-slate-700 dark:text-slate-300">
+                  <strong>{post.author}</strong> is a CRM & Automation Expert specializing in HubSpot, WordPress, and workflow automation. With over 5 years of experience, Sourabh helps businesses build scalable digital solutions that streamline data flows, reduce manual effort, and drive business outcomes through intelligent integrations.
+                </p>
               </div>
+
+              {/* Related Articles */}
+              {relatedPosts.length > 0 && (
+                <div className="mb-12">
+                  <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Related Articles</h3>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {relatedPosts.map((relatedPost) => (
+                      <Card
+                        key={relatedPost.id}
+                        className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                        onClick={() => navigate(`/blog/${relatedPost.slug}`)}
+                      >
+                        {relatedPost.featuredImage && (
+                          <div className="aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700">
+                            <img
+                              src={relatedPost.featuredImage}
+                              alt={relatedPost.title}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform"
+                            />
+                          </div>
+                        )}
+                        <div className="p-4">
+                          <h4 className="font-bold mb-2 text-slate-900 dark:text-white line-clamp-2">
+                            {relatedPost.title}
+                          </h4>
+                          <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 mb-3">
+                            {relatedPost.excerpt}
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-cyan-600 hover:text-cyan-700 p-0 h-auto"
+                            onClick={() => navigate(`/blog/${relatedPost.slug}`)}
+                          >
+                            Read More →
+                          </Button>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          </header>
 
-          {/* Content */}
-          <div className="prose dark:prose-invert max-w-none">
-            <Streamdown>{post.content}</Streamdown>
+            {/* Table of Contents Sidebar */}
+            {post.headings && post.headings.length > 0 && (
+              <aside className="hidden lg:block w-64 flex-shrink-0">
+                <div className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 h-96 flex flex-col">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 flex-shrink-0">
+                    <ChevronRight className="w-4 h-4" />
+                    On this page
+                  </h3>
+                  <nav className="space-y-2 overflow-y-auto flex-1 pr-2">
+                    {post.headings.map((heading) => (
+                      <a
+                        key={heading.id}
+                        href={`#${heading.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const element = document.querySelector(`[data-heading-id="${heading.id}"]`);
+                          if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }}
+                        className={`block text-sm py-1 px-3 rounded transition-colors ${
+                          activeHeading === heading.id
+                            ? "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 font-semibold"
+                            : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                        }`}
+                        style={{ paddingLeft: `${12 + (heading.level - 1) * 12}px` }}
+                      >
+                        {heading.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </aside>
+            )}
           </div>
         </div>
       </article>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Calendar, User, Search } from "lucide-react";
+import { ArrowRight, Calendar, User, Search, X } from "lucide-react";
 import { useLocation } from "wouter";
 
 interface BlogPost {
@@ -15,9 +15,24 @@ interface BlogPost {
   author: string;
 }
 
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+const CATEGORY_MAP: Record<number, string> = {
+  4: "AI",
+  2: "HubSpot",
+  5: "Integration",
+  1: "Salesforce",
+  3: "WordPress",
+};
+
 export default function WordPressBlog({ onContactClick }: { onContactClick?: () => void }) {
   const [, navigate] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
 
   // Fetch WordPress posts
@@ -26,26 +41,37 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
     perPage: 20,
   });
 
-  // Filter posts based on search query
+  // Fetch categories
+  const { data: categories } = trpc.wordpress.categories.useQuery();
+
+  // Fetch posts by category if selected
+  const { data: categoryPosts } = trpc.wordpress.postsByCategory.useQuery(
+    { categoryId: selectedCategory || 0, perPage: 20 },
+    { enabled: selectedCategory !== null }
+  );
+
+  // Filter posts based on search query and category
   useEffect(() => {
-    if (!posts) {
+    let filtered = selectedCategory ? categoryPosts : posts;
+
+    if (!filtered) {
       setFilteredPosts([]);
       return;
     }
 
     if (!searchQuery.trim()) {
-      setFilteredPosts(posts);
+      setFilteredPosts(filtered);
       return;
     }
 
     const query = searchQuery.toLowerCase();
-    const filtered = posts.filter(
+    const result = filtered.filter(
       (post) =>
         post.title.toLowerCase().includes(query) ||
         post.excerpt.toLowerCase().includes(query)
     );
-    setFilteredPosts(filtered);
-  }, [posts, searchQuery]);
+    setFilteredPosts(result);
+  }, [posts, categoryPosts, searchQuery, selectedCategory]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -69,18 +95,47 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
         </div>
       </section>
 
-      {/* Search Section */}
-      <section className="py-8 md:py-12 bg-slate-50 dark:bg-slate-800/50">
+      {/* Search and Filter Section */}
+      <section className="py-8 md:py-12 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
         <div className="container">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
+          {/* Search Bar */}
+          <div className="mb-6">
+            <div className="relative max-w-md">
+              <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+          </div>
+
+          {/* Category Filter */}
+          <div>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Filter by Category:</p>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={selectedCategory === null ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory(null)}
+                className={selectedCategory === null ? "bg-cyan-600 text-white" : ""}
+              >
+                All Posts
+              </Button>
+              {categories?.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={selectedCategory === category.id ? "bg-cyan-600 text-white" : ""}
+                >
+                  {category.name}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </section>

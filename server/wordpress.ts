@@ -111,10 +111,10 @@ export function getFeaturedImageUrl(post: WordPressPost): string | null {
  */
 export function getAuthorName(post: WordPressPost): string {
   if (!post._embedded || !post._embedded.author) {
-    return "Unknown Author";
+    return "Sourabh Saini";
   }
 
-  return post._embedded.author[0]?.name || "Unknown Author";
+  return post._embedded.author[0]?.name || "Sourabh Saini";
 }
 
 /**
@@ -136,4 +136,75 @@ export function cleanHtmlContent(html: string): string {
 export function getExcerpt(post: WordPressPost): string {
   const excerpt = post.excerpt?.rendered || "";
   return cleanHtmlContent(excerpt).substring(0, 160);
+}
+
+/**
+ * Fetch categories from WordPress
+ */
+export async function getWordPressCategories(): Promise<Array<{ id: number; name: string; slug: string }>> {
+  try {
+    const response = await fetch(`${WORDPRESS_API}/categories`, {
+      headers: {
+        "Accept": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`WordPress API error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const categories = await response.json();
+    return categories;
+  } catch (error) {
+    console.error("Error fetching WordPress categories:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetch posts by category
+ */
+export async function getWordPressPostsByCategory(categoryId: number, perPage = 10): Promise<WordPressPost[]> {
+  try {
+    const response = await fetch(
+      `${WORDPRESS_API}/posts?categories=${categoryId}&status=publish&per_page=${perPage}&_embed`,
+      {
+        headers: {
+          "Accept": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const posts: WordPressPost[] = await response.json();
+    return posts;
+  } catch (error) {
+    console.error("Error fetching WordPress posts by category:", error);
+    return [];
+  }
+}
+
+/**
+ * Extract headings from HTML content for table of contents
+ */
+export function extractHeadings(html: string): Array<{ id: string; text: string; level: number }> {
+  const headings: Array<{ id: string; text: string; level: number }> = [];
+  const headingRegex = /<h([1-6])(?:[^>]*)>([^<]+)<\/h\1>/gi;
+  let match;
+  let headingCount = 0;
+
+  while ((match = headingRegex.exec(html)) !== null) {
+    const level = parseInt(match[1]);
+    const text = cleanHtmlContent(match[2]);
+    const id = `heading-${headingCount}`;
+    headings.push({ id, text, level });
+    headingCount++;
+  }
+
+  return headings;
 }

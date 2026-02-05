@@ -2,7 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuthorName, getExcerpt } from "./wordpress";
+import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuthorName, getExcerpt, getWordPressCategories, getWordPressPostsByCategory, extractHeadings } from "./wordpress";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -47,6 +47,8 @@ export const appRouter = router({
           return null;
         }
         
+        const headings = extractHeadings(post.content.rendered);
+        
         return {
           id: post.id,
           title: post.title.rendered,
@@ -56,7 +58,29 @@ export const appRouter = router({
           date: post.date,
           featuredImage: getFeaturedImageUrl(post),
           author: getAuthorName(post),
+          headings: headings,
         };
+      }),
+    
+    categories: publicProcedure
+      .query(async () => {
+        return await getWordPressCategories();
+      }),
+    
+    postsByCategory: publicProcedure
+      .input(z.object({ categoryId: z.number(), perPage: z.number().default(10) }))
+      .query(async ({ input }) => {
+        const posts = await getWordPressPostsByCategory(input.categoryId, input.perPage);
+        
+        return posts.map((post) => ({
+          id: post.id,
+          title: post.title.rendered,
+          slug: post.slug,
+          excerpt: getExcerpt(post),
+          date: post.date,
+          featuredImage: getFeaturedImageUrl(post),
+          author: getAuthorName(post),
+        }));
       }),
   }),
 });
