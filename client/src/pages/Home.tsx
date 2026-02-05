@@ -434,9 +434,9 @@ export default function Home() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {skillGroup.items.map((item, itemIdx) => (
-                    <div key={itemIdx} className="text-sm">
+                    <span key={itemIdx} className="px-3 py-1 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 rounded-full text-sm font-medium">
                       {item}
-                    </div>
+                    </span>
                   ))}
                 </div>
               </Card>
