@@ -1,10 +1,11 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
 import { useState, useEffect } from "react";
 import CustomContactForm from "@/components/CustomContactForm";
 import { generatePersonSchema, generateBreadcrumbSchema, injectStructuredData } from "@/lib/structuredData";
+import { useTheme } from "@/contexts/ThemeContext";
 
 /**
  * Design System: Technical Elegance
@@ -17,6 +18,7 @@ export default function Home() {
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
   let { user, loading, error, isAuthenticated, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -331,6 +333,19 @@ export default function Home() {
               </a>
             ))}
           </div>
+
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={() => toggleTheme?.()}
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+            aria-label="Toggle dark mode"
+          >
+            {theme === "light" ? (
+              <Moon className="w-5 h-5 text-slate-600" />
+            ) : (
+              <Sun className="w-5 h-5 text-yellow-400" />
+            )}
+          </button>
 
           {/* Mobile Menu Button */}
           <button
