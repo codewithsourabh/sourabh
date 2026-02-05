@@ -3,8 +3,9 @@ import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, ChevronRight } from "lucide-react";
+import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Share2, Linkedin, Twitter, Mail, Copy, Check } from "lucide-react";
 import { Streamdown } from "streamdown";
+import { toast } from "sonner";
 
 interface BlogPostDetail {
   id: number;
@@ -37,8 +38,13 @@ export default function WordPressBlogPost() {
   const [error, setError] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeHeading, setActiveHeading] = useState<string | null>(null);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const slug = params?.slug as string;
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   // Fetch post by slug
   const { data: fetchedPost, isLoading: isFetching, error: fetchError } = trpc.wordpress.postBySlug.useQuery(
@@ -48,6 +54,72 @@ export default function WordPressBlogPost() {
 
   // Fetch all posts for related articles
   const { data: allPosts } = trpc.wordpress.posts.useQuery({ page: 1, perPage: 20 });
+
+  // Generate AI summary
+  const generateSummary = async () => {
+    if (!post) return;
+    
+    setIsGeneratingSummary(true);
+    try {
+      const response = await fetch("/api/trpc/wordpress.summarizePost?batch=1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          0: {
+            json: {
+              title: post.title,
+              content: post.content,
+            },
+          },
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to generate summary");
+      
+      const data = await response.json();
+      const summaryText = data[0]?.result?.data?.json;
+      setSummary(summaryText);
+      toast.success("Summary generated!");
+    } catch (error) {
+      console.error("Error generating summary:", error);
+      toast.error("Failed to generate summary");
+    } finally {
+      setIsGeneratingSummary(false);
+    }
+  };
+
+  // Share article
+  const shareArticle = (platform: "linkedin" | "twitter" | "email") => {
+    const text = `Check out this article: ${post?.title}`;
+    const url = currentUrl;
+
+    let shareUrl = "";
+    switch (platform) {
+      case "linkedin":
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        break;
+      case "twitter":
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        break;
+      case "email":
+        shareUrl = `mailto:?subject=${encodeURIComponent(post?.title || "Check out this article")}&body=${encodeURIComponent(text + "\n" + url)}`;
+        break;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, "_blank", "width=600,height=400");
+    }
+  };
+
+  // Copy link to clipboard
+  const copyLink = () => {
+    navigator.clipboard.writeText(currentUrl);
+    setCopiedLink(true);
+    toast.success("Link copied to clipboard!");
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
 
   useEffect(() => {
     if (isFetching) {
@@ -186,18 +258,92 @@ export default function WordPressBlogPost() {
                   {post.title}
                 </h1>
 
-                {/* Meta Information */}
-                <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 pb-6">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    {formatDate(post.date)}
+                {/* Meta Information and Actions */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-6">
+                  <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      {formatDate(post.date)}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      {post.author}
+                    </div>
                   </div>
+                  
+                  {/* Share and Summarize Buttons */}
                   <div className="flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    {post.author}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-cyan-600 hover:text-cyan-700 border-cyan-200 dark:border-cyan-800"
+                      onClick={generateSummary}
+                      disabled={isGeneratingSummary}
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      {isGeneratingSummary ? "Summarizing..." : "Summarize"}
+                    </Button>
+                    
+                    <div className="relative">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-cyan-600 hover:text-cyan-700 border-cyan-200 dark:border-cyan-800"
+                        onClick={() => setShowShareMenu(!showShareMenu)}
+                      >
+                        <Share2 className="w-4 h-4 mr-2" />
+                        Share
+                      </Button>
+                      
+                      {showShareMenu && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-10">
+                          <button
+                            onClick={() => { shareArticle("linkedin"); setShowShareMenu(false); }}
+                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300"
+                          >
+                            <Linkedin className="w-4 h-4" />
+                            LinkedIn
+                          </button>
+                          <button
+                            onClick={() => { shareArticle("twitter"); setShowShareMenu(false); }}
+                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300"
+                          >
+                            <Twitter className="w-4 h-4" />
+                            Twitter
+                          </button>
+                          <button
+                            onClick={() => { shareArticle("email"); setShowShareMenu(false); }}
+                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300"
+                          >
+                            <Mail className="w-4 h-4" />
+                            Email
+                          </button>
+                          <button
+                            onClick={() => { copyLink(); setShowShareMenu(false); }}
+                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300 border-t border-slate-200 dark:border-slate-700"
+                          >
+                            {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                            {copiedLink ? "Copied!" : "Copy Link"}
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </header>
+
+              {/* AI Summary (if generated) */}
+              {summary && (
+                <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-lg p-6 mb-8">
+                  <div className="flex items-start gap-3">
+                    <Sparkles className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="font-bold text-cyan-900 dark:text-cyan-100 mb-2">AI Summary</h3>
+                      <p className="text-cyan-800 dark:text-cyan-200 text-sm">{summary}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Content */}
               <div className="prose dark:prose-invert max-w-none mb-12">

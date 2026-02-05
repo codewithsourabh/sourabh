@@ -82,6 +82,30 @@ export const appRouter = router({
           author: getAuthorName(post),
         }));
       }),
+    
+    summarizePost: publicProcedure
+      .input(z.object({ title: z.string(), content: z.string() }))
+      .mutation(async ({ input }) => {
+        try {
+          const { invokeLLM } = await import("./_core/llm");
+          const response = await invokeLLM({
+            messages: [
+              {
+                role: "system",
+                content: "You are a helpful assistant that summarizes blog posts concisely in 2-3 sentences.",
+              },
+              {
+                role: "user",
+                content: `Please summarize this blog post in 2-3 sentences:\n\nTitle: ${input.title}\n\nContent: ${input.content}`,
+              },
+            ],
+          });
+          return response.choices[0]?.message?.content || "Unable to generate summary";
+        } catch (error) {
+          console.error("Error generating summary:", error);
+          throw new Error("Failed to generate summary");
+        }
+      }),
   }),
 });
 
