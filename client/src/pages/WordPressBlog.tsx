@@ -166,6 +166,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                   key={post.id}
                   className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
                   onClick={() => navigate(`/blog/${post.slug}`)}
+                  style={{paddingTop: '0px', paddingBottom: '2px'}}
                 >
                   {/* Featured Image */}
                   {post.featuredImage && (
