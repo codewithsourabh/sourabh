@@ -220,7 +220,7 @@ export function getAuthorImage(post: WordPressPost): string | null {
   }
 
   // Fallback to Gravatar using MD5 hash of email
-  const email = "sourabh@example.com";
+  const email = "sainisourav7900@gmail.com";
   const crypto = require("crypto");
   const hash = crypto.createHash("md5").update(email.toLowerCase()).digest("hex");
   return `https://www.gravatar.com/avatar/${hash}?s=96&d=identicon`;

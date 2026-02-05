@@ -368,9 +368,18 @@ export default function WordPressBlogPost() {
               {/* Author Box */}
               <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-6 mb-12 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-white">About the Author</h3>
-                <p className="text-slate-700 dark:text-slate-300">
-                  <strong>{post.author}</strong> is a CRM & Automation Expert specializing in HubSpot, WordPress, and workflow automation. With over 5 years of experience, Sourabh helps businesses build scalable digital solutions that streamline data flows, reduce manual effort, and drive business outcomes through intelligent integrations.
-                </p>
+                <div className="flex gap-4 items-start">
+                  {post.authorImage && (
+                    <img
+                      src={post.authorImage}
+                      alt={post.author}
+                      className="w-16 h-16 rounded-full flex-shrink-0"
+                    />
+                  )}
+                  <p className="text-slate-700 dark:text-slate-300">
+                    <strong>{post.author}</strong> is a CRM & Automation Expert specializing in HubSpot, WordPress, and workflow automation. With over 5 years of experience, Sourabh helps businesses build scalable digital solutions that streamline data flows, reduce manual effort, and drive business outcomes through intelligent integrations.
+                  </p>
+                </div>
               </div>
 
               {/* Related Articles */}
