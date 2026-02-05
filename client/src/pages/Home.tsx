@@ -700,7 +700,7 @@ export default function Home() {
                 <Mail className="w-4 h-4" />
                 Get in Touch
               </Button>
-              <a href="https://www.linkedin.com/in/mrsourabh" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/in/sourabhxsaini/" target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 gap-2">
                   <Linkedin className="w-4 h-4" />
                   LinkedIn
