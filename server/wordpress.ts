@@ -208,3 +208,31 @@ export function extractHeadings(html: string): Array<{ id: string; text: string;
 
   return headings;
 }
+
+
+/**
+ * Get author image from WordPress or Gravatar
+ */
+export function getAuthorImage(post: WordPressPost): string | null {
+  // Try to get from WordPress embedded author data
+  if (post._embedded && post._embedded.author && post._embedded.author[0]?.avatar_urls) {
+    return post._embedded.author[0].avatar_urls["96"] || null;
+  }
+
+  // Fallback to Gravatar using MD5 hash of email
+  const email = "sourabh@example.com";
+  const crypto = require("crypto");
+  const hash = crypto.createHash("md5").update(email.toLowerCase()).digest("hex");
+  return `https://www.gravatar.com/avatar/${hash}?s=96&d=identicon`;
+}
+
+/**
+ * Calculate reading time in minutes
+ */
+export function calculateReadingTime(htmlContent: string): number {
+  const cleanText = cleanHtmlContent(htmlContent);
+  const wordCount = cleanText.split(/\s+/).length;
+  const wordsPerMinute = 200;
+  const minutes = Math.ceil(wordCount / wordsPerMinute);
+  return Math.max(1, minutes);
+}

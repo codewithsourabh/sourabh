@@ -3,7 +3,7 @@ import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Share2, Linkedin, Twitter, Mail, Copy, Check } from "lucide-react";
+import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Share2, Linkedin, Twitter, Mail, Copy, Check, Clock } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 
@@ -16,6 +16,8 @@ interface BlogPostDetail {
   date: string;
   featuredImage: string | null;
   author: string;
+  authorImage?: string | null;
+  readingTime?: number;
   headings?: Array<{ id: string; text: string; level: number }>;
 }
 
@@ -266,9 +268,22 @@ export default function WordPressBlogPost() {
                       {formatDate(post.date)}
                     </div>
                     <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
+                      {post.authorImage && (
+                        <img
+                          src={post.authorImage}
+                          alt={post.author}
+                          className="w-6 h-6 rounded-full"
+                        />
+                      )}
+                      {!post.authorImage && <User className="w-4 h-4" />}
                       {post.author}
                     </div>
+                    {post.readingTime && (
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        {post.readingTime} min read
+                      </div>
+                    )}
                   </div>
                   
                   {/* Share and Summarize Buttons */}
