@@ -239,15 +239,13 @@ export default function WordPressBlogPost() {
 
       {/* Featured Image */}
       {post.featuredImage && (
-        <div className="py-8 md:py-12">
-          <div className="container max-w-6xl mx-auto px-4">
-            <div className="aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700 rounded-xl">
-              <img
-                src={post.featuredImage}
-                alt={post.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
+        <div className="container max-w-6xl mx-auto px-4 mb-8 md:mb-12">
+          <div className="aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700 rounded-xl">
+            <img
+              src={post.featuredImage}
+              alt={post.title}
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       )}
