@@ -64,6 +64,21 @@ export default function Blog() {
         }
       });
       setActiveHeading(activeId);
+
+      // Auto-scroll TOC to show active heading
+      if (activeId) {
+        const tocContainer = document.querySelector('.toc-container');
+        const activeLink = document.querySelector(`a[href="#${activeId}"]`);
+        if (tocContainer && activeLink) {
+          const containerRect = tocContainer.getBoundingClientRect();
+          const linkRect = activeLink.getBoundingClientRect();
+          const isVisible = linkRect.top >= containerRect.top && linkRect.bottom <= containerRect.bottom;
+          
+          if (!isVisible) {
+            activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -785,12 +800,12 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
               {/* TOC Sidebar */}
               {tableOfContents.length > 0 && (
                 <aside className="hidden lg:block w-64 flex-shrink-0">
-                  <div className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                    <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                  <div className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 h-96 flex flex-col">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 flex-shrink-0">
                       <ChevronRight className="w-4 h-4" />
                       On this page
                     </h3>
-                    <nav className="space-y-2">
+                    <nav className="space-y-2 overflow-y-auto flex-1 pr-2 toc-container">
                       {tableOfContents.map((heading) => (
                         <a
                           key={heading.id}
@@ -800,6 +815,14 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
                             const element = document.querySelector(`[data-heading-id="${heading.id}"]`);
                             if (element) {
                               element.scrollIntoView({ behavior: 'smooth' });
+                              // Scroll TOC to show the active item
+                              const tocContainer = document.querySelector('.toc-container');
+                              if (tocContainer) {
+                                const activeLink = document.querySelector(`a[href="#${heading.id}"]`);
+                                if (activeLink) {
+                                  activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                }
+                              }
                             }
                           }}
                           className={`block text-sm transition-colors py-1 px-3 rounded-md ${
