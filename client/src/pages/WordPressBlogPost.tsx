@@ -244,7 +244,7 @@ export default function WordPressBlogPost() {
       </div>
 
       {/* Back Button */}
-      <div className="container py-6">
+      <div className="container">
         <Button
           variant="ghost"
           className="text-cyan-600 hover:text-cyan-700"
