@@ -12,7 +12,11 @@ import { generateArticleSchema, generateBreadcrumbSchema, injectStructuredData }
  * Layout: Clean, readable blog layout with card-based articles
  */
 
-export default function Blog() {
+interface BlogProps {
+  onContactClick?: () => void;
+}
+
+export default function Blog({ onContactClick }: BlogProps) {
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -1144,19 +1148,6 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
-        <div className="container flex items-center justify-between h-16">
-          <a href="/" className="text-xl font-bold text-cyan-600 hover:text-cyan-700 transition">
-            Sourabh
-          </a>
-          <a href="/" className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </a>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="container">
@@ -1300,43 +1291,6 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-        <div className="container max-w-2xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Want to discuss these topics?
-          </h2>
-          <p className="text-lg text-slate-300 mb-8">
-            Reach out to discuss HubSpot implementations, WordPress optimization, or integration strategies for your business.
-          </p>
-          <Button
-            onClick={() => setIsContactModalOpen(true)}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2"
-          >
-            Get in Touch <ArrowRight className="w-4 h-4" />
-          </Button>
-        </div>
-      </section>
-
-      {/* Contact Form Modal */}
-      {isContactModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-border">
-              <h2 className="text-xl font-bold">Get in Touch</h2>
-              <button
-                onClick={() => setIsContactModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="p-6">
-              <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

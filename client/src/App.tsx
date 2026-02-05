@@ -6,17 +6,24 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { useState } from "react";
 
-function Router() {
+function Router({ mobileMenuOpen, setMobileMenuOpen, onContactClick }: any) {
   // make sure to consider if you need authentication for certain routes
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/blog"} component={Blog} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Header mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+      <Switch>
+        <Route path={"/"} component={() => <Home onContactClick={onContactClick} />} />
+        <Route path={"/blog"} component={() => <Blog onContactClick={onContactClick} />} />
+        <Route path={"/404"} component={NotFound} />
+        {/* Final fallback route */}
+        <Route component={NotFound} />
+      </Switch>
+      <Footer onContactClick={onContactClick} />
+    </>
   );
 }
 
@@ -26,6 +33,9 @@ function Router() {
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
   return (
     <ErrorBoundary>
       <ThemeProvider
@@ -34,7 +44,11 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <Router 
+            mobileMenuOpen={mobileMenuOpen} 
+            setMobileMenuOpen={setMobileMenuOpen}
+            onContactClick={() => setIsContactModalOpen(true)}
+          />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

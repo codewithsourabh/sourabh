@@ -14,7 +14,11 @@ import { useTheme } from "@/contexts/ThemeContext";
  * Layout: Asymmetric with diagonal dividers and smooth animations
  */
 
-export default function Home() {
+interface HomeProps {
+  onContactClick?: () => void;
+}
+
+export default function Home({ onContactClick }: HomeProps) {
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
   let { user, loading, error, isAuthenticated, logout } = useAuth();
@@ -350,82 +354,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
-        <div className="container flex items-center justify-between h-16">
-          <a href="/" className="text-xl font-bold text-cyan-600 hover:text-cyan-700 transition">Sourabh</a>
-          
-          {/* Desktop Menu */}
-          <div className="hidden md:flex gap-8 items-center">
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="text-sm hover:text-cyan-600 transition">
-                {link.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Dark Mode Toggle - Desktop Only */}
-          <button
-            onClick={() => toggleTheme?.()}
-            className="hidden md:flex p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
-            aria-label="Toggle dark mode (Cmd+K)"
-            title="Toggle dark mode (Cmd+K / Ctrl+K)"
-          >
-            {theme === "light" ? (
-              <Moon className="w-5 h-5 text-slate-600" />
-            ) : (
-              <Sun className="w-5 h-5 text-yellow-400" />
-            )}
-          </button>
-
-          {/* Mobile Menu - Dark Mode Toggle + Hamburger */}
-          <div className="md:hidden flex items-center gap-2">
-            {/* Dark Mode Toggle - Mobile */}
-            <button
-              onClick={() => toggleTheme?.()}
-              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
-              aria-label="Toggle dark mode"
-            >
-              {theme === "light" ? (
-                <Moon className="w-5 h-5 text-slate-600" />
-              ) : (
-                <Sun className="w-5 h-5 text-yellow-400" />
-              )}
-            </button>
-            
-            {/* Mobile Menu Button */}
-            <button
-              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-white dark:bg-slate-900 border-t border-border">
-            <div className="container py-4 flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm hover:text-cyan-600 transition py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-      </nav>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">
@@ -742,43 +670,6 @@ export default function Home() {
                 Certificate {currentCertificateIndex + 1} of {certificateImages.length}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-20 md:py-32 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Let's Work <span className="text-cyan-400">Together</span>
-            </h2>
-            <p className="text-lg text-slate-300 mb-8">
-              I'm open to discussing new projects, innovative ideas, and opportunities to be part of your vision.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-              <Button onClick={() => setIsContactModalOpen(true)} className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2">
-                <Mail className="w-4 h-4" />
-                Get in Touch
-              </Button>
-              <a href="https://www.linkedin.com/in/sourabhxsaini/" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 gap-2">
-                  <Linkedin className="w-4 h-4" />
-                  LinkedIn
-                </Button>
-              </a>
-              <a href="https://github.com/codewithsourabh" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 gap-2">
-                  <Github className="w-4 h-4" />
-                  GitHub
-                </Button>
-              </a>
-            </div>
-
-            <p className="text-slate-400 text-sm">
-              © 2026 Sourabh. Software Engineer specializing in CRM and Automation Solutions.
-            </p>
           </div>
         </div>
       </section>
