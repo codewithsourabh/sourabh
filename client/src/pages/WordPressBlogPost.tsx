@@ -432,47 +432,7 @@ export default function WordPressBlogPost() {
                 </div>
               </div>
 
-              {/* Related Articles */}
-              {relatedPosts.length > 0 && (
-                <div className="mb-12">
-                  <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Related Articles</h3>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {relatedPosts.map((relatedPost) => (
-                      <Card
-                        key={relatedPost.id}
-                        className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                        onClick={() => navigate(`/blog/${relatedPost.slug}`)}
-                      >
-                        {relatedPost.featuredImage && (
-                          <div className="aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700">
-                            <img
-                              src={relatedPost.featuredImage}
-                              alt={relatedPost.title}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform"
-                            />
-                          </div>
-                        )}
-                        <div className="p-4">
-                          <h4 className="font-bold mb-2 text-slate-900 dark:text-white line-clamp-2">
-                            {relatedPost.title}
-                          </h4>
-                          <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 mb-3">
-                            {relatedPost.excerpt}
-                          </p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-cyan-600 hover:text-cyan-700 p-0 h-auto"
-                            onClick={() => navigate(`/blog/${relatedPost.slug}`)}
-                          >
-                            Read More →
-                          </Button>
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              )}
+
             </div>
 
             {/* Table of Contents Sidebar */}
@@ -512,6 +472,50 @@ export default function WordPressBlogPost() {
           </div>
         </div>
       </article>
+
+      {/* Related Articles - Full Width */}
+      {relatedPosts.length > 0 && (
+        <div className="w-full bg-slate-50 dark:bg-slate-900/50 py-12 md:py-20">
+          <div className="container max-w-6xl mx-auto px-4">
+            <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Related Articles</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {relatedPosts.map((relatedPost) => (
+                <Card
+                  key={relatedPost.id}
+                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => navigate(`/blog/${relatedPost.slug}`)}
+                >
+                  {relatedPost.featuredImage && (
+                    <div className="aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700">
+                      <img
+                        src={relatedPost.featuredImage}
+                        alt={relatedPost.title}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h4 className="font-bold mb-2 text-slate-900 dark:text-white line-clamp-2">
+                      {relatedPost.title}
+                    </h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 mb-3">
+                      {relatedPost.excerpt}
+                    </p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-cyan-600 hover:text-cyan-700 p-0 h-auto"
+                      onClick={() => navigate(`/blog/${relatedPost.slug}`)}
+                    >
+                      Read More →
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
