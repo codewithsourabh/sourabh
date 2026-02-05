@@ -10,6 +10,7 @@ import WordPressBlogPost from "./pages/WordPressBlogPost";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import ColorSchemeSelector from "./components/ColorSchemeSelector";
 import { useState } from "react";
 
 function Router({ mobileMenuOpen, setMobileMenuOpen, onContactClick }: any) {
@@ -48,6 +49,7 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
+          <ColorSchemeSelector />
           <Router 
             mobileMenuOpen={mobileMenuOpen} 
             setMobileMenuOpen={setMobileMenuOpen}
