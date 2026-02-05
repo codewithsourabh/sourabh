@@ -239,10 +239,10 @@ export default function WordPressBlogPost() {
   if (error || !post) {
     return (
       <div className="min-h-screen bg-background text-foreground">
-        <div className="container py-12">
+        <div className="container max-w-6xl mx-auto px-4">
           <Button
             variant="ghost"
-            className="mb-8 text-cyan-600 hover:text-cyan-700"
+            className="text-cyan-600 hover:text-cyan-700"
             onClick={() => navigate("/blog")}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -267,7 +267,7 @@ export default function WordPressBlogPost() {
       </div>
 
       {/* Back Button */}
-      <div className="container">
+      <div className="container max-w-6xl mx-auto px-4">
         <Button
           variant="ghost"
           className="text-cyan-600 hover:text-cyan-700"
