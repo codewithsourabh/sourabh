@@ -786,17 +786,6 @@ By implementing proper data synchronization strategies, you'll ensure consistenc
           />
         </div>
 
-        {/* Header */}
-        <header className="sticky top-1 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border">
-          <div className="container flex items-center justify-between h-16">
-            <div className="text-xl font-bold text-cyan-600">Sourabh</div>
-            <a href="/blog" className="flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Blog
-            </a>
-          </div>
-        </header>
-
         {/* Article Content */}
         <article className="py-12 md:py-20">
           <div className="container">
