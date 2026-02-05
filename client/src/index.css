@@ -117,6 +117,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+  
+  /* Smooth theme transitions */
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
   body {
     @apply bg-background text-foreground;
   }

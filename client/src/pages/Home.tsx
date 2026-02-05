@@ -20,6 +20,18 @@ export default function Home() {
   let { user, loading, error, isAuthenticated, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
+  // Keyboard shortcut for dark mode toggle (Cmd+K or Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        toggleTheme?.();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [toggleTheme]);
+
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentCertificateIndex, setCurrentCertificateIndex] = useState(0);
@@ -334,11 +346,12 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Dark Mode Toggle */}
+          {/* Dark Mode Toggle - Desktop Only */}
           <button
             onClick={() => toggleTheme?.()}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
-            aria-label="Toggle dark mode"
+            className="hidden md:flex p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+            aria-label="Toggle dark mode (Cmd+K)"
+            title="Toggle dark mode (Cmd+K / Ctrl+K)"
           >
             {theme === "light" ? (
               <Moon className="w-5 h-5 text-slate-600" />
@@ -347,18 +360,34 @@ export default function Home() {
             )}
           </button>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          {/* Mobile Menu - Dark Mode Toggle + Hamburger */}
+          <div className="md:hidden flex items-center gap-2">
+            {/* Dark Mode Toggle - Mobile */}
+            <button
+              onClick={() => toggleTheme?.()}
+              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+              aria-label="Toggle dark mode"
+            >
+              {theme === "light" ? (
+                <Moon className="w-5 h-5 text-slate-600" />
+              ) : (
+                <Sun className="w-5 h-5 text-yellow-400" />
+              )}
+            </button>
+            
+            {/* Mobile Menu Button */}
+            <button
+              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}

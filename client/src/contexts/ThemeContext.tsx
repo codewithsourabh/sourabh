@@ -24,13 +24,22 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(() => {
     if (switchable) {
       const stored = localStorage.getItem("theme");
-      return (stored as Theme) || defaultTheme;
+      if (stored) {
+        return (stored as Theme);
+      }
+      // Detect system preference
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+      }
     }
     return defaultTheme;
   });
 
   useEffect(() => {
     const root = document.documentElement;
+    // Add transition class for smooth theme change
+    root.classList.add("theme-transition");
+    
     if (theme === "dark") {
       root.classList.add("dark");
     } else {
@@ -40,6 +49,13 @@ export function ThemeProvider({
     if (switchable) {
       localStorage.setItem("theme", theme);
     }
+    
+    // Remove transition class after animation completes
+    const timer = setTimeout(() => {
+      root.classList.remove("theme-transition");
+    }, 300);
+    
+    return () => clearTimeout(timer);
   }, [theme, switchable]);
 
   const toggleTheme = switchable
