@@ -3,6 +3,8 @@
  * Fetches blog posts from WordPress REST API
  */
 
+import crypto from "crypto";
+
 const WORDPRESS_URL = "https://whitesmoke-cormorant-464905.hostingersite.com";
 const WORDPRESS_API = `${WORDPRESS_URL}/wp-json/wp/v2`;
 
@@ -221,7 +223,6 @@ export function getAuthorImage(post: WordPressPost): string | null {
 
   // Fallback to Gravatar using MD5 hash of email
   const email = "sainisourav7900@gmail.com";
-  const crypto = require("crypto");
   const hash = crypto.createHash("md5").update(email.toLowerCase()).digest("hex");
   return `https://www.gravatar.com/avatar/${hash}?s=96&d=identicon`;
 }
