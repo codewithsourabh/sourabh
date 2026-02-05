@@ -25,4 +25,17 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
+// Blog post summaries cache table
+export const blogSummaries = mysqlTable("blog_summaries", {
+  id: int("id").autoincrement().primaryKey(),
+  postSlug: varchar("postSlug", { length: 255 }).notNull().unique(),
+  postTitle: text("postTitle").notNull(),
+  summary: text("summary").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type BlogSummary = typeof blogSummaries.$inferSelect;
+export type InsertBlogSummary = typeof blogSummaries.$inferInsert;
+
 // TODO: Add your tables here

@@ -114,6 +114,7 @@ export default function WordPressBlogPost() {
             json: {
               title: post.title,
               content: post.content,
+              slug: post.slug,
             },
           },
         }),

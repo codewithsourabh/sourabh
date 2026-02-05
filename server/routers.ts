@@ -3,6 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuthorName, getExcerpt, getWordPressCategories, getWordPressPostsByCategory, extractHeadings, getAuthorImage, calculateReadingTime } from "./wordpress";
+import { getBlogSummary, saveBlogSummary } from "./db";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -88,9 +89,17 @@ export const appRouter = router({
       }),
     
     summarizePost: publicProcedure
-      .input(z.object({ title: z.string(), content: z.string() }))
+      .input(z.object({ title: z.string(), content: z.string(), slug: z.string() }))
       .mutation(async ({ input }) => {
         try {
+          // Check if summary is already cached
+          const cachedSummary = await getBlogSummary(input.slug);
+          if (cachedSummary) {
+            console.log(`[Cache HIT] Summary for ${input.slug}`);
+            return cachedSummary.summary;
+          }
+
+          console.log(`[Cache MISS] Generating summary for ${input.slug}`);
           const { invokeLLM } = await import("./_core/llm");
           const response = await invokeLLM({
             messages: [
@@ -104,7 +113,18 @@ export const appRouter = router({
               },
             ],
           });
-          return response.choices[0]?.message?.content || "Unable to generate summary";
+          
+          const summaryContent = response.choices[0]?.message?.content;
+          const summary = typeof summaryContent === 'string' ? summaryContent : "Unable to generate summary";
+          
+          // Save to cache
+          await saveBlogSummary({
+            postSlug: input.slug,
+            postTitle: input.title,
+            summary: summary,
+          });
+          
+          return summary;
         } catch (error) {
           console.error("Error generating summary:", error);
           throw new Error("Failed to generate summary");

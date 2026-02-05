@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, blogSummaries, InsertBlogSummary } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -87,6 +87,44 @@ export async function getUserByOpenId(openId: string) {
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
 
   return result.length > 0 ? result[0] : undefined;
+}
+
+// Blog summary cache functions
+export async function getBlogSummary(postSlug: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get blog summary: database not available");
+    return undefined;
+  }
+
+  try {
+    const result = await db.select().from(blogSummaries).where(eq(blogSummaries.postSlug, postSlug)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to get blog summary:", error);
+    return undefined;
+  }
+}
+
+export async function saveBlogSummary(data: InsertBlogSummary) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot save blog summary: database not available");
+    return undefined;
+  }
+
+  try {
+    const result = await db.insert(blogSummaries).values(data).onDuplicateKeyUpdate({
+      set: {
+        summary: data.summary,
+        updatedAt: new Date(),
+      },
+    });
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to save blog summary:", error);
+    throw error;
+  }
 }
 
 // TODO: add feature queries here as your schema grows.
