@@ -5,7 +5,6 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import Blog from "./pages/Blog";
 import WordPressBlog from "./pages/WordPressBlog";
 import WordPressBlogPost from "./pages/WordPressBlogPost";
 import Header from "./components/Header";
