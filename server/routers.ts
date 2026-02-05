@@ -6,6 +6,25 @@ import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuth
 import { getBlogSummary, saveBlogSummary } from "./db";
 import { z } from "zod";
 
+// Decode HTML entities
+function decodeHtmlEntities(text: string): string {
+  const entities: Record<string, string> = {
+    '&#038;': '&',
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#039;': "'",
+    '&apos;': "'",
+  };
+  
+  let decoded = text;
+  for (const [entity, char] of Object.entries(entities)) {
+    decoded = decoded.replace(new RegExp(entity, 'g'), char);
+  }
+  return decoded;
+}
+
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
@@ -30,7 +49,7 @@ export const appRouter = router({
         
         return posts.map((post) => ({
           id: post.id,
-          title: post.title.rendered,
+          title: decodeHtmlEntities(post.title.rendered),
           slug: post.slug,
           excerpt: getExcerpt(post),
           date: post.date,
@@ -54,7 +73,7 @@ export const appRouter = router({
         
         return {
           id: post.id,
-          title: post.title.rendered,
+          title: decodeHtmlEntities(post.title.rendered),
           slug: post.slug,
           content: post.content.rendered,
           excerpt: getExcerpt(post),
@@ -79,7 +98,7 @@ export const appRouter = router({
         
         return posts.map((post) => ({
           id: post.id,
-          title: post.title.rendered,
+          title: decodeHtmlEntities(post.title.rendered),
           slug: post.slug,
           excerpt: getExcerpt(post),
           date: post.date,
