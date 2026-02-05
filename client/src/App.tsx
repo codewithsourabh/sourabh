@@ -6,6 +6,8 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Blog from "./pages/Blog";
+import WordPressBlog from "./pages/WordPressBlog";
+import WordPressBlogPost from "./pages/WordPressBlogPost";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { useState } from "react";
@@ -17,7 +19,8 @@ function Router({ mobileMenuOpen, setMobileMenuOpen, onContactClick }: any) {
       <Header mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
       <Switch>
         <Route path={"/"} component={() => <Home onContactClick={onContactClick} />} />
-        <Route path={"/blog"} component={() => <Blog onContactClick={onContactClick} />} />
+        <Route path={"/blog"} component={() => <WordPressBlog onContactClick={onContactClick} />} />
+        <Route path={"/blog/:slug"} component={() => <WordPressBlogPost />} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />
