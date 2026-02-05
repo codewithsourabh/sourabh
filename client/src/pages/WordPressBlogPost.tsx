@@ -48,6 +48,9 @@ export default function WordPressBlogPost() {
   const slug = params?.slug as string;
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const tocContainerRef = useRef<HTMLDivElement>(null);
+  const authorSectionRef = useRef<HTMLDivElement>(null);
+  const tocSidebarRef = useRef<HTMLDivElement>(null);
+  const [tocMaxHeight, setTocMaxHeight] = useState<string>('auto');
 
   // Auto-scroll TOC when active heading changes
   useEffect(() => {
@@ -65,8 +68,28 @@ export default function WordPressBlogPost() {
     }
   }, [activeHeading]);
 
+  // Calculate TOC sticky boundary (stop at author section)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!authorSectionRef.current || !tocSidebarRef.current) return;
 
-  // Fetch post by slug
+      const authorRect = authorSectionRef.current.getBoundingClientRect();
+      const tocRect = tocSidebarRef.current.getBoundingClientRect();
+
+      // If author section is visible in viewport, reduce TOC max height
+      if (authorRect.top < window.innerHeight) {
+        const distanceToAuthor = authorRect.top - tocRect.top;
+        setTocMaxHeight(`${Math.max(100, distanceToAuthor - 24)}px`);
+      } else {
+        setTocMaxHeight('auto');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fetch post by slugg
   const { data: fetchedPost, isLoading: isFetching, error: fetchError } = trpc.wordpress.postBySlug.useQuery(
     { slug },
     { enabled: !!slug }
@@ -386,7 +409,7 @@ export default function WordPressBlogPost() {
               </div>
 
               {/* Author Box */}
-              <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-6 mb-12 border border-slate-200 dark:border-slate-700">
+              <div ref={authorSectionRef} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-6 mb-12 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-white">About the Author</h3>
                 <div className="flex gap-6 items-start">
                   {post.authorImage && (
@@ -455,7 +478,7 @@ export default function WordPressBlogPost() {
             {/* Table of Contents Sidebar */}
             {post.headings && post.headings.length > 0 && (
               <aside className="hidden lg:block w-64 flex-shrink-0">
-                <div className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 h-96 flex flex-col">
+                <div ref={tocSidebarRef} className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 h-96 flex flex-col" style={{maxHeight: tocMaxHeight}}>
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 flex-shrink-0">
                     <ChevronRight className="w-4 h-4" />
                     On this page
