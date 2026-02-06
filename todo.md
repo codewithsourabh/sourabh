@@ -106,3 +106,4 @@
 - [x] Debug AIOSEO data fetching - verify API endpoint and data being returned (Fixed to fetch from aioseo_head_json field, added proper data mapping and robots parsing)
 - [x] Add meta tags to HTML head - dynamically inject AIOSEO meta titles, descriptions, and og/twitter tags (Installed react-helmet-async, added meta tag injection effect, supports og/twitter/canonical/robots tags)
 - [x] Map aioseo_head_json directly to seo field in API response (Updated getAIOSEOData to return complete aioseo_head_json object)
+- [x] Debug: Meta tags not changing - check for hardcoded values or static meta tags (Removed hardcoded meta tags from index.html, now dynamic injection works)
