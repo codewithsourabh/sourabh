@@ -107,7 +107,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                 variant={selectedCategory === null ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory(null)}
-                className={selectedCategory === null ? "bg-cyan-600 text-white" : "hover:text-white"}
+                className={selectedCategory === null ? "bg-cyan-600 text-white" : "hover:text-white transition-colors duration-300"}
               >
                 All Posts
               </Button>
@@ -117,7 +117,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                   variant={selectedCategory === category.id ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedCategory(category.id)}
-                  className={selectedCategory === category.id ? "bg-cyan-600 text-white" : "hover:text-white"}
+                  className={selectedCategory === category.id ? "bg-cyan-600 text-white" : "hover:text-white transition-colors duration-300"}
                 >
                   {category.name}
                 </Button>
