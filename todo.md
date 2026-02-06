@@ -134,3 +134,6 @@
 - [x] Add social media links to author bio (Added Facebook, Instagram, LinkedIn, and X with sourabhxsaini handle)
 - [x] Add "Follow Me On:" label before social icons (Added bold span with proper styling)
 - [x] Layout social icons side by side with "Follow Me On:" label (Updated to flex layout with items-center)
+
+## Newsletter & Footer
+- [x] Add newsletter signup form to footer (Created "Stay Updated" section with email input and subscribe button, stores emails in localStorage)
