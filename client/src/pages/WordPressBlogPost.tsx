@@ -39,6 +39,7 @@ export default function WordPressBlogPost() {
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
+  const [progressComplete, setProgressComplete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeHeading, setActiveHeading] = useState<string | null>(null);
@@ -47,24 +48,28 @@ export default function WordPressBlogPost() {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Smooth progress animation from 0 to 100%
+  // Smooth progress animation from 0 to 100% - guaranteed completion
   useEffect(() => {
     // Start progress from 0
     setLoadProgress(0);
+    setProgressComplete(false);
 
     // Use requestAnimationFrame for smooth animation
     let startTime = Date.now();
     let animationFrameId: number;
+    const ANIMATION_DURATION = 2000; // 2 seconds minimum animation
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
-      // Smooth easing function: starts fast, slows down as it approaches 100%
-      // This creates a natural-looking progress bar
-      const progress = Math.min(100 * (1 - Math.pow(0.995, elapsed / 50)), 100);
+      const progress = Math.min((elapsed / ANIMATION_DURATION) * 100, 100);
+      
       setLoadProgress(progress);
 
       if (progress < 100) {
         animationFrameId = requestAnimationFrame(animate);
+      } else {
+        // Mark progress as complete when reaching 100%
+        setProgressComplete(true);
       }
     };
 
@@ -202,21 +207,24 @@ export default function WordPressBlogPost() {
       setIsLoading(true);
     } else if (fetchError) {
       setError("Failed to load article");
-      // Wait for progress to reach 100% before showing error
-      const timer = setTimeout(() => setIsLoading(false), 1000);
-      return () => clearTimeout(timer);
+      // Wait for progress animation to complete before showing error
+      if (progressComplete) {
+        setIsLoading(false);
+      }
     } else if (fetchedPost) {
       setPost(fetchedPost);
       setError(null);
-      // Wait for progress to reach 100% before showing content
-      const timer = setTimeout(() => setIsLoading(false), 1000);
-      return () => clearTimeout(timer);
+      // Wait for progress animation to complete before showing content
+      if (progressComplete) {
+        setIsLoading(false);
+      }
     } else if (!isFetching && !fetchedPost) {
       setError("Article not found");
-      const timer = setTimeout(() => setIsLoading(false), 1000);
-      return () => clearTimeout(timer);
+      if (progressComplete) {
+        setIsLoading(false);
+      }
     }
-  }, [fetchedPost, isFetching, fetchError]);
+  }, [fetchedPost, isFetching, fetchError, progressComplete]);
 
   // Get related posts (exclude current post)
   useEffect(() => {
