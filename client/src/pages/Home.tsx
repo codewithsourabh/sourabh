@@ -658,26 +658,6 @@ export default function Home({ onContactClick }: HomeProps) {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 md:py-32 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Let's <span className="text-cyan-600">Connect</span>
-            </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-300 mb-8">
-              Have a project in mind or want to discuss how I can help streamline your workflows? I'd love to hear from you.
-            </p>
-            <Button 
-              onClick={() => setIsContactModalOpen(true)}
-              className="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-3 text-lg gap-2"
-            >
-              Get in Touch <Mail className="w-5 h-5" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Contact Form Modal */}
       <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
