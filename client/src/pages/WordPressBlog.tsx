@@ -54,6 +54,12 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
     { enabled: selectedCategory !== null }
   );
 
+  // Reset loader when category changes
+  useEffect(() => {
+    setLoadProgress(0);
+    setProgressComplete(false);
+  }, [selectedCategory]);
+
   // Filter posts based on search query and category
   useEffect(() => {
     let filtered = selectedCategory ? categoryPosts : posts;
@@ -119,6 +125,35 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
     }
   }, [loadProgress, isLoading]);
 
+  // Restart animation when category changes and data is loading
+  useEffect(() => {
+    if (selectedCategory !== null && isLoading) {
+      // Start a new animation sequence
+      let startTime = Date.now();
+      let animationFrameId: number;
+      const ANIMATION_DURATION = 2000;
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min((elapsed / ANIMATION_DURATION) * 100, 100);
+        
+        setLoadProgress(progress);
+
+        if (progress < 100) {
+          animationFrameId = requestAnimationFrame(animate);
+        }
+      };
+
+      animationFrameId = requestAnimationFrame(animate);
+
+      return () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+      };
+    }
+  }, [selectedCategory, isLoading]);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
@@ -183,15 +218,15 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
       {/* Blog Posts Grid */}
       <section className="py-16 md:py-20">
         <div className="container">
-          {(isLoading || !progressComplete) ? (
+          {(isLoading || (selectedCategory !== null && !progressComplete)) ? (
             <div className="flex justify-center py-20">
               <CircularProgress progress={loadProgress} />
             </div>
-          ) : error ? (
+          ) : (error && !isLoading) ? (
             <div className="text-center py-12">
               <p className="text-red-600 dark:text-red-400">Error loading articles. Please try again later.</p>
             </div>
-          ) : filteredPosts.length === 0 ? (
+          ) : (filteredPosts.length === 0 && !isLoading) ? (
             <div className="text-center py-12">
               <p className="text-slate-600 dark:text-slate-300">
                 {searchQuery ? "No articles found matching your search." : "No articles available."}
