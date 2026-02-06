@@ -3,7 +3,7 @@ import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock, Facebook, Instagram, Linkedin, Twitter, Send } from "lucide-react";
+import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock, Facebook, Instagram, Linkedin, Twitter, Send, ArrowRight } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
@@ -561,7 +561,9 @@ export default function WordPressBlogPost() {
                   key={relatedPost.id}
                   className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
                   onClick={() => navigate(`/blog/${relatedPost.slug}`)}
+                  style={{paddingTop: '0px', paddingBottom: '2px'}}
                 >
+                  {/* Featured Image */}
                   {relatedPost.featuredImage && (
                     <div className="aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700">
                       <img
@@ -571,20 +573,48 @@ export default function WordPressBlogPost() {
                       />
                     </div>
                   )}
-                  <div className="p-4">
-                    <h4 className="font-bold mb-2 text-slate-900 dark:text-white line-clamp-2">
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold mb-2 text-slate-900 dark:text-white line-clamp-2">
                       {relatedPost.title}
-                    </h4>
-                    <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 mb-3">
+                    </h3>
+
+                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 line-clamp-3">
                       {relatedPost.excerpt}
                     </p>
+
+                    {/* Meta */}
+                    <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 flex-wrap">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {new Date(relatedPost.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <User className="w-3 h-3" />
+                        {relatedPost.author}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {Math.ceil(relatedPost.excerpt.split(' ').length / 200)} min read
+                      </div>
+                    </div>
+
+                    {/* Read More Button */}
                     <Button
                       variant="ghost"
-                      size="sm"
-                      className="text-cyan-600 hover:text-cyan-700 p-0 h-auto"
+                      className="text-cyan-600 p-0 h-auto relative group hover:bg-transparent gap-1"
                       onClick={() => navigate(`/blog/${relatedPost.slug}`)}
                     >
-                      Read More →
+                      <span className="relative inline-block">
+                        Read More
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-600 transition-all duration-300 group-hover:w-full" />
+                      </span>
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Button>
                   </div>
                 </Card>

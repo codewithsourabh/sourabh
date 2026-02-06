@@ -140,3 +140,4 @@
 - [x] Move newsletter form to blog article (Relocated newsletter signup to appear before author box in blog posts with gradient background styling)
 - [x] Inject newsletter before last h2 heading in article content (Newsletter now appears within article content before the last h2 heading, not after content)
 - [x] Update newsletter endpoint to custom WordPress API (Send JSON POST to https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/custom/v1/newsletter with only email field, removed localStorage and other functionality)
+- [x] Update related articles card design to match blog page cards (Added date, author, read time metadata and animated Read More button with underline effect)
