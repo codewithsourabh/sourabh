@@ -7,6 +7,7 @@ import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock, Facebook, Ins
 import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
+import NewsletterForm from "@/components/NewsletterForm";
 
 
 interface BlogPostDetail {
@@ -48,8 +49,6 @@ export default function WordPressBlogPost() {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [isNewsletterSubscribing, setIsNewsletterSubscribing] = useState(false);
 
   // Smooth progress animation from 0 to 100% - guaranteed completion
   useEffect(() => {
@@ -205,31 +204,7 @@ export default function WordPressBlogPost() {
     setTimeout(() => setCopiedLink(false), 2000);
   };
 
-  // Handle newsletter subscription
-  const handleNewsletterSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!newsletterEmail || !newsletterEmail.includes("@")) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
 
-    setIsNewsletterSubscribing(true);
-    try {
-      const subscribers = JSON.parse(localStorage.getItem("newsletter_subscribers") || "[]");
-      if (!subscribers.includes(newsletterEmail)) {
-        subscribers.push(newsletterEmail);
-        localStorage.setItem("newsletter_subscribers", JSON.stringify(subscribers));
-      }
-      
-      toast.success("Thanks for subscribing!");
-      setNewsletterEmail("");
-    } catch (error) {
-      toast.error("Failed to subscribe. Please try again.");
-    } finally {
-      setIsNewsletterSubscribing(false);
-    }
-  };
 
   useEffect(() => {
     if (isFetching) {
@@ -451,33 +426,22 @@ export default function WordPressBlogPost() {
                 </div>
               )}
 
-              {/* Content */}
+              {/* Content with Newsletter Injection Before Last H2 */}
               <div className="prose dark:prose-invert max-w-none mb-12">
-                <Streamdown>{post.content}</Streamdown>
-              </div>
-
-              {/* Newsletter Signup */}
-              <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-lg p-8 mb-12 border border-cyan-500/30 dark:border-cyan-500/20">
-                <h3 className="text-xl font-semibold mb-3 text-slate-900 dark:text-white">Stay Updated</h3>
-                <p className="text-slate-700 dark:text-slate-300 text-sm mb-6">Subscribe to get the latest insights on CRM, automation, and web development.</p>
-                <form onSubmit={handleNewsletterSubscribe} className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    className="flex-1 px-4 py-3 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-colors"
-                    disabled={isNewsletterSubscribing}
-                  />
-                  <Button
-                    type="submit"
-                    className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 whitespace-nowrap"
-                    disabled={isNewsletterSubscribing}
-                  >
-                    <Send className="w-4 h-4" />
-                    {isNewsletterSubscribing ? "Subscribing..." : "Subscribe"}
-                  </Button>
-                </form>
+                {(() => {
+                  if (!post.content) return <Streamdown>{post.content}</Streamdown>;
+                  const lastH2Index = post.content.lastIndexOf('<h2');
+                  if (lastH2Index === -1) return <Streamdown>{post.content}</Streamdown>;
+                  const beforeLastH2 = post.content.substring(0, lastH2Index);
+                  const lastH2Onwards = post.content.substring(lastH2Index);
+                  return (
+                    <>
+                      <Streamdown>{beforeLastH2}</Streamdown>
+                      <NewsletterForm />
+                      <Streamdown>{lastH2Onwards}</Streamdown>
+                    </>
+                  );
+                })()}
               </div>
 
               {/* Author Box */}
