@@ -7,7 +7,7 @@ import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock } from "lucide
 import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
-import { DiscussionEmbed } from "disqus-react";
+
 
 interface BlogPostDetail {
   id: number;
@@ -452,21 +452,7 @@ export default function WordPressBlogPost() {
                 </div>
               </div>
 
-              {/* Disqus Comments Section */}
-              {post && (
-                <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
-                  <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Comments</h3>
-                  <DiscussionEmbed
-                    shortname="sourabhsaini"
-                    config={{
-                      url: typeof window !== 'undefined' ? window.location.href : '',
-                      identifier: post.id.toString(),
-                      title: post.title,
-                      language: 'en'
-                    }}
-                  />
-                </div>
-              )}
+
 
             </div>
 

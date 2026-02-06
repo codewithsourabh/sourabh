@@ -126,5 +126,4 @@
 - [x] Create ads.txt file with ad network verification data (35 ad networks configured)
 
 ## Comments Integration
-- [x] Add Disqus comments section to blog posts (right after author box, using shortname 'sourabhsaini')
-- [x] Fix Disqus loading - use disqus-react DiscussionEmbed component instead of script tag (Installed disqus-react, implemented DiscussionEmbed with proper config)
+- [x] Remove Disqus comments completely (User preference - free tier has limited customization options)
