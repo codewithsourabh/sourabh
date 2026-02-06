@@ -141,3 +141,4 @@
 - [x] Inject newsletter before last h2 heading in article content (Newsletter now appears within article content before the last h2 heading, not after content)
 - [x] Integrate newsletter form with SureForms WordPress plugin (Submit to https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/sureforms/v1/submit-form)
 - [x] Fix CORS error for newsletter submission (Created backend tRPC endpoint to proxy requests, bypassing browser CORS restrictions)
+- [x] Fix SureForms payload format (Changed from FormData to URLSearchParams with application/x-www-form-urlencoded content type for proper form submission)

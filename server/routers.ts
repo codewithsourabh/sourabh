@@ -170,27 +170,42 @@ export const appRouter = router({
       .input(z.object({ email: z.string().email() }))
       .mutation(async ({ input }) => {
         try {
-          const formData = new FormData();
-          formData.append("sureforms_form_submit", "7a9423dfb7");
-          formData.append("_wp_http_referer", "/form/newsletter-form/");
-          formData.append("form-id", "2716");
-          formData.append("srfm-sender-email-field", "");
-          formData.append("srfm-honeypot-field", "");
-          formData.append("srfm-email-feda2b5b-lbl-RW1haWwgQWRkcmVzcyo-email-address", input.email);
+          const params = new URLSearchParams();
+          params.append("sureforms_form_submit", "7a9423dfb7");
+          params.append("_wp_http_referer", "/form/newsletter-form/");
+          params.append("form-id", "2716");
+          params.append("srfm-sender-email-field", "");
+          params.append("srfm-honeypot-field", "");
+          params.append("srfm-email-feda2b5b-lbl-RW1haWwgQWRkcmVzcyo-email-address", input.email);
+
+          console.log("[Newsletter] Sending payload:", params.toString());
 
           const response = await fetch(
             "https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/sureforms/v1/submit-form",
             {
               method: "POST",
-              body: formData,
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: params.toString(),
             }
           );
 
+          const responseText = await response.text();
+          console.log("[Newsletter] Response status:", response.status);
+          console.log("[Newsletter] Response body:", responseText);
+
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}, body: ${responseText}`);
           }
 
-          const data = await response.json();
+          let data;
+          try {
+            data = JSON.parse(responseText);
+          } catch {
+            data = responseText;
+          }
+
           console.log("[Newsletter] Subscription successful:", input.email);
           return { success: true, data };
         } catch (error) {
