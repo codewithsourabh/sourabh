@@ -2,7 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuthorName, getExcerpt, getWordPressCategories, getWordPressPostsByCategory, extractHeadings, getAuthorImage, calculateReadingTime } from "./wordpress";
+import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuthorName, getExcerpt, getWordPressCategories, getWordPressPostsByCategory, extractHeadings, getAuthorImage, calculateReadingTime, getAIOSEOData } from "./wordpress";
 import { getBlogSummary, saveBlogSummary } from "./db";
 import { z } from "zod";
 
@@ -70,6 +70,7 @@ export const appRouter = router({
         const headings = extractHeadings(post.content.rendered);
         const readingTime = calculateReadingTime(post.content.rendered);
         const authorImage = getAuthorImage(post);
+        const seoData = await getAIOSEOData(post.id);
         
         return {
           id: post.id,
@@ -83,6 +84,7 @@ export const appRouter = router({
           authorImage: authorImage,
           readingTime: readingTime,
           headings: headings,
+          seo: seoData,
         };
       }),
     

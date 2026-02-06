@@ -42,6 +42,21 @@ export interface WordPressMedia {
   alt_text: string;
 }
 
+export interface AIOSEOData {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string;
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  robots?: Record<string, string>;
+  og_title?: string;
+  og_description?: string;
+  og_image?: string;
+  twitter_title?: string;
+  twitter_description?: string;
+  twitter_image?: string;
+}
+
 /**
  * Fetch all published posts from WordPress
  */
@@ -236,4 +251,31 @@ export function calculateReadingTime(htmlContent: string): number {
   const wordsPerMinute = 200;
   const minutes = Math.ceil(wordCount / wordsPerMinute);
   return Math.max(1, minutes);
+}
+
+/**
+ * Fetch AIOSEO SEO data for a post
+ */
+export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> {
+  try {
+    const response = await fetch(
+      `${WORDPRESS_API}/posts/${postId}?_fields=aioseo`,
+      {
+        headers: {
+          "Accept": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`AIOSEO API error: ${response.status} ${response.statusText}`);
+      return null;
+    }
+
+    const data: any = await response.json();
+    return data.aioseo || null;
+  } catch (error) {
+    console.error("Error fetching AIOSEO data:", error);
+    return null;
+  }
 }
