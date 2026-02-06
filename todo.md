@@ -130,3 +130,4 @@
 
 ## Code Cleanup
 - [x] Remove unused component files (Removed 28 unused components: AIChatBox, ContactFormModal, DashboardLayout, DashboardLayoutSkeleton, ManusDialog, Map, ComponentShowcase, and 21 unused UI components)
+- [x] Update author bio to single paragraph (Kept only the first paragraph as requested by user)

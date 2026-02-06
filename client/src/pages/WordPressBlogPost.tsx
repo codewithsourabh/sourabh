@@ -445,9 +445,6 @@ export default function WordPressBlogPost() {
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                       <strong className="text-slate-900 dark:text-white text-base">{post.author}</strong> is a results-driven CRM & Automation Specialist with a proven track record of designing and implementing enterprise-level solutions for businesses across diverse industries. With over 5 years of hands-on experience in HubSpot administration, WordPress development, and workflow automation, Sourabh specializes in architecting scalable digital ecosystems that drive operational efficiency and measurable business growth.
                     </p>
-                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-3">
-                      His expertise spans end-to-end CRM implementation, custom API integrations, marketing automation workflows, and data synchronization strategies. Sourabh is passionate about helping organizations streamline complex business processes, eliminate manual touchpoints, and leverage technology to unlock new revenue opportunities. When not optimizing systems, he enjoys sharing insights on automation best practices and emerging technologies through technical writing and community engagement.
-                    </p>
                   </div>
                 </div>
               </div>
