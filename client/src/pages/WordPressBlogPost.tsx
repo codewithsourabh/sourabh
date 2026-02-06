@@ -335,7 +335,7 @@ export default function WordPressBlogPost() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-cyan-600 hover:text-cyan-700 border-cyan-200 dark:border-cyan-800"
+                      className="text-cyan-600 hover:text-white border-cyan-200 dark:border-cyan-800 hover:bg-cyan-600 transition-colors"
                       onClick={generateSummary}
                       disabled={isGeneratingSummary}
                     >
@@ -347,7 +347,7 @@ export default function WordPressBlogPost() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-cyan-600 hover:text-cyan-700 border-cyan-200 dark:border-cyan-800"
+                        className="text-cyan-600 hover:text-white border-cyan-200 dark:border-cyan-800 hover:bg-cyan-600 transition-colors"
                         onClick={() => setShowShareMenu(!showShareMenu)}
                       >
                         <Share2 className="w-4 h-4 mr-2" />
