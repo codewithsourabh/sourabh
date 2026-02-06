@@ -571,7 +571,7 @@ export default function WordPressBlogPost() {
                       />
                     </div>
                   )}
-                  <div className="p-4">
+                  <div className="p-0">
                     <h4 className="font-bold mb-2 text-slate-900 dark:text-white line-clamp-2">
                       {relatedPost.title}
                     </h4>
