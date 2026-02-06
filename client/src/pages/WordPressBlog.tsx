@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Calendar, User, Search, X, Clock } from "lucide-react";
 import { useLocation } from "wouter";
+import { CircularProgress } from "@/components/CircularProgress";
 
 interface BlogPost {
   id: number;
@@ -35,6 +36,8 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [progressComplete, setProgressComplete] = useState(false);
 
   // Fetch WordPress posts
   const { data: posts, isLoading, error } = trpc.wordpress.posts.useQuery({
@@ -81,6 +84,40 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
       day: "numeric",
     });
   };
+
+  // Circular progress animation from 0 to 100% - guaranteed completion
+  useEffect(() => {
+    // Start progress from 0
+    setLoadProgress(0);
+    setProgressComplete(false);
+
+    // Use requestAnimationFrame for smooth animation
+    let startTime = Date.now();
+    let animationFrameId: number;
+    const ANIMATION_DURATION = 2000; // 2 seconds minimum animation
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min((elapsed / ANIMATION_DURATION) * 100, 100);
+      
+      setLoadProgress(progress);
+
+      if (progress < 100) {
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        // Mark progress as complete when reaching 100%
+        setProgressComplete(true);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -146,9 +183,9 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
       {/* Blog Posts Grid */}
       <section className="py-16 md:py-20">
         <div className="container">
-          {isLoading ? (
-            <div className="text-center py-12">
-              <p className="text-slate-600 dark:text-slate-300">Loading articles...</p>
+          {isLoading && !progressComplete ? (
+            <div className="flex justify-center py-20">
+              <CircularProgress progress={loadProgress} />
             </div>
           ) : error ? (
             <div className="text-center py-12">

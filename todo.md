@@ -97,3 +97,4 @@
 - [x] Make progress spinner transition smooth from 1-100% continuously without stopping at 90% (Using requestAnimationFrame with exponential easing for natural-looking animation)
 - [x] Refactor loading to show progress 0-100% then display article (load in background, show after 100%)
 - [x] Ensure loader completes to 100% before showing article (guarantee full animation with 2-second minimum animation duration)
+- [x] Implement circular progress spinner for blog page loading with same logic (0-100% then show posts)
