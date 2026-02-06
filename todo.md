@@ -73,3 +73,8 @@
 - [x] Sort certificates by completion date (newest first)
 - [x] Add verification links to certificate data
 - [x] Add "View Certificate" button with verification link
+
+
+## Blog Enhancement Features
+- [x] Add arrow slide animation on hover to Read More button
+- [x] Implement reading time badges on blog cards (e.g., "5 min read")

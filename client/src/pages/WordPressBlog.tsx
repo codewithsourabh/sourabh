@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Calendar, User, Search, X } from "lucide-react";
+import { ArrowRight, Calendar, User, Search, X, Clock } from "lucide-react";
 import { useLocation } from "wouter";
 
 interface BlogPost {
@@ -13,6 +13,7 @@ interface BlogPost {
   date: string;
   featuredImage: string | null;
   author: string;
+  content?: string;
 }
 
 interface Category {
@@ -190,7 +191,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                     </p>
 
                     {/* Meta */}
-                    <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4">
+                    <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 flex-wrap">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {formatDate(post.date)}
@@ -198,6 +199,10 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                       <div className="flex items-center gap-1">
                         <User className="w-3 h-3" />
                         {post.author}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {Math.ceil((post.excerpt.split(' ').length + (post.content?.split(' ').length || 0)) / 200)} min read
                       </div>
                     </div>
 
@@ -211,7 +216,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                         Read More
                         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-600 transition-all duration-300 group-hover:w-full" />
                       </span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Button>
                   </div>
                 </Card>
