@@ -190,7 +190,9 @@ export function applyColorScheme(scheme: ColorScheme, mode: ThemeMode) {
 
   const root = document.documentElement;
   Object.entries(colors).forEach(([key, value]) => {
-    root.style.setProperty(`--color-${key}`, value);
+    // Convert camelCase to kebab-case and set CSS variable
+    const cssVarName = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+    root.style.setProperty(cssVarName, value);
   });
 }
 
