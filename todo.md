@@ -99,3 +99,4 @@
 - [x] Ensure loader completes to 100% before showing article (guarantee full animation with 2-second minimum animation duration)
 - [x] Implement circular progress spinner for blog page loading with same logic (0-100% then show posts)
 - [x] Fix circular loader: reduce size and wait for actual data load before showing posts (Reduced from 120px to 80px, now waits for both animation AND data)
+- [x] Fix circular loader loading twice - prevent effect from running multiple times (Used empty dependency array for animation effect, separated content visibility logic)

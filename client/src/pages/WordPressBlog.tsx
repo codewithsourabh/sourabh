@@ -87,10 +87,6 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
 
   // Circular progress animation from 0 to 100% - guaranteed completion
   useEffect(() => {
-    // Start progress from 0
-    setLoadProgress(0);
-    setProgressComplete(false);
-
     // Use requestAnimationFrame for smooth animation
     let startTime = Date.now();
     let animationFrameId: number;
@@ -104,12 +100,6 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
 
       if (progress < 100) {
         animationFrameId = requestAnimationFrame(animate);
-      } else {
-        // Mark progress as complete when reaching 100%
-        // But only show content if data is also loaded
-        if (!isLoading) {
-          setProgressComplete(true);
-        }
       }
     };
 
@@ -120,7 +110,14 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [isLoading]);
+  }, []); // Empty dependency array - run once on mount
+
+  // Separate effect to handle showing content when both animation and data are ready
+  useEffect(() => {
+    if (loadProgress >= 100 && !isLoading) {
+      setProgressComplete(true);
+    }
+  }, [loadProgress, isLoading]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
