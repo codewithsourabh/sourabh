@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { X, CheckCircle, AlertCircle, Loader } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { X, CheckCircle, AlertCircle, Loader, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ContactFormModalProps {
@@ -54,6 +54,9 @@ const REASON_TO_CONTACT = [
   "General",
 ];
 
+const STORAGE_KEY = "contact_form_draft";
+const AUTO_SAVE_DELAY = 1000; // 1 second
+
 // Validation functions
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -89,6 +92,9 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [saveTimeout, setSaveTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Real-time validation on blur
   const handleBlur = (fieldName: string) => {
@@ -153,6 +159,25 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
       ...prev,
       [name]: value,
     }));
+    setHasUnsavedChanges(true);
+
+    if (saveTimeout) {
+      clearTimeout(saveTimeout);
+    }
+
+    const newTimeout = setTimeout(() => {
+      saveFormToDraft({
+        fullName: formData.fullName,
+        email: formData.email,
+        countryCode: formData.countryCode,
+        phoneNumber: formData.phoneNumber,
+        reasonToContact: formData.reasonToContact,
+        message: formData.message,
+        [name]: value,
+      });
+    }, AUTO_SAVE_DELAY);
+
+    setSaveTimeout(newTimeout);
 
     // Validate on change if field has been touched
     if (touched[name]) {
@@ -203,6 +228,52 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
       setErrors(newErrors);
     }
   };
+
+  const saveFormToDraft = (data: typeof formData) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      setLastSaved(new Date());
+      setHasUnsavedChanges(false);
+    } catch (error) {
+      console.error("Failed to save form draft:", error);
+    }
+  };
+
+  const loadFormFromDraft = () => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsedData = JSON.parse(saved);
+        setFormData(parsedData);
+      }
+    } catch (error) {
+      console.error("Failed to load form draft:", error);
+    }
+  };
+
+  const clearFormDraft = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      setLastSaved(null);
+      setHasUnsavedChanges(false);
+    } catch (error) {
+      console.error("Failed to clear form draft:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      loadFormFromDraft();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+    };
+  }, [saveTimeout]);
 
   const isFormValid = () => {
     // Check if all fields have values and are valid
@@ -310,6 +381,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
       });
       setErrors({});
       setTouched({});
+      clearFormDraft();
 
       // Auto-close after 3 seconds
       setTimeout(() => {
@@ -358,6 +430,13 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
               <p className="text-slate-600 dark:text-slate-400 mb-6">
                 Fill out the form below and I'll get back to you as soon as possible.
               </p>
+
+              {lastSaved && (
+                <div className="flex items-center gap-2 mb-4 text-xs text-slate-500 dark:text-slate-400">
+                  <Save className="w-3 h-3" />
+                  <span>Auto-saved {lastSaved.toLocaleTimeString()}</span>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Row 1: Full Name and Email */}

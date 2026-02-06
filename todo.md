@@ -112,3 +112,9 @@
 
 ## Form Improvements
 - [x] Add placeholder to Reason To Contact dropdown instead of default selection (Empty by default, shows "Select a reason..." placeholder)
+
+## Auto-Save Feature
+- [x] Implement localStorage auto-save for contact form (1-second debounce on input changes)
+- [x] Restore form data from localStorage on modal open (Loads draft when modal opens)
+- [x] Clear saved data after successful form submission (Clears draft after successful HubSpot submission)
+- [x] Add visual indicator showing when form is auto-saved (Shows "Auto-saved HH:MM:SS" with Save icon)
