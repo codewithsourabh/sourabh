@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { trpc } from "@/lib/trpc";
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");
-  const subscribeMutation = trpc.newsletter.subscribe.useMutation();
+  const [isSubscribing, setIsSubscribing] = useState(false);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,13 +15,20 @@ export default function NewsletterForm() {
       return;
     }
 
+    setIsSubscribing(true);
     try {
-      await subscribeMutation.mutateAsync({ email });
+      const subscribers = JSON.parse(localStorage.getItem("newsletter_subscribers") || "[]");
+      if (!subscribers.includes(email)) {
+        subscribers.push(email);
+        localStorage.setItem("newsletter_subscribers", JSON.stringify(subscribers));
+      }
+      
       toast.success("Thanks for subscribing!");
       setEmail("");
     } catch (error) {
-      console.error("Newsletter subscription error:", error);
       toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setIsSubscribing(false);
     }
   };
 
@@ -37,15 +43,15 @@ export default function NewsletterForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="flex-1 px-4 py-3 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-colors"
-          disabled={subscribeMutation.isPending}
+          disabled={isSubscribing}
         />
         <Button
           type="submit"
           className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 whitespace-nowrap h-11 px-6 py-6"
-          disabled={subscribeMutation.isPending}
+          disabled={isSubscribing}
         >
           <Send className="w-4 h-4" />
-          {subscribeMutation.isPending ? "Subscribing..." : "Subscribe"}
+          {isSubscribing ? "Subscribing..." : "Subscribe"}
         </Button>
       </form>
     </div>

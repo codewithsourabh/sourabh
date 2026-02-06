@@ -164,56 +164,6 @@ export const appRouter = router({
         }
       }),
   }),
-
-  newsletter: router({
-    subscribe: publicProcedure
-      .input(z.object({ email: z.string().email() }))
-      .mutation(async ({ input }) => {
-        try {
-          const params = new URLSearchParams();
-          params.append("sureforms_form_submit", "7a9423dfb7");
-          params.append("_wp_http_referer", "/form/newsletter-form/");
-          params.append("form-id", "2716");
-          params.append("srfm-sender-email-field", "");
-          params.append("srfm-honeypot-field", "");
-          params.append("srfm-email-feda2b5b-lbl-RW1haWwgQWRkcmVzcyo-email-address", input.email);
-
-          console.log("[Newsletter] Sending payload:", params.toString());
-
-          const response = await fetch(
-            "https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/sureforms/v1/submit-form",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-              },
-              body: params.toString(),
-            }
-          );
-
-          const responseText = await response.text();
-          console.log("[Newsletter] Response status:", response.status);
-          console.log("[Newsletter] Response body:", responseText);
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}, body: ${responseText}`);
-          }
-
-          let data;
-          try {
-            data = JSON.parse(responseText);
-          } catch {
-            data = responseText;
-          }
-
-          console.log("[Newsletter] Subscription successful:", input.email);
-          return { success: true, data };
-        } catch (error) {
-          console.error("[Newsletter] Subscription error:", error instanceof Error ? error.message : String(error));
-          throw new Error(`Failed to subscribe: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        }
-      }),
-  }),
 });
 
 export type AppRouter = typeof appRouter;
