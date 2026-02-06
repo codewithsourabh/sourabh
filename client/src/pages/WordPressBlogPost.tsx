@@ -49,13 +49,6 @@ export default function WordPressBlogPost() {
 
   // Smooth progress animation from 0 to 100%
   useEffect(() => {
-    if (!isLoading) {
-      // When loading completes, jump to 100% then reset
-      setLoadProgress(100);
-      const timer = setTimeout(() => setLoadProgress(0), 500);
-      return () => clearTimeout(timer);
-    }
-
     // Start progress from 0
     setLoadProgress(0);
 
@@ -67,10 +60,10 @@ export default function WordPressBlogPost() {
       const elapsed = Date.now() - startTime;
       // Smooth easing function: starts fast, slows down as it approaches 100%
       // This creates a natural-looking progress bar
-      const progress = Math.min(100 * (1 - Math.pow(0.995, elapsed / 50)), 99);
+      const progress = Math.min(100 * (1 - Math.pow(0.995, elapsed / 50)), 100);
       setLoadProgress(progress);
 
-      if (progress < 99) {
+      if (progress < 100) {
         animationFrameId = requestAnimationFrame(animate);
       }
     };
@@ -82,7 +75,7 @@ export default function WordPressBlogPost() {
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [isLoading]);
+  }, []);
 
   const slug = params?.slug as string;
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
@@ -209,14 +202,19 @@ export default function WordPressBlogPost() {
       setIsLoading(true);
     } else if (fetchError) {
       setError("Failed to load article");
-      setIsLoading(false);
+      // Wait for progress to reach 100% before showing error
+      const timer = setTimeout(() => setIsLoading(false), 1000);
+      return () => clearTimeout(timer);
     } else if (fetchedPost) {
       setPost(fetchedPost);
       setError(null);
-      setIsLoading(false);
+      // Wait for progress to reach 100% before showing content
+      const timer = setTimeout(() => setIsLoading(false), 1000);
+      return () => clearTimeout(timer);
     } else if (!isFetching && !fetchedPost) {
       setError("Article not found");
-      setIsLoading(false);
+      const timer = setTimeout(() => setIsLoading(false), 1000);
+      return () => clearTimeout(timer);
     }
   }, [fetchedPost, isFetching, fetchError]);
 
