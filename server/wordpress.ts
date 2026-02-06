@@ -42,21 +42,6 @@ export interface WordPressMedia {
   alt_text: string;
 }
 
-export interface AIOSEOData {
-  metaTitle?: string;
-  metaDescription?: string;
-  keywords?: string;
-  focusKeyword?: string;
-  canonicalUrl?: string;
-  robots?: Record<string, string>;
-  og_title?: string;
-  og_description?: string;
-  og_image?: string;
-  twitter_title?: string;
-  twitter_description?: string;
-  twitter_image?: string;
-}
-
 /**
  * Fetch all published posts from WordPress
  */
@@ -251,56 +236,4 @@ export function calculateReadingTime(htmlContent: string): number {
   const wordsPerMinute = 200;
   const minutes = Math.ceil(wordCount / wordsPerMinute);
   return Math.max(1, minutes);
-}
-
-/**
- * Fetch AIOSEO SEO data for a post
- */
-export async function getAIOSEOData(postId: number): Promise<Record<string, any> | null> {
-  try {
-    const response = await fetch(
-      `${WORDPRESS_API}/posts/${postId}?_fields=aioseo_head_json`,
-      {
-        headers: {
-          "Accept": "application/json",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      console.error(`AIOSEO API error: ${response.status} ${response.statusText}`);
-      return null;
-    }
-
-    const data: any = await response.json();
-    const aioseoData = data.aioseo_head_json;
-    
-    if (!aioseoData) {
-      console.warn(`No AIOSEO data found for post ${postId}`);
-      return null;
-    }
-
-    // Return the complete aioseo_head_json object directly
-    return aioseoData;
-  } catch (error) {
-    console.error("Error fetching AIOSEO data:", error);
-    return null;
-  }
-}
-
-/**
- * Parse robots directive string into object
- */
-function parseRobots(robotsString: string): Record<string, string> {
-  const robots: Record<string, string> = {};
-  const directives = robotsString.split(',').map(d => d.trim());
-  
-  directives.forEach(directive => {
-    const [key, value] = directive.split(':').map(d => d.trim());
-    if (key) {
-      robots[key] = value || 'true';
-    }
-  });
-  
-  return robots;
 }

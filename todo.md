@@ -102,8 +102,3 @@
 - [x] Fix circular loader loading twice - prevent effect from running multiple times (Used empty dependency array for animation effect, separated content visibility logic)
 - [x] Fix category filter: reset loader and show articles after loading completes (Added effect to reset loader on category change, restart animation for category loads)
 - [x] Fix loader stuck at 0% when clicking category - ensure animation starts properly (Changed to use isCategoryLoading instead of isLoading for category animation effect)
-- [x] Integrate AIOSEO SEO data fetching from WordPress REST API for article metadata (Added getAIOSEOData function, updated postBySlug to include seo data)
-- [x] Debug AIOSEO data fetching - verify API endpoint and data being returned (Fixed to fetch from aioseo_head_json field, added proper data mapping and robots parsing)
-- [x] Add meta tags to HTML head - dynamically inject AIOSEO meta titles, descriptions, and og/twitter tags (Installed react-helmet-async, added meta tag injection effect, supports og/twitter/canonical/robots tags)
-- [x] Map aioseo_head_json directly to seo field in API response (Updated getAIOSEOData to return complete aioseo_head_json object)
-- [x] Debug: Meta tags not changing - check for hardcoded values or static meta tags (Removed hardcoded meta tags from index.html, now dynamic injection works)
