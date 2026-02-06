@@ -118,3 +118,6 @@
 - [x] Restore form data from localStorage on modal open (Loads draft when modal opens)
 - [x] Clear saved data after successful form submission (Clears draft after successful HubSpot submission)
 - [x] Add visual indicator showing when form is auto-saved (Shows "Auto-saved HH:MM:SS" with Save icon)
+
+## UI Changes
+- [x] Remove Contact Section from Home page (Removed "Let's Connect" section, contact still accessible via footer)
