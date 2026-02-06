@@ -445,8 +445,8 @@ export default function WordPressBlogPost() {
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                       <strong className="text-slate-900 dark:text-white text-base">{post.author}</strong> is a results-driven CRM & Automation Specialist with a proven track record of designing and implementing enterprise-level solutions for businesses across diverse industries. With over 5 years of hands-on experience in HubSpot administration, WordPress development, and workflow automation, Sourabh specializes in architecting scalable digital ecosystems that drive operational efficiency and measurable business growth.
                     </p>
-                    <div className="mt-4">
-                      <p className="text-slate-700 dark:text-slate-300 text-sm mb-3">
+                    <div className="mt-4 flex items-center gap-4">
+                      <p className="text-slate-700 dark:text-slate-300 text-sm">
                         <strong className="text-slate-900 dark:text-white">Follow Me On:</strong>
                       </p>
                       <div className="flex gap-4">
