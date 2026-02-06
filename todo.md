@@ -123,7 +123,7 @@
 - [x] Remove Contact Section from Home page (Removed "Let's Connect" section, contact still accessible via footer)
 
 ## SEO & Ad Network Files
-- [x] Create ads.txt file with ad network verification data (35 ad networks configured)
+- [x] Create ads.txt file with ad network verification data (Updated with Google AdSense: pub-6257979001505195)
 
 ## Comments Integration
 - [x] Remove Disqus comments completely (User preference - free tier has limited customization options)
