@@ -89,3 +89,4 @@
 - [x] Create social sharing component with icons and share URLs
 - [x] Integrate sharing functionality into blog post page
 - [x] Write comprehensive vitest tests for social sharing functionality (17 tests covering URL generation, platform validation, and styling)
+- [x] Convert horizontal social sharing icons to dropdown menu button format

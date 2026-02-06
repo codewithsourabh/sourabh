@@ -344,15 +344,12 @@ export default function WordPressBlogPost() {
                       {isGeneratingSummary ? "Summarizing..." : "Summarize"}
                     </Button>
                     
-                    <div>
-                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Share Article</p>
-                      <SocialShareButtons
-                        title={post?.title || "Check out this article"}
-                        url={currentUrl}
-                        description={post?.excerpt}
-                        layout="horizontal"
-                      />
-                    </div>
+                    <SocialShareButtons
+                      title={post?.title || "Check out this article"}
+                      url={currentUrl}
+                      description={post?.excerpt}
+                      layout="dropdown"
+                    />
                   </div>
                 </div>
               </header>
