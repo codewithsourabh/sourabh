@@ -98,3 +98,4 @@
 - [x] Refactor loading to show progress 0-100% then display article (load in background, show after 100%)
 - [x] Ensure loader completes to 100% before showing article (guarantee full animation with 2-second minimum animation duration)
 - [x] Implement circular progress spinner for blog page loading with same logic (0-100% then show posts)
+- [x] Fix circular loader: reduce size and wait for actual data load before showing posts (Reduced from 120px to 80px, now waits for both animation AND data)

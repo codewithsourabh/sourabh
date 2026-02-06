@@ -4,7 +4,7 @@ interface CircularProgressProps {
   strokeWidth?: number;
 }
 
-export function CircularProgress({ progress, size = 120, strokeWidth = 4 }: CircularProgressProps) {
+export function CircularProgress({ progress, size = 80, strokeWidth = 3 }: CircularProgressProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (progress / 100) * circumference;
@@ -51,7 +51,7 @@ export function CircularProgress({ progress, size = 120, strokeWidth = 4 }: Circ
         </svg>
         {/* Center text */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-semibold text-cyan-600 dark:text-cyan-400">
+          <span className="text-sm font-semibold text-cyan-600 dark:text-cyan-400">
             {Math.round(progress)}%
           </span>
         </div>

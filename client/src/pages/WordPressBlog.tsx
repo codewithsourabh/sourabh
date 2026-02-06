@@ -106,7 +106,10 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
         animationFrameId = requestAnimationFrame(animate);
       } else {
         // Mark progress as complete when reaching 100%
-        setProgressComplete(true);
+        // But only show content if data is also loaded
+        if (!isLoading) {
+          setProgressComplete(true);
+        }
       }
     };
 
@@ -117,7 +120,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, []);
+  }, [isLoading]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -183,7 +186,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
       {/* Blog Posts Grid */}
       <section className="py-16 md:py-20">
         <div className="container">
-          {isLoading && !progressComplete ? (
+          {(isLoading || !progressComplete) ? (
             <div className="flex justify-center py-20">
               <CircularProgress progress={loadProgress} />
             </div>
