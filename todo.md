@@ -78,3 +78,7 @@
 ## Blog Enhancement Features
 - [x] Add arrow slide animation on hover to Read More button
 - [x] Implement reading time badges on blog cards (e.g., "5 min read")
+
+
+## Current Issues to Fix
+- [x] Fix hero section background image - not displaying properly on mobile (cutting in half) - FIXED
