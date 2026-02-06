@@ -505,7 +505,7 @@ export default function WordPressBlogPost() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-cyan-600 p-0 h-auto"
+                      className="text-cyan-600 hover:text-cyan-700 p-0 h-auto"
                       onClick={() => navigate(`/blog/${relatedPost.slug}`)}
                     >
                       Read More →
