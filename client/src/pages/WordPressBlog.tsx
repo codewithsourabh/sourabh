@@ -204,10 +204,13 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                     {/* Read More Button */}
                     <Button
                       variant="ghost"
-                      className="w-full justify-between text-cyan-600 hover:text-cyan-700 p-0 h-auto"
+                      className="w-full justify-between text-cyan-600 p-0 h-auto relative group"
                       onClick={() => navigate(`/blog/${post.slug}`)}
                     >
-                      Read More
+                      <span className="relative inline-block">
+                        Read More
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-600 transition-all duration-300 group-hover:w-full" />
+                      </span>
                       <ArrowRight className="w-4 h-4" />
                     </Button>
                   </div>
