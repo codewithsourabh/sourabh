@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Mail, Linkedin, Github, ArrowUp } from "lucide-react";
+import { Mail, Linkedin, Github } from "lucide-react";
 
 interface FooterProps {
   onContactClick: () => void;
@@ -36,19 +36,9 @@ export default function Footer({ onContactClick }: FooterProps) {
             </a>
           </div>
 
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-slate-400 text-sm">
-              © 2026 Sourabh. Software Engineer specializing in CRM and Automation Solutions.
-            </p>
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-cyan-400 hover:text-cyan-300 transition-colors duration-300 flex items-center gap-2 text-sm font-medium"
-              aria-label="Back to top"
-            >
-              <ArrowUp className="w-4 h-4" />
-              Back to Top
-            </button>
-          </div>
+          <p className="text-slate-400 text-sm">
+            © 2026 Sourabh. Software Engineer specializing in CRM and Automation Solutions.
+          </p>
         </div>
       </div>
     </section>

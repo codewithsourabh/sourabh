@@ -78,4 +78,3 @@
 ## Blog Enhancement Features
 - [x] Add arrow slide animation on hover to Read More button
 - [x] Implement reading time badges on blog cards (e.g., "5 min read")
-- [x] Add "Back to Top" text link in footer as alternative navigation method
