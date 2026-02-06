@@ -164,6 +164,41 @@ export const appRouter = router({
         }
       }),
   }),
+
+  newsletter: router({
+    subscribe: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        try {
+          const formData = new FormData();
+          formData.append("sureforms_form_submit", "7a9423dfb7");
+          formData.append("_wp_http_referer", "/form/newsletter-form/");
+          formData.append("form-id", "2716");
+          formData.append("srfm-sender-email-field", "");
+          formData.append("srfm-honeypot-field", "");
+          formData.append("srfm-email-feda2b5b-lbl-RW1haWwgQWRkcmVzcyo-email-address", input.email);
+
+          const response = await fetch(
+            "https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/sureforms/v1/submit-form",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("[Newsletter] Subscription successful:", input.email);
+          return { success: true, data };
+        } catch (error) {
+          console.error("[Newsletter] Subscription error:", error instanceof Error ? error.message : String(error));
+          throw new Error(`Failed to subscribe: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
