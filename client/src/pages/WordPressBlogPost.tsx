@@ -552,7 +552,7 @@ export default function WordPressBlogPost() {
 
       {/* Related Articles - Full Width */}
       {relatedPosts.length > 0 && (
-        <div className="w-full bg-slate-50 dark:bg-slate-900/50 py-6 md:py-8">
+        <div className="w-full bg-slate-50 dark:bg-slate-900/50 py-0">
           <div className="container max-w-6xl mx-auto px-4">
             <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Related Articles</h3>
             <div className="grid md:grid-cols-3 gap-6">
