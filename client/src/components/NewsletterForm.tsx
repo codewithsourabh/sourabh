@@ -33,7 +33,7 @@ export default function NewsletterForm() {
   };
 
   return (
-    <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-lg p-8 mb-12 border border-cyan-500/30 dark:border-cyan-500/20 not-prose">
+    <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-lg p-8 mb-12 border border-cyan-500/30 dark:border-cyan-500/20 not-prose mt-12">
       <h3 className="text-xl font-semibold mb-3 text-slate-900 dark:text-white">Stay Updated</h3>
       <p className="text-slate-700 dark:text-slate-300 text-sm mb-6">Subscribe to get the latest insights on CRM, automation, and web development.</p>
       <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
