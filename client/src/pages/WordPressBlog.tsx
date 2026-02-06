@@ -204,7 +204,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                     {/* Read More Button */}
                     <Button
                       variant="ghost"
-                      className="w-full justify-between text-cyan-600 p-0 h-auto relative group"
+                      className="w-full justify-between text-cyan-600 p-0 h-auto relative group hover:bg-transparent"
                       onClick={() => navigate(`/blog/${post.slug}`)}
                     >
                       <span className="relative inline-block">
