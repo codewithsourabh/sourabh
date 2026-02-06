@@ -93,3 +93,4 @@
 - [x] Arrange Summarize and Share buttons side by side horizontally
 - [x] Fix summarization error - "Failed to generate summary" (Added content cleaning, HTML tag removal, token limit handling, and improved error logging)
 - [x] Add loading progress spinner (0-100%) while blog posts load
+- [x] Fix progress spinner to cap at 100% maximum (Using Math.min to ensure value never exceeds 90% during loading, then 100% on completion)

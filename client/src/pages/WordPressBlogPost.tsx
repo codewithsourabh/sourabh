@@ -53,8 +53,9 @@ export default function WordPressBlogPost() {
 
     const interval = setInterval(() => {
       setLoadProgress((prev) => {
-        if (prev >= 90) return prev;
-        return prev + Math.random() * 30;
+        const newProgress = prev + Math.random() * 30;
+        // Cap at 90% during loading, 100% will be set when loading completes
+        return Math.min(newProgress, 90);
       });
     }, 300);
 
