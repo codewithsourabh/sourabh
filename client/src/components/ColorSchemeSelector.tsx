@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
 import { ChevronRight, X } from 'lucide-react';
-import { colorSchemes, type ColorScheme, getStoredColorScheme, saveColorScheme, applyColorScheme } from '@/lib/colorSchemes';
+import { colorSchemes, type ColorScheme, getColorScheme, applyColorScheme } from '@/lib/colorSchemes';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export default function ColorSchemeSelector() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedScheme, setSelectedScheme] = useState<ColorScheme>(getStoredColorScheme());
+  const [selectedScheme, setSelectedScheme] = useState<ColorScheme>(getColorScheme());
   const { theme } = useTheme();
 
   useEffect(() => {
-    applyColorScheme(selectedScheme, theme as 'light' | 'dark');
-  }, [selectedScheme, theme]);
+    applyColorScheme(selectedScheme);
+  }, [selectedScheme]);
 
   const handleSelectScheme = (scheme: ColorScheme) => {
     setSelectedScheme(scheme);
-    saveColorScheme(scheme);
-    applyColorScheme(scheme, theme as 'light' | 'dark');
+    applyColorScheme(scheme);
   };
 
   return (
@@ -72,30 +71,23 @@ export default function ColorSchemeSelector() {
                   <div
                     className="w-6 h-6 rounded-full border border-border"
                     style={{
-                      backgroundColor: theme === 'light' ? schemeConfig.light.primary : schemeConfig.dark.primary,
+                      backgroundColor: theme === 'light' ? schemeConfig.colors.light.primary : schemeConfig.colors.dark.primary,
                     }}
                     title="Primary color"
                   />
                   <div
                     className="w-6 h-6 rounded-full border border-border"
                     style={{
-                      backgroundColor: theme === 'light' ? schemeConfig.light.secondary : schemeConfig.dark.secondary,
+                      backgroundColor: theme === 'light' ? schemeConfig.colors.light.secondary : schemeConfig.colors.dark.secondary,
                     }}
                     title="Secondary color"
                   />
                   <div
                     className="w-6 h-6 rounded-full border border-border"
                     style={{
-                      backgroundColor: theme === 'light' ? schemeConfig.light.accent : schemeConfig.dark.accent,
+                      backgroundColor: theme === 'light' ? schemeConfig.colors.light.accent : schemeConfig.colors.dark.accent,
                     }}
                     title="Accent color"
-                  />
-                  <div
-                    className="w-6 h-6 rounded-full border border-border"
-                    style={{
-                      backgroundColor: theme === 'light' ? schemeConfig.light.muted : schemeConfig.dark.muted,
-                    }}
-                    title="Muted color"
                   />
                 </div>
 
