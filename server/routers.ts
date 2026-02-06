@@ -119,6 +119,14 @@ export const appRouter = router({
           }
 
           console.log(`[Cache MISS] Generating summary for ${input.slug}`);
+          
+          // Clean and truncate content to avoid token limits
+          // Remove HTML tags and limit to first 2000 characters
+          const cleanContent = input.content
+            .replace(/<[^>]*>/g, '') // Remove HTML tags
+            .replace(/&[a-z]+;/g, '') // Remove HTML entities
+            .substring(0, 2000);
+          
           const { invokeLLM } = await import("./_core/llm");
           const response = await invokeLLM({
             messages: [
@@ -128,12 +136,17 @@ export const appRouter = router({
               },
               {
                 role: "user",
-                content: `Please summarize this blog post in 2-3 sentences:\n\nTitle: ${input.title}\n\nContent: ${input.content}`,
+                content: `Please summarize this blog post in 2-3 sentences:\n\nTitle: ${input.title}\n\nContent: ${cleanContent}`,
               },
             ],
           });
           
           const summaryContent = response.choices[0]?.message?.content;
+          if (!summaryContent) {
+            console.error("No summary content received from LLM");
+            throw new Error("No summary content received");
+          }
+          
           const summary = typeof summaryContent === 'string' ? summaryContent : "Unable to generate summary";
           
           // Save to cache
@@ -143,10 +156,11 @@ export const appRouter = router({
             summary: summary,
           });
           
+          console.log(`[Success] Summary generated for ${input.slug}`);
           return summary;
         } catch (error) {
-          console.error("Error generating summary:", error);
-          throw new Error("Failed to generate summary");
+          console.error("Error generating summary:", error instanceof Error ? error.message : String(error));
+          throw new Error(`Failed to generate summary: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
       }),
   }),

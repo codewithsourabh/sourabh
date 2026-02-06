@@ -91,3 +91,4 @@
 - [x] Write comprehensive vitest tests for social sharing functionality (17 tests covering URL generation, platform validation, and styling)
 - [x] Convert horizontal social sharing icons to dropdown menu button format
 - [x] Arrange Summarize and Share buttons side by side horizontally
+- [x] Fix summarization error - "Failed to generate summary" (Added content cleaning, HTML tag removal, token limit handling, and improved error logging)
