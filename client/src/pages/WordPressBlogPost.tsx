@@ -38,6 +38,7 @@ export default function WordPressBlogPost() {
   const [post, setPost] = useState<BlogPostDetail | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeHeading, setActiveHeading] = useState<string | null>(null);
@@ -45,6 +46,29 @@ export default function WordPressBlogPost() {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Simulate progress while loading
+  useEffect(() => {
+    if (!isLoading) return;
+
+    const interval = setInterval(() => {
+      setLoadProgress((prev) => {
+        if (prev >= 90) return prev;
+        return prev + Math.random() * 30;
+      });
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, [isLoading]);
+
+  // Complete progress when loading finishes
+  useEffect(() => {
+    if (!isLoading) {
+      setLoadProgress(100);
+      const timer = setTimeout(() => setLoadProgress(0), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
 
   const slug = params?.slug as string;
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
@@ -232,8 +256,19 @@ export default function WordPressBlogPost() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-        <p className="text-slate-600 dark:text-slate-300">Loading article...</p>
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center gap-6">
+        <p className="text-slate-600 dark:text-slate-300 text-lg">Loading article...</p>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-64 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-full transition-all duration-300 ease-out"
+              style={{ width: `${loadProgress}%` }}
+            />
+          </div>
+          <p className="text-sm font-medium text-cyan-600 dark:text-cyan-400">
+            {Math.round(loadProgress)}%
+          </p>
+        </div>
       </div>
     );
   }

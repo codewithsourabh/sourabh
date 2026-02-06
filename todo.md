@@ -92,3 +92,4 @@
 - [x] Convert horizontal social sharing icons to dropdown menu button format
 - [x] Arrange Summarize and Share buttons side by side horizontally
 - [x] Fix summarization error - "Failed to generate summary" (Added content cleaning, HTML tag removal, token limit handling, and improved error logging)
+- [x] Add loading progress spinner (0-100%) while blog posts load
