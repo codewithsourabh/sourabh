@@ -81,4 +81,4 @@
 
 
 ## Current Issues to Fix
-- [x] Fix hero section background image - not displaying properly on mobile (cutting in half) - FIXED
+- [x] Fix hero section background image - not displaying properly on mobile (cutting in half) - FIXED (hidden on mobile, visible on desktop)

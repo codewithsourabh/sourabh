@@ -341,7 +341,7 @@ export default function Home({ onContactClick }: HomeProps) {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">
-        <div className="absolute inset-0 opacity-50">
+        <div className="absolute inset-0 opacity-50 hidden md:block">
           <picture>
             <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.avif" type="image/avif" />
             <source srcSet="https://cdn.sourabhsaini.com/assets/img/hero-bg.webp" type="image/webp" />
