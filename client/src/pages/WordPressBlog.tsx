@@ -49,7 +49,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
   const { data: categories } = trpc.wordpress.categories.useQuery();
 
   // Fetch posts by category if selected
-  const { data: categoryPosts } = trpc.wordpress.postsByCategory.useQuery(
+  const { data: categoryPosts, isLoading: isCategoryLoading } = trpc.wordpress.postsByCategory.useQuery(
     { categoryId: selectedCategory || 0, perPage: 20 },
     { enabled: selectedCategory !== null }
   );
@@ -127,7 +127,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
 
   // Restart animation when category changes and data is loading
   useEffect(() => {
-    if (selectedCategory !== null && isLoading) {
+    if (selectedCategory !== null && isCategoryLoading) {
       // Start a new animation sequence
       let startTime = Date.now();
       let animationFrameId: number;
@@ -152,7 +152,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
         }
       };
     }
-  }, [selectedCategory, isLoading]);
+  }, [selectedCategory, isCategoryLoading]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -218,7 +218,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
       {/* Blog Posts Grid */}
       <section className="py-16 md:py-20">
         <div className="container">
-          {(isLoading || (selectedCategory !== null && !progressComplete)) ? (
+          {(isLoading || isCategoryLoading || (selectedCategory !== null && !progressComplete)) ? (
             <div className="flex justify-center py-20">
               <CircularProgress progress={loadProgress} />
             </div>
