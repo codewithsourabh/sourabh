@@ -3,7 +3,7 @@ import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock, Facebook, Instagram, Linkedin, Twitter, Send } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
@@ -48,6 +48,8 @@ export default function WordPressBlogPost() {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [isNewsletterSubscribing, setIsNewsletterSubscribing] = useState(false);
 
   // Smooth progress animation from 0 to 100% - guaranteed completion
   useEffect(() => {
@@ -201,6 +203,32 @@ export default function WordPressBlogPost() {
     setCopiedLink(true);
     toast.success("Link copied to clipboard!");
     setTimeout(() => setCopiedLink(false), 2000);
+  };
+
+  // Handle newsletter subscription
+  const handleNewsletterSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail || !newsletterEmail.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    setIsNewsletterSubscribing(true);
+    try {
+      const subscribers = JSON.parse(localStorage.getItem("newsletter_subscribers") || "[]");
+      if (!subscribers.includes(newsletterEmail)) {
+        subscribers.push(newsletterEmail);
+        localStorage.setItem("newsletter_subscribers", JSON.stringify(subscribers));
+      }
+      
+      toast.success("Thanks for subscribing!");
+      setNewsletterEmail("");
+    } catch (error) {
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setIsNewsletterSubscribing(false);
+    }
   };
 
   useEffect(() => {
@@ -426,6 +454,30 @@ export default function WordPressBlogPost() {
               {/* Content */}
               <div className="prose dark:prose-invert max-w-none mb-12">
                 <Streamdown>{post.content}</Streamdown>
+              </div>
+
+              {/* Newsletter Signup */}
+              <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-lg p-8 mb-12 border border-cyan-500/30 dark:border-cyan-500/20">
+                <h3 className="text-xl font-semibold mb-3 text-slate-900 dark:text-white">Stay Updated</h3>
+                <p className="text-slate-700 dark:text-slate-300 text-sm mb-6">Subscribe to get the latest insights on CRM, automation, and web development.</p>
+                <form onSubmit={handleNewsletterSubscribe} className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    className="flex-1 px-4 py-3 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-colors"
+                    disabled={isNewsletterSubscribing}
+                  />
+                  <Button
+                    type="submit"
+                    className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 whitespace-nowrap"
+                    disabled={isNewsletterSubscribing}
+                  >
+                    <Send className="w-4 h-4" />
+                    {isNewsletterSubscribing ? "Subscribing..." : "Subscribe"}
+                  </Button>
+                </form>
               </div>
 
               {/* Author Box */}

@@ -137,3 +137,4 @@
 
 ## Newsletter & Footer
 - [x] Add newsletter signup form to footer (Created "Stay Updated" section with email input and subscribe button, stores emails in localStorage)
+- [x] Move newsletter form to blog article (Relocated newsletter signup to appear before author box in blog posts with gradient background styling)
