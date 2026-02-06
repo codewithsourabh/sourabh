@@ -17,15 +17,24 @@ export default function NewsletterForm() {
 
     setIsSubscribing(true);
     try {
-      const subscribers = JSON.parse(localStorage.getItem("newsletter_subscribers") || "[]");
-      if (!subscribers.includes(email)) {
-        subscribers.push(email);
-        localStorage.setItem("newsletter_subscribers", JSON.stringify(subscribers));
+      const response = await fetch('https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/custom/v1/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       toast.success("Thanks for subscribing!");
       setEmail("");
     } catch (error) {
+      console.error("Newsletter subscription error:", error);
       toast.error("Failed to subscribe. Please try again.");
     } finally {
       setIsSubscribing(false);

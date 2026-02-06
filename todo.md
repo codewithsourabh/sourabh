@@ -139,3 +139,4 @@
 - [x] Add newsletter signup form to footer (Created "Stay Updated" section with email input and subscribe button, stores emails in localStorage)
 - [x] Move newsletter form to blog article (Relocated newsletter signup to appear before author box in blog posts with gradient background styling)
 - [x] Inject newsletter before last h2 heading in article content (Newsletter now appears within article content before the last h2 heading, not after content)
+- [x] Update newsletter endpoint to custom WordPress API (Send JSON POST to https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/custom/v1/newsletter with only email field, removed localStorage and other functionality)
