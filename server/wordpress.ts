@@ -259,7 +259,7 @@ export function calculateReadingTime(htmlContent: string): number {
 export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> {
   try {
     const response = await fetch(
-      `${WORDPRESS_API}/posts/${postId}?_fields=aioseo`,
+      `${WORDPRESS_API}/posts/${postId}?_fields=aioseo_head_json`,
       {
         headers: {
           "Accept": "application/json",
@@ -273,9 +273,46 @@ export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> 
     }
 
     const data: any = await response.json();
-    return data.aioseo || null;
+    const aioseoData = data.aioseo_head_json;
+    
+    if (!aioseoData) {
+      console.warn(`No AIOSEO data found for post ${postId}`);
+      return null;
+    }
+
+    // Map AIOSEO response to our interface
+    return {
+      metaTitle: aioseoData.title || undefined,
+      metaDescription: aioseoData.description || undefined,
+      keywords: aioseoData.keywords || undefined,
+      canonicalUrl: aioseoData.canonical_url || undefined,
+      robots: aioseoData.robots ? parseRobots(aioseoData.robots) : undefined,
+      og_title: aioseoData.og_title || undefined,
+      og_description: aioseoData.og_description || undefined,
+      og_image: aioseoData.og_image || undefined,
+      twitter_title: aioseoData.twitter_title || undefined,
+      twitter_description: aioseoData.twitter_description || undefined,
+      twitter_image: aioseoData.twitter_image || undefined,
+    };
   } catch (error) {
     console.error("Error fetching AIOSEO data:", error);
     return null;
   }
+}
+
+/**
+ * Parse robots directive string into object
+ */
+function parseRobots(robotsString: string): Record<string, string> {
+  const robots: Record<string, string> = {};
+  const directives = robotsString.split(',').map(d => d.trim());
+  
+  directives.forEach(directive => {
+    const [key, value] = directive.split(':').map(d => d.trim());
+    if (key) {
+      robots[key] = value || 'true';
+    }
+  });
+  
+  return robots;
 }

@@ -103,3 +103,4 @@
 - [x] Fix category filter: reset loader and show articles after loading completes (Added effect to reset loader on category change, restart animation for category loads)
 - [x] Fix loader stuck at 0% when clicking category - ensure animation starts properly (Changed to use isCategoryLoading instead of isLoading for category animation effect)
 - [x] Integrate AIOSEO SEO data fetching from WordPress REST API for article metadata (Added getAIOSEOData function, updated postBySlug to include seo data)
+- [x] Debug AIOSEO data fetching - verify API endpoint and data being returned (Fixed to fetch from aioseo_head_json field, added proper data mapping and robots parsing)
