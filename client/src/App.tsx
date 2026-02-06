@@ -10,9 +10,7 @@ import WordPressBlogPost from "./pages/WordPressBlogPost";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import ColorSchemeSelector from "./components/ColorSchemeSelector";
-import { useState, useEffect } from "react";
-import { getColorScheme, applyColorScheme, initializeColorScheme } from "./lib/colorSchemes";
+import { useState } from "react";
 
 function Router({ mobileMenuOpen, setMobileMenuOpen, onContactClick }: any) {
   // make sure to consider if you need authentication for certain routes
@@ -42,13 +40,6 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-  useEffect(() => {
-    // Initialize color scheme on mount
-    initializeColorScheme();
-  }, []);
-
-
-
   return (
     <ErrorBoundary>
       <ThemeProvider
@@ -62,7 +53,6 @@ function App() {
             setMobileMenuOpen={setMobileMenuOpen}
             onContactClick={() => setIsContactModalOpen(true)}
           />
-          <ColorSchemeSelector />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
