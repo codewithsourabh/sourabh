@@ -11,6 +11,7 @@ interface FormErrors {
   fullName?: string;
   email?: string;
   phoneNumber?: string;
+  reasonToContact?: string;
   message?: string;
 }
 
@@ -47,6 +48,12 @@ const COUNTRY_CODES = [
   { code: "+56", country: "Chile" },
 ];
 
+const REASON_TO_CONTACT = [
+  "Job",
+  "Project",
+  "General",
+];
+
 // Validation functions
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -73,6 +80,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
     email: "",
     countryCode: "+1",
     phoneNumber: "",
+    reasonToContact: "General",
     message: "",
   });
 
@@ -118,6 +126,13 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
           newErrors.phoneNumber = "Phone number must be 7-15 digits";
         } else {
           delete newErrors.phoneNumber;
+        }
+        break;
+      case "reasonToContact":
+        if (!formData.reasonToContact) {
+          newErrors.reasonToContact = "Please select a reason to contact";
+        } else {
+          delete newErrors.reasonToContact;
         }
         break;
       case "message":
@@ -169,6 +184,13 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
             delete newErrors.phoneNumber;
           }
           break;
+        case "reasonToContact":
+          if (!value) {
+            newErrors.reasonToContact = "Please select a reason to contact";
+          } else {
+            delete newErrors.reasonToContact;
+          }
+          break;
         case "message":
           if (!validateMessage(value)) {
             newErrors.message = "Message must be at least 10 characters";
@@ -184,11 +206,12 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
 
   const isFormValid = () => {
     // Check if all fields have values and are valid
-    const hasAllValues = formData.fullName && formData.email && formData.phoneNumber && formData.message;
+    const hasAllValues = formData.fullName && formData.email && formData.phoneNumber && formData.reasonToContact && formData.message;
     const allValid = 
       validateFullName(formData.fullName) &&
       validateEmail(formData.email) &&
       validatePhoneNumber(formData.phoneNumber) &&
+      formData.reasonToContact &&
       validateMessage(formData.message);
     const noErrors = Object.keys(errors).length === 0;
     
@@ -210,6 +233,9 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
     if (!formData.phoneNumber || !validatePhoneNumber(formData.phoneNumber)) {
       newErrors.phoneNumber = "Phone number must be 7-15 digits";
     }
+    if (!formData.reasonToContact) {
+      newErrors.reasonToContact = "Please select a reason to contact";
+    }
     if (!validateMessage(formData.message)) {
       newErrors.message = "Message must be at least 10 characters";
     }
@@ -220,6 +246,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
         fullName: true,
         email: true,
         phoneNumber: true,
+        reasonToContact: true,
         message: true,
       });
       return;
@@ -243,6 +270,10 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
           {
             name: "phone",
             value: `${formData.countryCode}${formData.phoneNumber}`,
+          },
+          {
+            name: "reason_to_contact",
+            value: formData.reasonToContact,
           },
           {
             name: "message",
@@ -274,6 +305,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
         email: "",
         countryCode: "+1",
         phoneNumber: "",
+        reasonToContact: "General",
         message: "",
       });
       setErrors({});
@@ -296,7 +328,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="relative w-full max-w-md mx-4 bg-white dark:bg-slate-900 rounded-lg shadow-xl">
+      <div className="relative w-full max-w-2xl mx-4 bg-white dark:bg-slate-900 rounded-lg shadow-xl">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -307,7 +339,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
         </button>
 
         {/* Modal Content */}
-        <div className="p-6 pt-12">
+        <div className="p-8 pt-12">
           {submitStatus === "success" ? (
             <div className="text-center py-8">
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -328,110 +360,149 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Full Name */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur("fullName")}
-                    required
-                    className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
-                      touched.fullName && errors.fullName
-                        ? "border-red-500 focus:ring-red-500"
-                        : touched.fullName && !errors.fullName
-                          ? "border-green-500 focus:ring-green-500"
-                          : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
-                    }`}
-                    placeholder="John Doe"
-                  />
-                  {touched.fullName && errors.fullName && (
-                    <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
-                  )}
-                  {touched.fullName && !errors.fullName && formData.fullName && (
-                    <p className="text-green-500 text-xs mt-1">✓ Valid</p>
-                  )}
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    onBlur={() => handleBlur("email")}
-                    required
-                    className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
-                      touched.email && errors.email
-                        ? "border-red-500 focus:ring-red-500"
-                        : touched.email && !errors.email
-                          ? "border-green-500 focus:ring-green-500"
-                          : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
-                    }`}
-                    placeholder="john@example.com"
-                  />
-                  {touched.email && errors.email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-                  )}
-                  {touched.email && !errors.email && formData.email && (
-                    <p className="text-green-500 text-xs mt-1">✓ Valid email</p>
-                  )}
-                </div>
-
-                {/* Phone Number with Country Code */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                    Phone Number *
-                  </label>
-                  <div className="flex gap-2">
-                    <select
-                      name="countryCode"
-                      value={formData.countryCode}
+                {/* Row 1: Full Name and Email */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formData.fullName}
                       onChange={handleInputChange}
-                      className="w-24 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      onBlur={() => handleBlur("fullName")}
+                      required
+                      className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
+                        touched.fullName && errors.fullName
+                          ? "border-red-500 focus:ring-red-500"
+                          : touched.fullName && !errors.fullName
+                            ? "border-green-500 focus:ring-green-500"
+                            : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                      }`}
+                      placeholder="John Doe"
+                    />
+                    {touched.fullName && errors.fullName && (
+                      <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+                    )}
+                    {touched.fullName && !errors.fullName && formData.fullName && (
+                      <p className="text-green-500 text-xs mt-1">✓ Valid</p>
+                    )}
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      onBlur={() => handleBlur("email")}
+                      required
+                      className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
+                        touched.email && errors.email
+                          ? "border-red-500 focus:ring-red-500"
+                          : touched.email && !errors.email
+                            ? "border-green-500 focus:ring-green-500"
+                            : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                      }`}
+                      placeholder="john@example.com"
+                    />
+                    {touched.email && errors.email && (
+                      <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                    )}
+                    {touched.email && !errors.email && formData.email && (
+                      <p className="text-green-500 text-xs mt-1">✓ Valid email</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Row 2: Phone Number and Reason To Contact */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Phone Number with Country Code */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Phone Number *
+                    </label>
+                    <div className="flex gap-2">
+                      <select
+                        name="countryCode"
+                        value={formData.countryCode}
+                        onChange={handleInputChange}
+                        className="w-20 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      >
+                        {COUNTRY_CODES.map((item) => (
+                          <option key={item.code} value={item.code}>
+                            {item.code}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="flex-1">
+                        <input
+                          type="tel"
+                          name="phoneNumber"
+                          value={formData.phoneNumber}
+                          onChange={handleInputChange}
+                          onBlur={() => handleBlur("phoneNumber")}
+                          required
+                          className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
+                            touched.phoneNumber && errors.phoneNumber
+                              ? "border-red-500 focus:ring-red-500"
+                              : touched.phoneNumber && !errors.phoneNumber
+                                ? "border-green-500 focus:ring-green-500"
+                                : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                          }`}
+                          placeholder="1234567890"
+                        />
+                      </div>
+                    </div>
+                    {touched.phoneNumber && errors.phoneNumber && (
+                      <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>
+                    )}
+                    {touched.phoneNumber && !errors.phoneNumber && formData.phoneNumber && (
+                      <p className="text-green-500 text-xs mt-1">✓ Valid phone number</p>
+                    )}
+                  </div>
+
+                  {/* Reason To Contact */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Reason To Contact *
+                    </label>
+                    <select
+                      name="reasonToContact"
+                      value={formData.reasonToContact}
+                      onChange={handleInputChange}
+                      onBlur={() => handleBlur("reasonToContact")}
+                      required
+                      className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
+                        touched.reasonToContact && errors.reasonToContact
+                          ? "border-red-500 focus:ring-red-500"
+                          : touched.reasonToContact && !errors.reasonToContact
+                            ? "border-green-500 focus:ring-green-500"
+                            : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
+                      }`}
                     >
-                      {COUNTRY_CODES.map((item) => (
-                        <option key={item.code} value={item.code}>
-                          {item.code}
+                      {REASON_TO_CONTACT.map((reason) => (
+                        <option key={reason} value={reason}>
+                          {reason}
                         </option>
                       ))}
                     </select>
-                    <div className="flex-1">
-                      <input
-                        type="tel"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleInputChange}
-                        onBlur={() => handleBlur("phoneNumber")}
-                        required
-                        className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 transition-all ${
-                          touched.phoneNumber && errors.phoneNumber
-                            ? "border-red-500 focus:ring-red-500"
-                            : touched.phoneNumber && !errors.phoneNumber
-                              ? "border-green-500 focus:ring-green-500"
-                              : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
-                        }`}
-                        placeholder="1234567890"
-                      />
-                    </div>
+                    {touched.reasonToContact && errors.reasonToContact && (
+                      <p className="text-red-500 text-xs mt-1">{errors.reasonToContact}</p>
+                    )}
+                    {touched.reasonToContact && !errors.reasonToContact && formData.reasonToContact && (
+                      <p className="text-green-500 text-xs mt-1">✓ Selected</p>
+                    )}
                   </div>
-                  {touched.phoneNumber && errors.phoneNumber && (
-                    <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>
-                  )}
-                  {touched.phoneNumber && !errors.phoneNumber && formData.phoneNumber && (
-                    <p className="text-green-500 text-xs mt-1">✓ Valid phone number</p>
-                  )}
                 </div>
 
-                {/* Message */}
+                {/* Row 3: Message (Full Width) */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                     Message *

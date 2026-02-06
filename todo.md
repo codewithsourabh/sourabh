@@ -105,3 +105,7 @@
 
 ## Current Issues
 - [x] Fix "Get in Touch" contact popup not opening (Added CustomContactForm to App.tsx and wired modal state)
+
+## Form Updates
+- [x] Add "Reason To Contact" dropdown field to contact form (Job, Project, General options)
+- [x] Restructure form layout: Name/Email side by side, Phone/Reason side by side, Message full width (Grid layout with proper spacing)
