@@ -127,3 +127,6 @@
 
 ## Comments Integration
 - [x] Remove Disqus comments completely (User preference - free tier has limited customization options)
+
+## Code Cleanup
+- [x] Remove unused component files (Removed 28 unused components: AIChatBox, ContactFormModal, DashboardLayout, DashboardLayoutSkeleton, ManusDialog, Map, ComponentShowcase, and 21 unused UI components)
