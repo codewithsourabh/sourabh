@@ -256,7 +256,7 @@ export function calculateReadingTime(htmlContent: string): number {
 /**
  * Fetch AIOSEO SEO data for a post
  */
-export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> {
+export async function getAIOSEOData(postId: number): Promise<Record<string, any> | null> {
   try {
     const response = await fetch(
       `${WORDPRESS_API}/posts/${postId}?_fields=aioseo_head_json`,
@@ -280,20 +280,8 @@ export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> 
       return null;
     }
 
-    // Map AIOSEO response to our interface
-    return {
-      metaTitle: aioseoData.title || undefined,
-      metaDescription: aioseoData.description || undefined,
-      keywords: aioseoData.keywords || undefined,
-      canonicalUrl: aioseoData.canonical_url || undefined,
-      robots: aioseoData.robots ? parseRobots(aioseoData.robots) : undefined,
-      og_title: aioseoData.og_title || undefined,
-      og_description: aioseoData.og_description || undefined,
-      og_image: aioseoData.og_image || undefined,
-      twitter_title: aioseoData.twitter_title || undefined,
-      twitter_description: aioseoData.twitter_description || undefined,
-      twitter_image: aioseoData.twitter_image || undefined,
-    };
+    // Return the complete aioseo_head_json object directly
+    return aioseoData;
   } catch (error) {
     console.error("Error fetching AIOSEO data:", error);
     return null;
