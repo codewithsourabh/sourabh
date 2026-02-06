@@ -47,28 +47,41 @@ export default function WordPressBlogPost() {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Simulate progress while loading
-  useEffect(() => {
-    if (!isLoading) return;
-
-    const interval = setInterval(() => {
-      setLoadProgress((prev) => {
-        const newProgress = prev + Math.random() * 30;
-        // Cap at 90% during loading, 100% will be set when loading completes
-        return Math.min(newProgress, 90);
-      });
-    }, 300);
-
-    return () => clearInterval(interval);
-  }, [isLoading]);
-
-  // Complete progress when loading finishes
+  // Smooth progress animation from 0 to 100%
   useEffect(() => {
     if (!isLoading) {
+      // When loading completes, jump to 100% then reset
       setLoadProgress(100);
       const timer = setTimeout(() => setLoadProgress(0), 500);
       return () => clearTimeout(timer);
     }
+
+    // Start progress from 0
+    setLoadProgress(0);
+
+    // Use requestAnimationFrame for smooth animation
+    let startTime = Date.now();
+    let animationFrameId: number;
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      // Smooth easing function: starts fast, slows down as it approaches 100%
+      // This creates a natural-looking progress bar
+      const progress = Math.min(100 * (1 - Math.pow(0.995, elapsed / 50)), 99);
+      setLoadProgress(progress);
+
+      if (progress < 99) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [isLoading]);
 
   const slug = params?.slug as string;
