@@ -80,7 +80,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
     email: "",
     countryCode: "+1",
     phoneNumber: "",
-    reasonToContact: "General",
+    reasonToContact: "",
     message: "",
   });
 
@@ -305,7 +305,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
         email: "",
         countryCode: "+1",
         phoneNumber: "",
-        reasonToContact: "General",
+        reasonToContact: "",
         message: "",
       });
       setErrors({});
@@ -487,6 +487,9 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                             : "border-slate-300 dark:border-slate-600 focus:ring-cyan-500"
                       }`}
                     >
+                      <option value="" disabled>
+                        Select a reason...
+                      </option>
                       {REASON_TO_CONTACT.map((reason) => (
                         <option key={reason} value={reason}>
                           {reason}

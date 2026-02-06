@@ -78,6 +78,7 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.selectOptions(screen.getByDisplayValue("+1"), "+44");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
+    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     const submitButton = screen.getByText("Send Message");
@@ -110,6 +111,7 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
+    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     await user.click(screen.getByText("Send Message"));
@@ -133,6 +135,7 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
+    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     await user.click(screen.getByText("Send Message"));
@@ -158,6 +161,7 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
+    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     const submitButton = screen.getByText("Send Message") as HTMLButtonElement;

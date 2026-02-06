@@ -109,3 +109,6 @@
 ## Form Updates
 - [x] Add "Reason To Contact" dropdown field to contact form (Job, Project, General options)
 - [x] Restructure form layout: Name/Email side by side, Phone/Reason side by side, Message full width (Grid layout with proper spacing)
+
+## Form Improvements
+- [x] Add placeholder to Reason To Contact dropdown instead of default selection (Empty by default, shows "Select a reason..." placeholder)
