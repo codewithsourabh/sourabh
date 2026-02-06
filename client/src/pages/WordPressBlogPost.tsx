@@ -3,7 +3,7 @@ import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
@@ -445,6 +445,44 @@ export default function WordPressBlogPost() {
                     <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                       <strong className="text-slate-900 dark:text-white text-base">{post.author}</strong> is a results-driven CRM & Automation Specialist with a proven track record of designing and implementing enterprise-level solutions for businesses across diverse industries. With over 5 years of hands-on experience in HubSpot administration, WordPress development, and workflow automation, Sourabh specializes in architecting scalable digital ecosystems that drive operational efficiency and measurable business growth.
                     </p>
+                    <div className="flex gap-4 mt-4">
+                      <a
+                        href="https://facebook.com/sourabhxsaini"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                        aria-label="Facebook"
+                      >
+                        <Facebook className="w-5 h-5" />
+                      </a>
+                      <a
+                        href="https://instagram.com/sourabhxsaini"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                        aria-label="Instagram"
+                      >
+                        <Instagram className="w-5 h-5" />
+                      </a>
+                      <a
+                        href="https://linkedin.com/in/sourabhxsaini"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                        aria-label="LinkedIn"
+                      >
+                        <Linkedin className="w-5 h-5" />
+                      </a>
+                      <a
+                        href="https://x.com/sourabhxsaini"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                        aria-label="X (Twitter)"
+                      >
+                        <Twitter className="w-5 h-5" />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
