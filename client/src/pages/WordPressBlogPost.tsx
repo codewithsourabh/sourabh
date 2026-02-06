@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock } from "lucide-react";
 import { Streamdown } from "streamdown";
+import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
 
@@ -20,6 +21,20 @@ interface BlogPostDetail {
   authorImage?: string | null;
   readingTime?: number;
   headings?: Array<{ id: string; text: string; level: number }>;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string;
+    focusKeyword?: string;
+    canonicalUrl?: string;
+    robots?: Record<string, string>;
+    og_title?: string;
+    og_description?: string;
+    og_image?: string;
+    twitter_title?: string;
+    twitter_description?: string;
+    twitter_image?: string;
+  } | null;
 }
 
 interface BlogPost {
@@ -225,6 +240,82 @@ export default function WordPressBlogPost() {
       }
     }
   }, [fetchedPost, isFetching, fetchError, progressComplete]);
+
+
+  // Update meta tags from AIOSEO data
+  useEffect(() => {
+    if (post?.seo) {
+      const seo = post.seo;
+      
+      // Update document title
+      if (seo.metaTitle) {
+        document.title = seo.metaTitle;
+      }
+      
+      // Update or create meta tags
+      const updateMetaTag = (name: string, content: string) => {
+        let tag = document.querySelector(`meta[name="${name}"]`) || 
+                  document.querySelector(`meta[property="${name}"]`);
+        
+        if (!tag) {
+          tag = document.createElement('meta');
+          if (name.startsWith('og:') || name.startsWith('twitter:')) {
+            tag.setAttribute('property', name);
+          } else {
+            tag.setAttribute('name', name);
+          }
+          document.head.appendChild(tag);
+        }
+        
+        tag.setAttribute('content', content);
+      };
+      
+      // Set meta description
+      if (seo.metaDescription) {
+        updateMetaTag('description', seo.metaDescription);
+      }
+      
+      // Set keywords
+      if (seo.keywords) {
+        updateMetaTag('keywords', seo.keywords);
+      }
+      
+      // Set canonical URL
+      if (seo.canonicalUrl) {
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+          canonical = document.createElement('link');
+          canonical.setAttribute('rel', 'canonical');
+          document.head.appendChild(canonical);
+        }
+        canonical.setAttribute('href', seo.canonicalUrl);
+      }
+      
+      // Set robots meta
+      if (seo.robots) {
+        const robotsString = Object.entries(seo.robots)
+          .map(([key, value]) => `${key}:${value}`)
+          .join(', ');
+        updateMetaTag('robots', robotsString);
+      }
+      
+      // Set Open Graph tags
+      if (seo.og_title) updateMetaTag('og:title', seo.og_title);
+      if (seo.og_description) updateMetaTag('og:description', seo.og_description);
+      if (seo.og_image) updateMetaTag('og:image', seo.og_image);
+      if (post.featuredImage) updateMetaTag('og:image', post.featuredImage);
+      
+      // Set Twitter Card tags
+      if (seo.twitter_title) updateMetaTag('twitter:title', seo.twitter_title);
+      if (seo.twitter_description) updateMetaTag('twitter:description', seo.twitter_description);
+      if (seo.twitter_image) updateMetaTag('twitter:image', seo.twitter_image);
+      if (post.featuredImage) updateMetaTag('twitter:image', post.featuredImage);
+      
+      // Set article meta tags
+      updateMetaTag('article:published_time', post.date);
+      updateMetaTag('article:author', post.author);
+    }
+  }, [post?.seo, post?.date, post?.author, post?.featuredImage]);
 
   // Get related posts (exclude current post)
   useEffect(() => {
