@@ -10,6 +10,7 @@ import WordPressBlogPost from "./pages/WordPressBlogPost";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import CustomContactForm from "./components/CustomContactForm";
 import { useState } from "react";
 
 function Router({ mobileMenuOpen, setMobileMenuOpen, onContactClick }: any) {
@@ -53,6 +54,7 @@ function App() {
             setMobileMenuOpen={setMobileMenuOpen}
             onContactClick={() => setIsContactModalOpen(true)}
           />
+          <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

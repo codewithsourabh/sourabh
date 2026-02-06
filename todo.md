@@ -102,3 +102,6 @@
 - [x] Fix circular loader loading twice - prevent effect from running multiple times (Used empty dependency array for animation effect, separated content visibility logic)
 - [x] Fix category filter: reset loader and show articles after loading completes (Added effect to reset loader on category change, restart animation for category loads)
 - [x] Fix loader stuck at 0% when clicking category - ensure animation starts properly (Changed to use isCategoryLoading instead of isLoading for category animation effect)
+
+## Current Issues
+- [x] Fix "Get in Touch" contact popup not opening (Added CustomContactForm to App.tsx and wired modal state)
