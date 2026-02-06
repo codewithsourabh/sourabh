@@ -47,7 +47,7 @@ export default function NewsletterForm() {
         />
         <Button
           type="submit"
-          className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 whitespace-nowrap"
+          className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 whitespace-nowrap h-11 px-6"
           disabled={isSubscribing}
         >
           <Send className="w-4 h-4" />
