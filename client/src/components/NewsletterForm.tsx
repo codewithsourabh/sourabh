@@ -17,15 +17,31 @@ export default function NewsletterForm() {
 
     setIsSubscribing(true);
     try {
-      const subscribers = JSON.parse(localStorage.getItem("newsletter_subscribers") || "[]");
-      if (!subscribers.includes(email)) {
-        subscribers.push(email);
-        localStorage.setItem("newsletter_subscribers", JSON.stringify(subscribers));
+      // Create FormData for multipart/form-data submission
+      const formData = new FormData();
+      formData.append("sureforms_form_submit", "7a9423dfb7");
+      formData.append("_wp_http_referer", "/form/newsletter-form/");
+      formData.append("form-id", "2716");
+      formData.append("srfm-sender-email-field", "");
+      formData.append("srfm-honeypot-field", "");
+      formData.append("srfm-email-feda2b5b-lbl-RW1haWwgQWRkcmVzcyo-email-address", email);
+
+      const response = await fetch(
+        "https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/sureforms/v1/submit-form",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       toast.success("Thanks for subscribing!");
       setEmail("");
     } catch (error) {
+      console.error("Newsletter subscription error:", error);
       toast.error("Failed to subscribe. Please try again.");
     } finally {
       setIsSubscribing(false);
