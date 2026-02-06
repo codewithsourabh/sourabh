@@ -451,6 +451,21 @@ export default function WordPressBlogPost() {
                 </div>
               </div>
 
+              {/* Disqus Comments Section */}
+              <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+                <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Comments</h3>
+                <div id="disqus_thread"></div>
+                <script>
+                  {`
+                    (function() {
+                      var d = document, s = d.createElement('script');
+                      s.src = 'https://sourabhsaini.disqus.com/embed.js';
+                      s.setAttribute('data-timestamp', +new Date());
+                      (d.head || d.body).appendChild(s);
+                    })();
+                  `}
+                </script>
+              </div>
 
             </div>
 

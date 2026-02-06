@@ -124,3 +124,6 @@
 
 ## SEO & Ad Network Files
 - [x] Create ads.txt file with ad network verification data (35 ad networks configured)
+
+## Comments Integration
+- [x] Add Disqus comments section to blog posts (right after author box, using shortname 'sourabhsaini')
