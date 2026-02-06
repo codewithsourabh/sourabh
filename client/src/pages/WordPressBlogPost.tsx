@@ -332,7 +332,7 @@ export default function WordPressBlogPost() {
                   </div>
                   
                   {/* Share and Summarize Buttons */}
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-row gap-2 items-center">
                     <Button
                       size="sm"
                       variant="outline"
