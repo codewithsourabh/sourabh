@@ -127,3 +127,4 @@
 
 ## Comments Integration
 - [x] Add Disqus comments section to blog posts (right after author box, using shortname 'sourabhsaini')
+- [x] Fix Disqus loading - use disqus-react DiscussionEmbed component instead of script tag (Installed disqus-react, implemented DiscussionEmbed with proper config)
