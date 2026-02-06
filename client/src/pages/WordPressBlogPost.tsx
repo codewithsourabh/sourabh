@@ -3,9 +3,10 @@ import { useRoute, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Share2, Linkedin, Twitter, Mail, Copy, Check, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, User, ChevronRight, Sparkles, Clock } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { toast } from "sonner";
+import SocialShareButtons from "@/components/SocialShareButtons";
 
 interface BlogPostDetail {
   id: number;
@@ -331,11 +332,11 @@ export default function WordPressBlogPost() {
                   </div>
                   
                   {/* Share and Summarize Buttons */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col gap-4">
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-cyan-600 hover:text-white border-cyan-200 dark:border-cyan-800 hover:bg-cyan-600 transition-colors"
+                      className="w-fit text-cyan-600 hover:text-white border-cyan-200 dark:border-cyan-800 hover:bg-cyan-600 transition-colors"
                       onClick={generateSummary}
                       disabled={isGeneratingSummary}
                     >
@@ -343,49 +344,14 @@ export default function WordPressBlogPost() {
                       {isGeneratingSummary ? "Summarizing..." : "Summarize"}
                     </Button>
                     
-                    <div className="relative">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-cyan-600 hover:text-white border-cyan-200 dark:border-cyan-800 hover:bg-cyan-600 transition-colors"
-                        onClick={() => setShowShareMenu(!showShareMenu)}
-                      >
-                        <Share2 className="w-4 h-4 mr-2" />
-                        Share
-                      </Button>
-                      
-                      {showShareMenu && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-10">
-                          <button
-                            onClick={() => { shareArticle("linkedin"); setShowShareMenu(false); }}
-                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300"
-                          >
-                            <Linkedin className="w-4 h-4" />
-                            LinkedIn
-                          </button>
-                          <button
-                            onClick={() => { shareArticle("twitter"); setShowShareMenu(false); }}
-                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300"
-                          >
-                            <Twitter className="w-4 h-4" />
-                            Twitter
-                          </button>
-                          <button
-                            onClick={() => { shareArticle("email"); setShowShareMenu(false); }}
-                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300"
-                          >
-                            <Mail className="w-4 h-4" />
-                            Email
-                          </button>
-                          <button
-                            onClick={() => { copyLink(); setShowShareMenu(false); }}
-                            className="w-full text-left px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 text-slate-700 dark:text-slate-300 border-t border-slate-200 dark:border-slate-700"
-                          >
-                            {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                            {copiedLink ? "Copied!" : "Copy Link"}
-                          </button>
-                        </div>
-                      )}
+                    <div>
+                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Share Article</p>
+                      <SocialShareButtons
+                        title={post?.title || "Check out this article"}
+                        url={currentUrl}
+                        description={post?.excerpt}
+                        layout="horizontal"
+                      />
                     </div>
                   </div>
                 </div>
