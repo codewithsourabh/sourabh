@@ -440,7 +440,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Row 1: Full Name and Email */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Full Name */}
                   <div>
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
@@ -501,7 +501,7 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                 </div>
 
                 {/* Row 2: Phone Number and Reason To Contact */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Phone Number with Country Code */}
                   <div>
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
