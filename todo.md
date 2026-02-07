@@ -143,3 +143,4 @@
 - [x] Update related articles card design to match blog page cards (Added date, author, read time metadata and animated Read More button with underline effect)
 - [x] Update author box mobile layout (Center-align author image, left-align description and social icons for mobile devices only)
 - [x] Update contact modal mobile layout (Stack form fields vertically - one field per row on mobile devices)
+- [x] Add country flags to country code dropdown (Display flag emojis next to country codes for better visual identification)

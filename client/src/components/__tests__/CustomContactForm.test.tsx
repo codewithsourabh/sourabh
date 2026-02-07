@@ -57,7 +57,7 @@ describe("CustomContactForm", () => {
     const user = userEvent.setup();
     render(<CustomContactForm isOpen={true} onClose={() => {}} />);
     
-    const countrySelect = screen.getByDisplayValue("+1") as HTMLSelectElement;
+    const countrySelect = screen.getAllByRole("combobox")[0] as HTMLSelectElement; // First select is country code
     await user.selectOptions(countrySelect, "+44");
     
     expect(countrySelect.value).toBe("+44");
@@ -76,9 +76,11 @@ describe("CustomContactForm", () => {
     
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
-    await user.selectOptions(screen.getByDisplayValue("+1"), "+44");
+    const countryCodeSelect = screen.getAllByRole("combobox")[0]; // First select is country code
+    await user.selectOptions(countryCodeSelect, "+44");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
-    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
+    const selects = screen.getAllByRole("combobox");
+    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     const submitButton = screen.getByText("Send Message");
@@ -111,7 +113,8 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
-    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
+    const selects = screen.getAllByRole("combobox");
+    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     await user.click(screen.getByText("Send Message"));
@@ -135,7 +138,8 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
-    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
+    const selects = screen.getAllByRole("combobox");
+    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     await user.click(screen.getByText("Send Message"));
@@ -161,13 +165,16 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
-    await user.selectOptions(screen.getByDisplayValue("Select a reason..."), "Job");
+    const selects = screen.getAllByRole("combobox");
+    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     const submitButton = screen.getByText("Send Message") as HTMLButtonElement;
     await user.click(submitButton);
     
-    expect(submitButton.disabled).toBe(true);
-    expect(screen.getByText("Sending...")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(submitButton.disabled).toBe(true);
+      expect(screen.getByText("Sending...")).toBeInTheDocument();
+    });
   });
 });
