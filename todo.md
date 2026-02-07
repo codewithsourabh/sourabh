@@ -145,3 +145,6 @@
 - [x] Update contact modal mobile layout (Stack form fields vertically - one field per row on mobile devices)
 - [x] Add country flags to country code dropdown (Display flag emojis next to country codes for better visual identification)
 - [x] Expand country code dropdown to include all countries (Added 195+ countries with flags and calling codes, fixed duplicate key warnings)
+- [x] Add country search/filter to dropdown (Created SearchableCountrySelect component with real-time search by country name or code)
+- [x] Set default country based on IP geolocation (Integrated ipapi.co API to auto-detect visitor's country and pre-select country code)
+- [x] Add popular countries section at top of dropdown (Marked 10 popular countries with priority display at the top of the list)

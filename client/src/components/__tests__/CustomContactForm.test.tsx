@@ -11,6 +11,20 @@ global.fetch = vi.fn();
 describe("CustomContactForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Mock IP geolocation API to return +1 by default
+    (global.fetch as any).mockImplementation((url: string) => {
+      if (url.includes('ipapi.co')) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({ country_calling_code: '+1' }),
+        });
+      }
+      // For HubSpot API, return success by default (can be overridden in individual tests)
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({}),
+      });
+    });
   });
 
   it("renders the form when isOpen is true", () => {
@@ -53,14 +67,15 @@ describe("CustomContactForm", () => {
     expect(emailInput.value).toBe("jane@example.com");
   });
 
-  it("changes country code when dropdown is selected", async () => {
-    const user = userEvent.setup();
+  it("renders searchable country code selector", async () => {
     render(<CustomContactForm isOpen={true} onClose={() => {}} />);
     
-    const countrySelect = screen.getAllByRole("combobox")[0] as HTMLSelectElement; // First select is country code
-    await user.selectOptions(countrySelect, "+44");
+    // SearchableCountrySelect renders a button with the selected country code
+    const countryButtons = screen.getAllByRole("button");
+    const countryButton = countryButtons.find(btn => btn.textContent?.includes("+"));
     
-    expect(countrySelect.value).toBe("+44");
+    expect(countryButton).toBeInTheDocument();
+    expect(countryButton?.textContent).toContain("+");
   });
 
   it("submits form with correct data to HubSpot API", async () => {
@@ -76,11 +91,10 @@ describe("CustomContactForm", () => {
     
     await user.type(screen.getByPlaceholderText("John Doe"), "Jane Smith");
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
-    const countryCodeSelect = screen.getAllByRole("combobox")[0]; // First select is country code
-    await user.selectOptions(countryCodeSelect, "+44");
+    // Country code is auto-detected, skip manual selection
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
     const selects = screen.getAllByRole("combobox");
-    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
+    await user.selectOptions(selects[0], "Job"); // First (and only) select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     const submitButton = screen.getByText("Send Message");
@@ -114,7 +128,7 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
     const selects = screen.getAllByRole("combobox");
-    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
+    await user.selectOptions(selects[0], "Job"); // First (and only) select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     await user.click(screen.getByText("Send Message"));
@@ -128,10 +142,16 @@ describe("CustomContactForm", () => {
     const user = userEvent.setup();
     const mockFetch = vi.mocked(fetch);
     
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      json: async () => ({}),
-    } as Response);
+    // First call is IP geolocation (success), second call is HubSpot (failure)
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ country_calling_code: '+1' }),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({}),
+      } as Response);
     
     render(<CustomContactForm isOpen={true} onClose={() => {}} />);
     
@@ -139,7 +159,7 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
     const selects = screen.getAllByRole("combobox");
-    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
+    await user.selectOptions(selects[0], "Job"); // First (and only) select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     await user.click(screen.getByText("Send Message"));
@@ -153,12 +173,18 @@ describe("CustomContactForm", () => {
     const user = userEvent.setup();
     const mockFetch = vi.mocked(fetch);
     
-    mockFetch.mockImplementationOnce(
-      () => new Promise((resolve) => setTimeout(() => resolve({
+    // First call is IP geolocation (success), second call is HubSpot (delayed success)
+    mockFetch
+      .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({}),
-      } as Response), 100))
-    );
+        json: async () => ({ country_calling_code: '+1' }),
+      } as Response)
+      .mockImplementationOnce(
+        () => new Promise((resolve) => setTimeout(() => resolve({
+          ok: true,
+          json: async () => ({}),
+        } as Response), 100))
+      );
     
     render(<CustomContactForm isOpen={true} onClose={() => {}} />);
     
@@ -166,7 +192,7 @@ describe("CustomContactForm", () => {
     await user.type(screen.getByPlaceholderText("john@example.com"), "jane@example.com");
     await user.type(screen.getByPlaceholderText("1234567890"), "9876543210");
     const selects = screen.getAllByRole("combobox");
-    await user.selectOptions(selects[1], "Job"); // Second select is reason to contact
+    await user.selectOptions(selects[0], "Job"); // First (and only) select is reason to contact
     await user.type(screen.getByPlaceholderText("Your message here..."), "Test message");
     
     const submitButton = screen.getByText("Send Message") as HTMLButtonElement;

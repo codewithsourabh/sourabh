@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X, CheckCircle, AlertCircle, Loader, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SearchableCountrySelect from "@/components/SearchableCountrySelect";
 
 interface ContactFormModalProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ const COUNTRY_CODES = [
   { code: "+244", country: "Angola", flag: "🇦🇴" },
   { code: "+54", country: "Argentina", flag: "🇦🇷" },
   { code: "+374", country: "Armenia", flag: "🇦🇲" },
-  { code: "+61", country: "Australia", flag: "🇦🇺" },
+  { code: "+61", country: "Australia", flag: "🇦🇺", popular: true },
   { code: "+43", country: "Austria", flag: "🇦🇹" },
   { code: "+994", country: "Azerbaijan", flag: "🇦🇿" },
   { code: "+973", country: "Bahrain", flag: "🇧🇭" },
@@ -43,12 +44,12 @@ const COUNTRY_CODES = [
   { code: "+257", country: "Burundi", flag: "🇧🇮" },
   { code: "+855", country: "Cambodia", flag: "🇰🇭" },
   { code: "+237", country: "Cameroon", flag: "🇨🇲" },
-  { code: "+1", country: "Canada", flag: "🇨🇦" },
+  { code: "+1", country: "Canada", flag: "🇨🇦", popular: true },
   { code: "+238", country: "Cape Verde", flag: "🇨🇻" },
   { code: "+236", country: "Central African Republic", flag: "🇨🇫" },
   { code: "+235", country: "Chad", flag: "🇹🇩" },
   { code: "+56", country: "Chile", flag: "🇨🇱" },
-  { code: "+86", country: "China", flag: "🇨🇳" },
+  { code: "+86", country: "China", flag: "🇨🇳", popular: true },
   { code: "+57", country: "Colombia", flag: "🇨🇴" },
   { code: "+269", country: "Comoros", flag: "🇰🇲" },
   { code: "+242", country: "Congo", flag: "🇨🇬" },
@@ -68,11 +69,11 @@ const COUNTRY_CODES = [
   { code: "+251", country: "Ethiopia", flag: "🇪🇹" },
   { code: "+679", country: "Fiji", flag: "🇫🇯" },
   { code: "+358", country: "Finland", flag: "🇫🇮" },
-  { code: "+33", country: "France", flag: "🇫🇷" },
+  { code: "+33", country: "France", flag: "🇫🇷", popular: true },
   { code: "+241", country: "Gabon", flag: "🇬🇦" },
   { code: "+220", country: "Gambia", flag: "🇬🇲" },
   { code: "+995", country: "Georgia", flag: "🇬🇪" },
-  { code: "+49", country: "Germany", flag: "🇩🇪" },
+  { code: "+49", country: "Germany", flag: "🇩🇪", popular: true },
   { code: "+233", country: "Ghana", flag: "🇬🇭" },
   { code: "+30", country: "Greece", flag: "🇬🇷" },
   { code: "+502", country: "Guatemala", flag: "🇬🇹" },
@@ -84,7 +85,7 @@ const COUNTRY_CODES = [
   { code: "+852", country: "Hong Kong", flag: "🇭🇰" },
   { code: "+36", country: "Hungary", flag: "🇭🇺" },
   { code: "+354", country: "Iceland", flag: "🇮🇸" },
-  { code: "+91", country: "India", flag: "🇮🇳" },
+  { code: "+91", country: "India", flag: "🇮🇳", popular: true },
   { code: "+62", country: "Indonesia", flag: "🇮🇩" },
   { code: "+98", country: "Iran", flag: "🇮🇷" },
   { code: "+964", country: "Iraq", flag: "🇮🇶" },
@@ -92,7 +93,7 @@ const COUNTRY_CODES = [
   { code: "+972", country: "Israel", flag: "🇮🇱" },
   { code: "+39", country: "Italy", flag: "🇮🇹" },
   { code: "+225", country: "Ivory Coast", flag: "🇨🇮" },
-  { code: "+81", country: "Japan", flag: "🇯🇵" },
+  { code: "+81", country: "Japan", flag: "🇯🇵", popular: true },
   { code: "+962", country: "Jordan", flag: "🇯🇴" },
   { code: "+7", country: "Kazakhstan", flag: "🇰🇿" },
   { code: "+254", country: "Kenya", flag: "🇰🇪" },
@@ -117,7 +118,7 @@ const COUNTRY_CODES = [
   { code: "+356", country: "Malta", flag: "🇲🇹" },
   { code: "+222", country: "Mauritania", flag: "🇲🇷" },
   { code: "+230", country: "Mauritius", flag: "🇲🇺" },
-  { code: "+52", country: "Mexico", flag: "🇲🇽" },
+  { code: "+52", country: "Mexico", flag: "🇲🇽", popular: true },
   { code: "+373", country: "Moldova", flag: "🇲🇩" },
   { code: "+377", country: "Monaco", flag: "🇲🇨" },
   { code: "+976", country: "Mongolia", flag: "🇲🇳" },
@@ -153,12 +154,12 @@ const COUNTRY_CODES = [
   { code: "+381", country: "Serbia", flag: "🇷🇸" },
   { code: "+248", country: "Seychelles", flag: "🇸🇨" },
   { code: "+232", country: "Sierra Leone", flag: "🇸🇱" },
-  { code: "+65", country: "Singapore", flag: "🇸🇬" },
+  { code: "+65", country: "Singapore", flag: "🇸🇬", popular: true },
   { code: "+421", country: "Slovakia", flag: "🇸🇰" },
   { code: "+386", country: "Slovenia", flag: "🇸🇮" },
   { code: "+252", country: "Somalia", flag: "🇸🇴" },
   { code: "+27", country: "South Africa", flag: "🇿🇦" },
-  { code: "+82", country: "South Korea", flag: "🇰🇷" },
+  { code: "+82", country: "South Korea", flag: "🇰🇷", popular: true },
   { code: "+211", country: "South Sudan", flag: "🇸🇸" },
   { code: "+34", country: "Spain", flag: "🇪🇸" },
   { code: "+94", country: "Sri Lanka", flag: "🇱🇰" },
@@ -178,9 +179,9 @@ const COUNTRY_CODES = [
   { code: "+993", country: "Turkmenistan", flag: "🇹🇲" },
   { code: "+256", country: "Uganda", flag: "🇺🇬" },
   { code: "+380", country: "Ukraine", flag: "🇺🇦" },
-  { code: "+971", country: "UAE", flag: "🇦🇪" },
-  { code: "+44", country: "United Kingdom", flag: "🇬🇧" },
-  { code: "+1", country: "United States", flag: "🇺🇸" },
+  { code: "+971", country: "UAE", flag: "🇦🇪", popular: true },
+  { code: "+44", country: "United Kingdom", flag: "🇬🇧", popular: true },
+  { code: "+1", country: "United States", flag: "🇺🇸", popular: true },
   { code: "+598", country: "Uruguay", flag: "🇺🇾" },
   { code: "+998", country: "Uzbekistan", flag: "🇺🇿" },
   { code: "+678", country: "Vanuatu", flag: "🇻🇺" },
@@ -418,6 +419,38 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
     };
   }, [saveTimeout]);
 
+  // Detect user's country based on IP and set default country code
+  useEffect(() => {
+    const detectCountry = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        
+        if (data.country_calling_code) {
+          // Find matching country in COUNTRY_CODES
+          const matchedCountry = COUNTRY_CODES.find(
+            country => country.code === data.country_calling_code
+          );
+          
+          if (matchedCountry) {
+            setFormData(prev => ({
+              ...prev,
+              countryCode: matchedCountry.code
+            }));
+          }
+        }
+      } catch (error) {
+        console.log('Could not detect country, using default');
+        // Keep default +1 if detection fails
+      }
+    };
+
+    if (isOpen && formData.countryCode === '+1') {
+      // Only detect if still using default value
+      detectCountry();
+    }
+  }, [isOpen]);
+
   const isFormValid = () => {
     // Check if all fields have values and are valid
     const hasAllValues = formData.fullName && formData.email && formData.phoneNumber && formData.reasonToContact && formData.message;
@@ -651,18 +684,12 @@ export default function CustomContactForm({ isOpen, onClose }: ContactFormModalP
                       Phone Number *
                     </label>
                     <div className="flex gap-2">
-                      <select
-                        name="countryCode"
+                      <SearchableCountrySelect
                         value={formData.countryCode}
-                        onChange={handleInputChange}
-                        className="w-24 px-2 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                      >
-                        {COUNTRY_CODES.map((item) => (
-                          <option key={`${item.country}-${item.code}`} value={item.code}>
-                            {item.flag} {item.code}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={(code) => setFormData(prev => ({ ...prev, countryCode: code }))}
+                        countries={COUNTRY_CODES}
+                        className="w-32"
+                      />
                       <div className="flex-1">
                         <input
                           type="tel"
