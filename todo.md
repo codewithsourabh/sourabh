@@ -141,3 +141,4 @@
 - [x] Inject newsletter before last h2 heading in article content (Newsletter now appears within article content before the last h2 heading, not after content)
 - [x] Update newsletter endpoint to custom WordPress API (Send JSON POST to https://whitesmoke-cormorant-464905.hostingersite.com/wp-json/custom/v1/newsletter with only email field, removed localStorage and other functionality)
 - [x] Update related articles card design to match blog page cards (Added date, author, read time metadata and animated Read More button with underline effect)
+- [x] Update author box mobile layout (Center-align author image, left-align description and social icons for mobile devices only)

@@ -447,9 +447,9 @@ export default function WordPressBlogPost() {
               {/* Author Box */}
               <div ref={authorSectionRef} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-6 mb-12 border border-slate-200 dark:border-slate-700">
                 <h3 className="text-lg font-bold mb-3 text-slate-900 dark:text-white">About the Author</h3>
-                <div className="flex gap-6 items-start">
+                <div className="flex flex-col md:flex-row gap-6 items-start">
                   {post.authorImage && (
-                    <div className="border-4 border-cyan-500 rounded-full flex-shrink-0">
+                    <div className="border-4 border-cyan-500 rounded-full flex-shrink-0 mx-auto md:mx-0">
                       <img
                         src={post.authorImage}
                         alt={post.author}
@@ -457,11 +457,11 @@ export default function WordPressBlogPost() {
                       />
                     </div>
                   )}
-                  <div className="flex-1">
-                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                  <div className="flex-1 w-full">
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-left">
                       <strong className="text-slate-900 dark:text-white text-base">{post.author}</strong> is a results-driven CRM & Automation Specialist with a proven track record of designing and implementing enterprise-level solutions for businesses across diverse industries. With over 5 years of hands-on experience in HubSpot administration, WordPress development, and workflow automation, Sourabh specializes in architecting scalable digital ecosystems that drive operational efficiency and measurable business growth.
                     </p>
-                    <div className="mt-4 flex items-center gap-4">
+                    <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                       <p className="text-slate-700 dark:text-slate-300 text-sm">
                         <strong className="text-slate-900 dark:text-white">Follow Me On:</strong>
                       </p>
