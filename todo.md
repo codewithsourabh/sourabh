@@ -144,3 +144,4 @@
 - [x] Update author box mobile layout (Center-align author image, left-align description and social icons for mobile devices only)
 - [x] Update contact modal mobile layout (Stack form fields vertically - one field per row on mobile devices)
 - [x] Add country flags to country code dropdown (Display flag emojis next to country codes for better visual identification)
+- [x] Expand country code dropdown to include all countries (Added 195+ countries with flags and calling codes, fixed duplicate key warnings)
