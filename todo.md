@@ -150,3 +150,4 @@
 - [x] Add popular countries section at top of dropdown (Marked 10 popular countries with priority display at the top of the list)
 - [x] Add favicon files to public directory and link in HTML head (Added all 7 favicon files: android-chrome-192x192.png, android-chrome-512x512.png, apple-touch-icon.png, favicon.ico, favicon-16x16.png, favicon-32x32.png, site.webmanifest with proper HTML head tags)
 - [x] Fix favicon 404 errors (Moved favicon files from root public/ to client/public/ directory to match Vite publicDir configuration)
+- [x] Upload logo.svg to client/public/ directory (Copied logo.svg to public assets, accessible at /logo.svg)
