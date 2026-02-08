@@ -5,7 +5,6 @@ import { nanoid } from "nanoid";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import viteConfig from "../../vite.config";
-import { viteSeoPlugin } from "./vite-seo-plugin";
 
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
@@ -19,10 +18,6 @@ export async function setupVite(app: Express, server: Server) {
     configFile: false,
     server: serverOptions,
     appType: "custom",
-    plugins: [
-      ...(viteConfig.plugins || []),
-      viteSeoPlugin(),
-    ],
   });
 
   app.use(vite.middlewares);
