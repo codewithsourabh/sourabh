@@ -153,3 +153,4 @@
 - [x] Upload logo.svg to client/public/ directory (Copied logo.svg to public assets, accessible at /logo.svg)
 - [x] Remove all static SEO meta tags and related logic from all pages (Removed meta description/keywords from index.html, removed structuredData imports/usage from Home.tsx, deleted structuredData.ts library file)
 - [x] Implement AIOSEO integration for WordPress blog posts (Added SEOMetaTags component, aioseo-types.ts, updated WordPressPost interface with aioseo field, integrated SEOMetaTags in WordPressBlogPost with dynamic title/description/og:image/canonical URL)
+- [x] Add console logging for AIOSEO data in blog posts (Added console.log statements in WordPressBlogPost to display AIOSEO availability and full data when articles are fetched, also added aioseo field to postBySlug router return)

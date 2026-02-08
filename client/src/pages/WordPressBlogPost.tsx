@@ -234,6 +234,10 @@ export default function WordPressBlogPost() {
     } else if (fetchedPost) {
       setPost(fetchedPost);
       setError(null);
+      // Log AIOSEO data for debugging
+      console.log('📊 AIOSEO Data for article:', fetchedPost.title);
+      console.log('AIOSEO Available:', fetchedPost.aioseo?.available);
+      console.log('AIOSEO Full Data:', fetchedPost.aioseo);
       // Wait for progress animation to complete before showing content
       if (progressComplete) {
         setIsLoading(false);

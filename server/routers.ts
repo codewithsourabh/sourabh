@@ -83,6 +83,7 @@ export const appRouter = router({
           authorImage: authorImage,
           readingTime: readingTime,
           headings: headings,
+          aioseo: post.aioseo,
         };
       }),
     
