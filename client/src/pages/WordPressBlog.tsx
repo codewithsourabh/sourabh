@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Calendar, User, Search, X, Clock } from "lucide-react";
 import { useLocation } from "wouter";
 import { CircularProgress } from "@/components/CircularProgress";
+import SEOMetaTags from "@/components/SEOMetaTags";
 
 interface BlogPost {
   id: number;
@@ -156,6 +157,12 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEOMetaTags
+        title="Blog | Sourabh Saini - CRM & Automation Insights"
+        description="Explore articles about HubSpot, WordPress, CRM automation, workflow optimization, and integration strategies. Expert insights from a CRM & Automation Specialist."
+        canonicalUrl="https://sourabhsaini.com/blog"
+      />
+      
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="container">

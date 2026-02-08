@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
 import { useState, useEffect } from "react";
 import CustomContactForm from "@/components/CustomContactForm";
-
+import SEOMetaTags from "@/components/SEOMetaTags";
 import { useTheme } from "@/contexts/ThemeContext";
 
 /**
@@ -333,6 +333,11 @@ export default function Home({ onContactClick }: HomeProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEOMetaTags
+        title="Sourabh Saini | CRM & Automation Expert"
+        description="Sourabh Saini is a results-driven CRM & Automation Specialist with over 5 years of experience in HubSpot, WordPress, and workflow automation. Building scalable digital solutions that drive business growth."
+        canonicalUrl="https://sourabhsaini.com"
+      />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">

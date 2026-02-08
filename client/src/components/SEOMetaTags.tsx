@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 interface SEOMetaTagsProps {
   title?: string;
@@ -22,77 +22,46 @@ interface SEOMetaTagsProps {
 }
 
 export default function SEOMetaTags(props: SEOMetaTagsProps) {
-  useEffect(() => {
-    const aioseo = props.aioseo;
-    
-    const finalMeta = {
-      title: props.title || aioseo?.rendered_title || aioseo?.title || '',
-      description: props.description || aioseo?.rendered_description || aioseo?.description || '',
-      canonicalUrl: props.canonicalUrl || aioseo?.canonical_url || window.location.href,
-      ogImage: props.ogImage || aioseo?.og_image_custom_url || aioseo?.og_image_url || '',
-      robots: buildRobotsTag(aioseo),
-    };
-
-    // Set document title
-    if (finalMeta.title) {
-      document.title = finalMeta.title;
-    }
-
-    // Remove existing meta tags
-    removeExistingMetaTags();
-
-    // Create and append new meta tags
-    const metaTags = [
-      createMetaTag('description', finalMeta.description),
-      finalMeta.robots && createMetaTag('robots', finalMeta.robots),
-      finalMeta.canonicalUrl && createLinkTag('canonical', finalMeta.canonicalUrl),
-      createMetaTag('og:title', finalMeta.title, 'property'),
-      createMetaTag('og:description', finalMeta.description, 'property'),
-      finalMeta.ogImage && createMetaTag('og:image', finalMeta.ogImage, 'property'),
-      createMetaTag('og:type', 'article', 'property'),
-      createMetaTag('twitter:card', 'summary_large_image', 'name'),
-      createMetaTag('twitter:title', finalMeta.title, 'name'),
-      createMetaTag('twitter:description', finalMeta.description, 'name'),
-      finalMeta.ogImage && createMetaTag('twitter:image', finalMeta.ogImage, 'name'),
-    ];
-
-    metaTags.forEach(tag => {
-      if (tag) {
-        document.head.appendChild(tag);
-      }
-    });
-
-    return () => {
-      removeExistingMetaTags();
-    };
-  }, [props]);
-
-  return null;
-}
-
-function createMetaTag(name: string, content: string, attribute: 'name' | 'property' = 'name'): HTMLMetaElement | null {
-  if (!content) return null;
+  const aioseo = props.aioseo;
   
-  const meta = document.createElement('meta');
-  meta.setAttribute(attribute, name);
-  meta.setAttribute('content', content);
-  meta.setAttribute('data-seo-injected', 'true');
-  return meta;
-}
+  const finalMeta = {
+    title: props.title || aioseo?.rendered_title || aioseo?.title || 'Sourabh | Software Engineer Portfolio',
+    description: props.description || aioseo?.rendered_description || aioseo?.description || 'CRM & Automation Expert. HubSpot, WordPress, and workflow automation specialist building scalable digital solutions.',
+    canonicalUrl: props.canonicalUrl || aioseo?.canonical_url || (typeof window !== 'undefined' ? window.location.href : ''),
+    ogImage: props.ogImage || aioseo?.og_image_custom_url || aioseo?.og_image_url || '',
+    robots: buildRobotsTag(aioseo),
+  };
 
-function createLinkTag(rel: string, href: string): HTMLLinkElement | null {
-  if (!href) return null;
-  
-  const link = document.createElement('link');
-  link.setAttribute('rel', rel);
-  link.setAttribute('href', href);
-  link.setAttribute('data-seo-injected', 'true');
-  return link;
-}
-
-function removeExistingMetaTags() {
-  const existingTags = document.querySelectorAll('[data-seo-injected="true"]');
-  existingTags.forEach(tag => tag.remove());
+  return (
+    <Helmet>
+      {/* Basic Meta Tags */}
+      <title>{finalMeta.title}</title>
+      <meta name="description" content={finalMeta.description} />
+      {finalMeta.robots && <meta name="robots" content={finalMeta.robots} />}
+      {finalMeta.canonicalUrl && <link rel="canonical" href={finalMeta.canonicalUrl} />}
+      
+      {/* Open Graph Tags */}
+      <meta property="og:title" content={finalMeta.title} />
+      <meta property="og:description" content={finalMeta.description} />
+      {finalMeta.ogImage && <meta property="og:image" content={finalMeta.ogImage} />}
+      <meta property="og:type" content="article" />
+      {finalMeta.canonicalUrl && <meta property="og:url" content={finalMeta.canonicalUrl} />}
+      
+      {/* Twitter Card Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={finalMeta.title} />
+      <meta name="twitter:description" content={finalMeta.description} />
+      {finalMeta.ogImage && <meta name="twitter:image" content={finalMeta.ogImage} />}
+      
+      {/* Article Specific Tags */}
+      {props.articlePublishedTime && (
+        <meta property="article:published_time" content={props.articlePublishedTime} />
+      )}
+      {props.articleAuthor && (
+        <meta property="article:author" content={props.articleAuthor} />
+      )}
+    </Helmet>
+  );
 }
 
 function buildRobotsTag(aioseo?: any): string {
