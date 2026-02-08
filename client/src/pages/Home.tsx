@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
 import { useState, useEffect } from "react";
 import CustomContactForm from "@/components/CustomContactForm";
-import { generatePersonSchema, generateBreadcrumbSchema, injectStructuredData } from "@/lib/structuredData";
+
 import { useTheme } from "@/contexts/ThemeContext";
 
 /**
@@ -155,12 +155,7 @@ export default function Home({ onContactClick }: HomeProps) {
     };
   }, []);
 
-  useEffect(() => {
-    injectStructuredData(generatePersonSchema());
-    injectStructuredData(generateBreadcrumbSchema([
-      { name: 'Home', url: 'https://sourabh-portfolio.manus.space' },
-    ]));
-  }, []);
+
 
   const navLinks = [
     { label: "Skills", href: "#skills" },
