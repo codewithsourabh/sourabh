@@ -155,3 +155,4 @@
 - [x] Remove all SEO-related code and unused default components (Removed SEOMetaTags.tsx, aioseo-types.ts, DashboardLayout.tsx, DashboardLayoutSkeleton.tsx, AIChatBox.tsx, Map.tsx, ComponentShowcase.tsx. All tests passing.)
 - [x] Scan and remove all unused components from client/src/components directory (All components are actively used)
 - [x] Remove AIChatBox.tsx, DashboardLayout.tsx, DashboardLayoutSkeleton.tsx, Map.tsx from components (Successfully removed all 4 files)
+- [x] Remove static title tag from index.html and implement dynamic page titles (Created usePageTitle hook, removed static title from index.html, added dynamic titles to Home, Blog listing, Blog post, and 404 pages. All 27 tests passing.)
