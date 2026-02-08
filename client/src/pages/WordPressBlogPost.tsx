@@ -9,6 +9,7 @@ import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
 import NewsletterForm from "@/components/NewsletterForm";
+import SEOHead from "@/components/SEOHead";
 
 
 interface BlogPostDetail {
@@ -23,6 +24,20 @@ interface BlogPostDetail {
   authorImage?: string | null;
   readingTime?: number;
   headings?: Array<{ id: string; text: string; level: number }>;
+  seo?: {
+    title?: string;
+    description?: string;
+    og_title?: string;
+    og_description?: string;
+    og_image?: string;
+    twitter_title?: string;
+    twitter_description?: string;
+    twitter_image?: string;
+    canonical_url?: string;
+    keywords?: string;
+    robots_noindex?: boolean;
+    robots_nofollow?: boolean;
+  } | null;
 }
 
 interface BlogPost {
@@ -39,7 +54,7 @@ export default function WordPressBlogPost() {
   const [, navigate] = useLocation();
   const [match, params] = useRoute("/blog/:slug");
   const [post, setPost] = useState<BlogPostDetail | null>(null);
-  
+
   // Set dynamic title based on post title
   usePageTitle(post ? `${post.title} - Sourabh Saini Blogs` : "Loading... - Sourabh Saini Blogs");
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
@@ -68,7 +83,7 @@ export default function WordPressBlogPost() {
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min((elapsed / ANIMATION_DURATION) * 100, 100);
-      
+
       setLoadProgress(progress);
 
       if (progress < 100) {
@@ -144,7 +159,7 @@ export default function WordPressBlogPost() {
   // Generate AI summary
   const generateSummary = async () => {
     if (!post) return;
-    
+
     setIsGeneratingSummary(true);
     try {
       const response = await fetch("/api/trpc/wordpress.summarizePost?batch=1", {
@@ -164,7 +179,7 @@ export default function WordPressBlogPost() {
       });
 
       if (!response.ok) throw new Error("Failed to generate summary");
-      
+
       const data = await response.json();
       const summaryText = data[0]?.result?.data?.json;
       setSummary(summaryText);
@@ -323,6 +338,27 @@ export default function WordPressBlogPost() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* SEO Meta Tags */}
+      {post && (
+        <SEOHead
+          title={post.seo?.title || `${post.title} - Sourabh Saini Blogs`}
+          description={post.seo?.description || post.excerpt}
+          ogTitle={post.seo?.og_title || post.title}
+          ogDescription={post.seo?.og_description || post.excerpt}
+          ogImage={post.seo?.og_image || post.featuredImage || undefined}
+          twitterTitle={post.seo?.twitter_title}
+          twitterDescription={post.seo?.twitter_description}
+          twitterImage={post.seo?.twitter_image}
+          canonicalUrl={post.seo?.canonical_url || currentUrl}
+          keywords={post.seo?.keywords}
+          noindex={post.seo?.robots_noindex}
+          nofollow={post.seo?.robots_nofollow}
+          author={post.author}
+          publishedTime={post.date}
+          type="article"
+        />
+      )}
+
       {/* Reading Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-700 z-50">
         <div
@@ -393,7 +429,7 @@ export default function WordPressBlogPost() {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Share and Summarize Buttons */}
                   <div className="flex flex-row gap-2 items-center">
                     <Button
@@ -406,7 +442,7 @@ export default function WordPressBlogPost() {
                       <Sparkles className="w-4 h-4 mr-2" />
                       {isGeneratingSummary ? "Summarizing..." : "Summarize"}
                     </Button>
-                    
+
                     <SocialShareButtons
                       title={post?.title || "Check out this article"}
                       url={currentUrl}
@@ -470,42 +506,42 @@ export default function WordPressBlogPost() {
                         <strong className="text-slate-900 dark:text-white">Follow Me On:</strong>
                       </p>
                       <div className="flex gap-4">
-                      <a
-                        href="https://facebook.com/sourabhxsaini"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
-                        aria-label="Facebook"
-                      >
-                        <Facebook className="w-5 h-5" />
-                      </a>
-                      <a
-                        href="https://instagram.com/sourabhxsaini"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
-                        aria-label="Instagram"
-                      >
-                        <Instagram className="w-5 h-5" />
-                      </a>
-                      <a
-                        href="https://linkedin.com/in/sourabhxsaini"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
-                        aria-label="LinkedIn"
-                      >
-                        <Linkedin className="w-5 h-5" />
-                      </a>
-                      <a
-                        href="https://x.com/sourabhxsaini"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
-                        aria-label="X (Twitter)"
-                      >
-                        <Twitter className="w-5 h-5" />
-                      </a>
+                        <a
+                          href="https://facebook.com/sourabhxsaini"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                          aria-label="Facebook"
+                        >
+                          <Facebook className="w-5 h-5" />
+                        </a>
+                        <a
+                          href="https://instagram.com/sourabhxsaini"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                          aria-label="Instagram"
+                        >
+                          <Instagram className="w-5 h-5" />
+                        </a>
+                        <a
+                          href="https://linkedin.com/in/sourabhxsaini"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                          aria-label="LinkedIn"
+                        >
+                          <Linkedin className="w-5 h-5" />
+                        </a>
+                        <a
+                          href="https://x.com/sourabhxsaini"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                          aria-label="X (Twitter)"
+                        >
+                          <Twitter className="w-5 h-5" />
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -519,7 +555,7 @@ export default function WordPressBlogPost() {
             {/* Table of Contents Sidebar */}
             {post.headings && post.headings.length > 0 && (
               <aside className="hidden lg:block w-64 flex-shrink-0">
-                <div ref={tocSidebarRef} className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 h-96 flex flex-col" style={{maxHeight: tocMaxHeight}}>
+                <div ref={tocSidebarRef} className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 h-96 flex flex-col" style={{ maxHeight: tocMaxHeight }}>
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 flex-shrink-0">
                     <ChevronRight className="w-4 h-4" />
                     On this page
@@ -536,11 +572,10 @@ export default function WordPressBlogPost() {
                             element.scrollIntoView({ behavior: "smooth" });
                           }
                         }}
-                        className={`block text-sm py-1 px-3 rounded transition-colors ${
-                          activeHeading === heading.id
+                        className={`block text-sm py-1 px-3 rounded transition-colors ${activeHeading === heading.id
                             ? "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 font-semibold"
                             : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
-                        }`}
+                          }`}
                         style={{ paddingLeft: `${12 + (heading.level - 1) * 12}px` }}
                       >
                         {heading.text}
@@ -565,7 +600,7 @@ export default function WordPressBlogPost() {
                   key={relatedPost.id}
                   className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
                   onClick={() => navigate(`/blog/${relatedPost.slug}`)}
-                  style={{paddingTop: '0px', paddingBottom: '2px'}}
+                  style={{ paddingTop: '0px', paddingBottom: '2px' }}
                 >
                   {/* Featured Image */}
                   {relatedPost.featuredImage && (

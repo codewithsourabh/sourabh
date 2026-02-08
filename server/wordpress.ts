@@ -1,12 +1,13 @@
 /**
- * WordPress API Helper
- * Fetches blog posts from WordPress REST API
+ * WordPress API Helper with AIOSEO Support
+ * Fetches blog posts and SEO data from WordPress REST API
  */
 
 import crypto from "crypto";
 
-const WORDPRESS_URL = "https://whitesmoke-cormorant-464905.hostingersite.com";
+const WORDPRESS_URL = "https://cdn.sourabhsaini.com";
 const WORDPRESS_API = `${WORDPRESS_URL}/wp-json/wp/v2`;
+const AIOSEO_API = `${WORDPRESS_URL}/wp-json/aioseo/v1`;
 
 export interface WordPressPost {
   id: number;
@@ -36,10 +37,68 @@ export interface WordPressPost {
   };
 }
 
+export interface AIOSEOData {
+  title?: string;
+  description?: string;
+  og_title?: string;
+  og_description?: string;
+  og_image?: string;
+  twitter_title?: string;
+  twitter_description?: string;
+  twitter_image?: string;
+  canonical_url?: string;
+  keywords?: string;
+  robots_default?: boolean;
+  robots_noindex?: boolean;
+  robots_nofollow?: boolean;
+}
+
 export interface WordPressMedia {
   id: number;
   source_url: string;
   alt_text: string;
+}
+
+/**
+ * Fetch AIOSEO data for a specific post
+ */
+export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> {
+  try {
+    const response = await fetch(
+      `${AIOSEO_API}/post/${postId}`,
+      {
+        headers: {
+          "Accept": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.warn(`AIOSEO API returned ${response.status} for post ${postId}`);
+      return null;
+    }
+
+    const data = await response.json();
+    
+    return {
+      title: data.title || null,
+      description: data.description || null,
+      og_title: data.og_title || null,
+      og_description: data.og_description || null,
+      og_image: data.og_image_url || null,
+      twitter_title: data.twitter_title || null,
+      twitter_description: data.twitter_description || null,
+      twitter_image: data.twitter_image_url || null,
+      canonical_url: data.canonical_url || null,
+      keywords: data.keyphrases?.focus?.keyphrase || null,
+      robots_default: data.robots_default !== false,
+      robots_noindex: data.robots_noindex === true,
+      robots_nofollow: data.robots_nofollow === true,
+    };
+  } catch (error) {
+    console.error("Error fetching AIOSEO data for post", postId, ":", error);
+    return null;
+  }
 }
 
 /**

@@ -2,9 +2,9 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuthorName, getExcerpt, getWordPressCategories, getWordPressPostsByCategory, extractHeadings, getAuthorImage, calculateReadingTime } from "./wordpress";
-import { getBlogSummary, saveBlogSummary } from "./db";
+import { getWordPressPosts, getWordPressPostBySlug, getFeaturedImageUrl, getAuthorName, getExcerpt, getWordPressCategories, getWordPressPostsByCategory, extractHeadings, getAuthorImage, calculateReadingTime, getAIOSEOData } from "./wordpress";import { getBlogSummary, saveBlogSummary } from "./db";
 import { z } from "zod";
+
 
 // Decode HTML entities
 function decodeHtmlEntities(text: string): string {
@@ -17,7 +17,7 @@ function decodeHtmlEntities(text: string): string {
     '&#039;': "'",
     '&apos;': "'",
   };
-  
+
   let decoded = text;
   for (const [entity, char] of Object.entries(entities)) {
     decoded = decoded.replace(new RegExp(entity, 'g'), char);
@@ -26,7 +26,7 @@ function decodeHtmlEntities(text: string): string {
 }
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
+  // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -46,7 +46,7 @@ export const appRouter = router({
         const page = input?.page || 1;
         const perPage = input?.perPage || 10;
         const posts = await getWordPressPosts(page, perPage);
-        
+
         return posts.map((post) => ({
           id: post.id,
           title: decodeHtmlEntities(post.title.rendered),
@@ -57,20 +57,23 @@ export const appRouter = router({
           author: getAuthorName(post),
         }));
       }),
-    
+
     postBySlug: publicProcedure
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }) => {
         const post = await getWordPressPostBySlug(input.slug);
-        
+
         if (!post) {
           return null;
         }
-        
+
         const headings = extractHeadings(post.content.rendered);
         const readingTime = calculateReadingTime(post.content.rendered);
         const authorImage = getAuthorImage(post);
-        
+
+        // Fetch AIOSEO data
+        const seoData = await getAIOSEOData(post.id);
+
         return {
           id: post.id,
           title: decodeHtmlEntities(post.title.rendered),
@@ -83,19 +86,20 @@ export const appRouter = router({
           authorImage: authorImage,
           readingTime: readingTime,
           headings: headings,
+          seo: seoData, // Add SEO data
         };
       }),
-    
+
     categories: publicProcedure
       .query(async () => {
         return await getWordPressCategories();
       }),
-    
+
     postsByCategory: publicProcedure
       .input(z.object({ categoryId: z.number(), perPage: z.number().default(10) }))
       .query(async ({ input }) => {
         const posts = await getWordPressPostsByCategory(input.categoryId, input.perPage);
-        
+
         return posts.map((post) => ({
           id: post.id,
           title: decodeHtmlEntities(post.title.rendered),
@@ -106,7 +110,7 @@ export const appRouter = router({
           author: getAuthorName(post),
         }));
       }),
-    
+
     summarizePost: publicProcedure
       .input(z.object({ title: z.string(), content: z.string(), slug: z.string() }))
       .mutation(async ({ input }) => {
@@ -119,14 +123,14 @@ export const appRouter = router({
           }
 
           console.log(`[Cache MISS] Generating summary for ${input.slug}`);
-          
+
           // Clean and truncate content to avoid token limits
           // Remove HTML tags and limit to first 2000 characters
           const cleanContent = input.content
             .replace(/<[^>]*>/g, '') // Remove HTML tags
             .replace(/&[a-z]+;/g, '') // Remove HTML entities
             .substring(0, 2000);
-          
+
           const { invokeLLM } = await import("./_core/llm");
           const response = await invokeLLM({
             messages: [
@@ -140,22 +144,22 @@ export const appRouter = router({
               },
             ],
           });
-          
+
           const summaryContent = response.choices[0]?.message?.content;
           if (!summaryContent) {
             console.error("No summary content received from LLM");
             throw new Error("No summary content received");
           }
-          
+
           const summary = typeof summaryContent === 'string' ? summaryContent : "Unable to generate summary";
-          
+
           // Save to cache
           await saveBlogSummary({
             postSlug: input.slug,
             postTitle: input.title,
             summary: summary,
           });
-          
+
           console.log(`[Success] Summary generated for ${input.slug}`);
           return summary;
         } catch (error) {
