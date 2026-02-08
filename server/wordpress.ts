@@ -34,6 +34,21 @@ export interface WordPressPost {
       };
     }>;
   };
+  aioseo?: {
+    available: boolean;
+    title?: string;
+    description?: string;
+    og_image_url?: string;
+    og_image_custom_url?: string;
+    canonical_url?: string;
+    seo_score?: number;
+    rendered_title?: string;
+    rendered_description?: string;
+    robots_noindex?: boolean;
+    robots_nofollow?: boolean;
+    robots_noarchive?: boolean;
+    [key: string]: any;
+  };
 }
 
 export interface WordPressMedia {

@@ -8,6 +8,7 @@ import { Streamdown } from "streamdown";
 import { toast } from "sonner";
 import SocialShareButtons from "@/components/SocialShareButtons";
 import NewsletterForm from "@/components/NewsletterForm";
+import SEOMetaTags from "@/components/SEOMetaTags";
 
 
 interface BlogPostDetail {
@@ -22,6 +23,21 @@ interface BlogPostDetail {
   authorImage?: string | null;
   readingTime?: number;
   headings?: Array<{ id: string; text: string; level: number }>;
+  aioseo?: {
+    available: boolean;
+    title?: string;
+    description?: string;
+    og_image_url?: string;
+    og_image_custom_url?: string;
+    canonical_url?: string;
+    seo_score?: number;
+    rendered_title?: string;
+    rendered_description?: string;
+    robots_noindex?: boolean;
+    robots_nofollow?: boolean;
+    robots_noarchive?: boolean;
+    [key: string]: any;
+  };
 }
 
 interface BlogPost {
@@ -319,6 +335,17 @@ export default function WordPressBlogPost() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* SEO Meta Tags */}
+      <SEOMetaTags
+        aioseo={post.aioseo}
+        title={post.aioseo?.rendered_title || post.title}
+        description={post.aioseo?.rendered_description || post.excerpt}
+        ogImage={post.aioseo?.og_image_custom_url || post.aioseo?.og_image_url || post.featuredImage || undefined}
+        canonicalUrl={post.aioseo?.canonical_url || currentUrl}
+        articlePublishedTime={post.date}
+        articleAuthor={post.author}
+      />
+      
       {/* Reading Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-700 z-50">
         <div
