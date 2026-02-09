@@ -674,6 +674,5 @@ export default function Home({ onContactClick }: HomeProps) {
       {/* Contact Form Modal */}
       <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
-    </>
   );
 }
