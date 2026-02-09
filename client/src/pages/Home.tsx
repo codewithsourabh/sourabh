@@ -1,5 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
@@ -20,7 +21,11 @@ interface HomeProps {
 }
 
 export default function Home({ onContactClick }: HomeProps) {
-  usePageTitle("Sourabh Saini - CRM & Automation Expert | HubSpot, WordPress, Workflow Automation");
+  usePageTitle("Sourabh Saini | CRM & Automation Expert");
+  
+  // SEO meta tags
+  const seoDescription = "Expert in HubSpot, WordPress, and workflow automation. Building scalable digital solutions with CRM integrations and intelligent automation.";
+  const seoKeywords = "HubSpot, WordPress, CRM, Automation, Workflow Automation, Integration, Salesforce, Zapier, ClickUp, Web Development";
   
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
@@ -335,7 +340,19 @@ export default function Home({ onContactClick }: HomeProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+      <SEOHead
+        title="Sourabh Saini | CRM & Automation Expert"
+        description={seoDescription}
+        keywords={seoKeywords}
+        canonicalUrl="https://sourabhsaini.com/"
+        ogTitle="Sourabh Saini | CRM & Automation Expert"
+        ogDescription={seoDescription}
+        ogImage="https://cdn.sourabhsaini.com/assets/img/og-image.webp"
+        type="website"
+        author="Sourabh Saini"
+      />
+      <div className="min-h-screen bg-background text-foreground">
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">
@@ -659,5 +676,6 @@ export default function Home({ onContactClick }: HomeProps) {
       {/* Contact Form Modal */}
       <CustomContactForm isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
     </div>
+    </>
   );
 }
