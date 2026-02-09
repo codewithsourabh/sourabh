@@ -71,8 +71,8 @@ export const appRouter = router({
         const readingTime = calculateReadingTime(post.content.rendered);
         const authorImage = getAuthorImage(post);
 
-        // Fetch AIOSEO data
-        const seoData = await getAIOSEOData(post.id);
+        // Fetch AIOSEO data (tries meta fields first, then API)
+        const seoData = await getAIOSEOData(post.id, post);
 
         return {
           id: post.id,

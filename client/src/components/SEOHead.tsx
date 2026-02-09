@@ -44,8 +44,16 @@ export default function SEOHead({
     }
 
     // Function to update or create meta tag
-    const setMetaTag = (property: string, content: string, isProperty = false) => {
-      if (!content) return;
+    const setMetaTag = (property: string, content: string | null | undefined, isProperty = false) => {
+      if (!content) {
+        // Remove the meta tag if no content
+        const attribute = isProperty ? "property" : "name";
+        const meta = document.querySelector(`meta[${attribute}="${property}"]`) as HTMLMetaElement;
+        if (meta) {
+          meta.remove();
+        }
+        return;
+      }
       
       const attribute = isProperty ? "property" : "name";
       let meta = document.querySelector(`meta[${attribute}="${property}"]`) as HTMLMetaElement;
@@ -60,8 +68,15 @@ export default function SEOHead({
     };
 
     // Set link tag (canonical, etc.)
-    const setLinkTag = (rel: string, href: string) => {
-      if (!href) return;
+    const setLinkTag = (rel: string, href: string | null | undefined) => {
+      if (!href) {
+        // Remove the link tag if no href
+        const link = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement;
+        if (link) {
+          link.remove();
+        }
+        return;
+      }
       
       let link = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement;
       
@@ -85,6 +100,9 @@ export default function SEOHead({
     if (nofollow) robotsContent.push("nofollow");
     if (robotsContent.length > 0) {
       setMetaTag("robots", robotsContent.join(", "));
+    } else {
+      // Remove robots meta if no restrictions
+      setMetaTag("robots", null);
     }
 
     // Open Graph tags
@@ -92,6 +110,8 @@ export default function SEOHead({
     if (ogTitle || title) setMetaTag("og:title", ogTitle || title || "", true);
     if (ogDescription || description) setMetaTag("og:description", ogDescription || description || "", true);
     if (ogImage) setMetaTag("og:image", ogImage, true);
+    else setMetaTag("og:image", null, true);
+    
     if (canonicalUrl) setMetaTag("og:url", canonicalUrl, true);
     if (publishedTime) setMetaTag("article:published_time", publishedTime, true);
     if (modifiedTime) setMetaTag("article:modified_time", modifiedTime, true);
@@ -104,9 +124,11 @@ export default function SEOHead({
       setMetaTag("twitter:description", twitterDescription || ogDescription || description || "");
     }
     if (twitterImage || ogImage) setMetaTag("twitter:image", twitterImage || ogImage || "");
+    else setMetaTag("twitter:image", null);
 
     // Canonical URL
     if (canonicalUrl) setLinkTag("canonical", canonicalUrl);
+    else setLinkTag("canonical", null);
 
     // Cleanup function (optional - if you want to remove tags when component unmounts)
     return () => {

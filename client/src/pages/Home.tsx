@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
 import { useState, useEffect } from "react";
 import CustomContactForm from "@/components/CustomContactForm";
+import SEOHead from "@/components/SEOHead";
 
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -336,6 +337,20 @@ export default function Home({ onContactClick }: HomeProps) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title="Sourabh Saini - CRM & Automation Expert | HubSpot, WordPress, Workflow Automation"
+        description="A professional portfolio website for a Software Engineer specializing in HubSpot, WordPress, and Automation. Features include expertise in CRM integration, workflow automation, and web development."
+        ogTitle="Sourabh Saini - CRM & Automation Expert"
+        ogDescription="Discover Sourabh's expertise in HubSpot, WordPress integration, and workflow automation. View skills, experience, projects, and certifications."
+        ogImage="https://files.manuscdn.com/webdev_screenshots/2026/02/09/oHoHpGprXVbv49C7HQ8P7Y.png?x-oss-process=image/resize,w_1200/crop,h_630,x_0,y_0"
+        twitterTitle="Sourabh Saini - CRM & Automation Expert"
+        twitterDescription="Specialize in HubSpot, WordPress integration, and business automation. Portfolio featuring projects, skills, and certifications."
+        twitterImage="https://files.manuscdn.com/webdev_screenshots/2026/02/09/oHoHpGprXVbv49C7HQ8P7Y.png?x-oss-process=image/resize,w_1200/crop,h_630,x_0,y_0"
+        canonicalUrl="https://sourabhsaini.com"
+        keywords="HubSpot, WordPress, CRM, Automation, Web Development, Integration, Workflow"
+        type="website"
+      />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 py-20 md:py-32">

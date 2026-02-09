@@ -346,9 +346,9 @@ export default function WordPressBlogPost() {
           ogTitle={post.seo?.og_title || post.title}
           ogDescription={post.seo?.og_description || post.excerpt}
           ogImage={post.seo?.og_image || post.featuredImage || undefined}
-          twitterTitle={post.seo?.twitter_title}
-          twitterDescription={post.seo?.twitter_description}
-          twitterImage={post.seo?.twitter_image}
+          twitterTitle={post.seo?.twitter_title || post.seo?.og_title || post.title}
+          twitterDescription={post.seo?.twitter_description || post.seo?.og_description || post.excerpt}
+          twitterImage={post.seo?.twitter_image || post.seo?.og_image || post.featuredImage || undefined}
           canonicalUrl={post.seo?.canonical_url || currentUrl}
           keywords={post.seo?.keywords}
           noindex={post.seo?.robots_noindex}

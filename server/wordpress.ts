@@ -23,6 +23,7 @@ export interface WordPressPost {
   slug: string;
   date: string;
   featured_media: number;
+  meta?: Record<string, any>;
   _embedded?: {
     "wp:featuredmedia"?: Array<{
       source_url: string;
@@ -60,10 +61,70 @@ export interface WordPressMedia {
 }
 
 /**
+ * Parse AIOSEO data from post meta fields
+ */
+export function parseAIOSEOMetaData(meta?: Record<string, any>): AIOSEOData | null {
+  if (!meta) return null;
+
+  try {
+    // Try to parse AIOSEO meta data
+    const seoTitle = meta._aioseo_title || null;
+    const seoDescription = meta._aioseo_description || null;
+    const seoKeywords = meta._aioseo_keywords || null;
+    
+    // Try to parse AIOSEO JSON if available
+    let aioseoData: any = null;
+    if (meta._aioseo_settings) {
+      try {
+        aioseoData = typeof meta._aioseo_settings === 'string' 
+          ? JSON.parse(meta._aioseo_settings) 
+          : meta._aioseo_settings;
+      } catch (e) {
+        console.warn("Failed to parse AIOSEO settings:", e);
+      }
+    }
+
+    // Return parsed data with fallbacks
+    const result: AIOSEOData = {
+      title: seoTitle,
+      description: seoDescription,
+      og_title: aioseoData?.openGraph?.title || null,
+      og_description: aioseoData?.openGraph?.description || null,
+      og_image: aioseoData?.openGraph?.image || null,
+      twitter_title: aioseoData?.twitter?.title || null,
+      twitter_description: aioseoData?.twitter?.description || null,
+      twitter_image: aioseoData?.twitter?.image || null,
+      canonical_url: aioseoData?.canonical || null,
+      keywords: seoKeywords,
+      robots_default: aioseoData?.robots?.default !== false,
+      robots_noindex: aioseoData?.robots?.noindex === true,
+      robots_nofollow: aioseoData?.robots?.nofollow === true,
+    };
+
+    // Check if any data was found
+    const hasData = Object.values(result).some(v => v !== null && v !== false && v !== true);
+    return hasData ? result : null;
+  } catch (error) {
+    console.error("Error parsing AIOSEO meta data:", error);
+    return null;
+  }
+}
+
+/**
  * Fetch AIOSEO data for a specific post
  */
-export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> {
+export async function getAIOSEOData(postId: number, post?: WordPressPost): Promise<AIOSEOData | null> {
   try {
+    // First try to parse from meta fields if post is provided
+    if (post?.meta) {
+      const metaData = parseAIOSEOMetaData(post.meta);
+      if (metaData) {
+        console.log(`[AIOSEO] Found SEO data in post meta for post ${postId}`);
+        return metaData;
+      }
+    }
+
+    // Try the AIOSEO REST API endpoint
     const response = await fetch(
       `${AIOSEO_API}/post/${postId}`,
       {
@@ -79,6 +140,7 @@ export async function getAIOSEOData(postId: number): Promise<AIOSEOData | null> 
     }
 
     const data = await response.json();
+    console.log(`[AIOSEO] Fetched SEO data for post ${postId}:`, JSON.stringify(data, null, 2));
     
     return {
       title: data.title || null,
@@ -133,8 +195,9 @@ export async function getWordPressPosts(page = 1, perPage = 10): Promise<WordPre
  */
 export async function getWordPressPostBySlug(slug: string): Promise<WordPressPost | null> {
   try {
+    // Fetch with context=edit to get all fields including meta
     const response = await fetch(
-      `${WORDPRESS_API}/posts?slug=${slug}&_embed`,
+      `${WORDPRESS_API}/posts?slug=${slug}&_embed&context=edit`,
       {
         headers: {
           "Accept": "application/json",

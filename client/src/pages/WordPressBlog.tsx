@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Calendar, User, Search, X, Clock } from "lucide-react";
 import { useLocation } from "wouter";
 import { CircularProgress } from "@/components/CircularProgress";
+import SEOHead from "@/components/SEOHead";
 
 interface BlogPost {
   id: number;
@@ -159,6 +160,21 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title="Blog - Sourabh Saini | HubSpot, WordPress, Automation Insights"
+        description="Discover expert insights on HubSpot automation, WordPress optimization, and integration strategies. Learn best practices for CRM implementation, workflow automation, and digital transformation."
+        ogTitle="Blog & Insights - Sourabh Saini"
+        ogDescription="Expert articles and guides on HubSpot, WordPress, automation, and CRM integration. Stay updated with the latest trends in business automation."
+        ogImage="https://files.manuscdn.com/webdev_screenshots/2026/02/09/oHoHpGprXVbv49C7HQ8P7Y.png?x-oss-process=image/resize,w_1200/crop,h_630,x_0,y_0"
+        twitterTitle="Blog & Insights - Sourabh Saini"
+        twitterDescription="Read expert insights on HubSpot, WordPress integration, and business automation strategies."
+        twitterImage="https://files.manuscdn.com/webdev_screenshots/2026/02/09/oHoHpGprXVbv49C7HQ8P7Y.png?x-oss-process=image/resize,w_1200/crop,h_630,x_0,y_0"
+        canonicalUrl="https://sourabhsaini.com/blog"
+        keywords="HubSpot, WordPress, Automation, CRM, Integration, Blog, Articles, Guides"
+        type="website"
+      />
+
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="container">
