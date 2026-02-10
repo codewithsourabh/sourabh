@@ -5,7 +5,7 @@
 
 import crypto from "crypto";
 
-const WORDPRESS_URL = "https://whitesmoke-cormorant-464905.hostingersite.com";
+const WORDPRESS_URL = "https://cdn.sourabhsaini.com";
 const WORDPRESS_API = `${WORDPRESS_URL}/wp-json/wp/v2`;
 
 export interface WordPressPost {
