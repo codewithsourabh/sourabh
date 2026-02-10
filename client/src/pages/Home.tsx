@@ -1,5 +1,4 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Code2, Zap, Globe, Database, Workflow, ExternalLink, Github, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight, Moon, Sun } from "lucide-react";
@@ -20,8 +19,6 @@ interface HomeProps {
 }
 
 export default function Home({ onContactClick }: HomeProps) {
-  usePageTitle("Sourabh Saini - CRM & Automation Expert | HubSpot, WordPress, Workflow Automation");
-  
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
   let { user, loading, error, isAuthenticated, logout } = useAuth();

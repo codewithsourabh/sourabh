@@ -1,5 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
-import { usePageTitle } from "@/hooks/usePageTitle";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -33,8 +32,6 @@ const CATEGORY_MAP: Record<number, string> = {
 };
 
 export default function WordPressBlog({ onContactClick }: { onContactClick?: () => void }) {
-  usePageTitle("Blog - Sourabh Saini | HubSpot, WordPress, Automation Insights");
-  
   const [, navigate] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);

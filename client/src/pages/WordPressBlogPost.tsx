@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useRoute, useLocation } from "wouter";
-import { usePageTitle } from "@/hooks/usePageTitle";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -39,9 +38,6 @@ export default function WordPressBlogPost() {
   const [, navigate] = useLocation();
   const [match, params] = useRoute("/blog/:slug");
   const [post, setPost] = useState<BlogPostDetail | null>(null);
-  
-  // Set dynamic title based on post title
-  usePageTitle(post ? `${post.title} - Sourabh Saini Blogs` : "Loading... - Sourabh Saini Blogs");
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
