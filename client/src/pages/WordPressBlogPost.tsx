@@ -89,7 +89,7 @@ export default function WordPressBlogPost() {
   const tocContainerRef = useRef<HTMLDivElement>(null);
   const authorSectionRef = useRef<HTMLDivElement>(null);
   const tocSidebarRef = useRef<HTMLDivElement>(null);
-  const [tocMaxHeight, setTocMaxHeight] = useState<string>('auto');
+  const [isTocSticky, setIsTocSticky] = useState<boolean>(true);
 
   // Auto-scroll TOC when active heading changes
   useEffect(() => {
@@ -107,24 +107,24 @@ export default function WordPressBlogPost() {
     }
   }, [activeHeading]);
 
-  // Calculate TOC sticky boundary (stop at author section)
+  // Calculate TOC sticky boundary (stop being sticky at author section)
   useEffect(() => {
     const handleScroll = () => {
       if (!authorSectionRef.current || !tocSidebarRef.current) return;
 
       const authorRect = authorSectionRef.current.getBoundingClientRect();
-      const tocRect = tocSidebarRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
 
-      // If author section is visible in viewport, reduce TOC max height
-      if (authorRect.top < window.innerHeight) {
-        const distanceToAuthor = authorRect.top - tocRect.top;
-        setTocMaxHeight(`${Math.max(100, distanceToAuthor - 24)}px`);
+      // Stop being sticky when author section reaches the top of viewport
+      if (authorRect.top <= 96) { // 96px = top-24 (sticky top position)
+        setIsTocSticky(false);
       } else {
-        setTocMaxHeight('auto');
+        setIsTocSticky(true);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -515,7 +515,7 @@ export default function WordPressBlogPost() {
             {/* Table of Contents Sidebar */}
             {post.headings && post.headings.length > 0 && (
               <aside className="hidden lg:block w-64 flex-shrink-0">
-                <div ref={tocSidebarRef} className="sticky top-24 bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 h-96 flex flex-col" style={{maxHeight: tocMaxHeight}}>
+                <div ref={tocSidebarRef} className={`${isTocSticky ? 'sticky top-24' : 'relative'} bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700 max-h-96 flex flex-col`}>
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 flex-shrink-0">
                     <ChevronRight className="w-4 h-4" />
                     On this page
