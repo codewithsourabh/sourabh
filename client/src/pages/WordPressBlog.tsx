@@ -274,7 +274,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        {Math.ceil((post.excerpt.split(' ').length + (post.content?.split(' ').length || 0)) / 200)} min read
+                        {Math.max(1, Math.ceil((post.content?.split(' ').length || post.excerpt.split(' ').length) / 200))} min read
                       </div>
                     </div>
 

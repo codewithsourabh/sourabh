@@ -157,3 +157,4 @@
 - [x] Remove AIChatBox.tsx, DashboardLayout.tsx, DashboardLayoutSkeleton.tsx, Map.tsx from components (Successfully removed all 4 files)
 - [x] Update WordPress URL to cdn.sourabhsaini.com to fetch blog articles from new location (Updated WORDPRESS_URL constant in server/wordpress.ts, verified API connection returns posts with AIOSEO data, all 27 tests passing)
 - [x] Fix table of contents sticky behavior - remain sticky until author section, then stop being sticky (Replaced tocMaxHeight state with isTocSticky boolean, updated scroll handler to toggle sticky class when author section reaches top, removed height decrease logic. All 27 tests passing.)
+- [x] Fix reading time calculation for articles on blog page to show accurate estimates (Changed from adding excerpt + content word counts to using only content word count, fallback to excerpt if content unavailable, minimum 1 minute display. All 27 tests passing.)
