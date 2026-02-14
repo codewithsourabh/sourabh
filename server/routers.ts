@@ -52,6 +52,7 @@ export const appRouter = router({
           title: decodeHtmlEntities(post.title.rendered),
           slug: post.slug,
           excerpt: getExcerpt(post),
+          content: post.content.rendered, // Include full content for accurate reading time
           date: post.date,
           featuredImage: getFeaturedImageUrl(post),
           author: getAuthorName(post),
@@ -101,6 +102,7 @@ export const appRouter = router({
           title: decodeHtmlEntities(post.title.rendered),
           slug: post.slug,
           excerpt: getExcerpt(post),
+          content: post.content.rendered, // Include full content for accurate reading time
           date: post.date,
           featuredImage: getFeaturedImageUrl(post),
           author: getAuthorName(post),
