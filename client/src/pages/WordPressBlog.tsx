@@ -91,6 +91,29 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
     });
   };
 
+  // Helper function to strip HTML tags and count words
+  const getWordCount = (htmlContent: string): number => {
+    // Strip HTML tags
+    const textContent = htmlContent.replace(/<[^>]*>/g, ' ');
+    // Decode HTML entities
+    const decodedText = textContent
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#039;/g, "'");
+    // Split by whitespace and filter out empty strings
+    const words = decodedText.trim().split(/\s+/).filter(word => word.length > 0);
+    return words.length;
+  };
+
+  // Calculate reading time in minutes
+  const getReadingTime = (post: BlogPost): number => {
+    const wordCount = post.content ? getWordCount(post.content) : getWordCount(post.excerpt);
+    return Math.max(1, Math.ceil(wordCount / 200)); // 200 words per minute
+  };
+
   // Circular progress animation from 0 to 100% - guaranteed completion
   useEffect(() => {
     // Use requestAnimationFrame for smooth animation
@@ -274,7 +297,7 @@ export default function WordPressBlog({ onContactClick }: { onContactClick?: () 
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        {Math.max(1, Math.ceil((post.content?.split(' ').length || post.excerpt.split(' ').length) / 200))} min read
+                        {getReadingTime(post)} min read
                       </div>
                     </div>
 
